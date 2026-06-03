@@ -1,0 +1,346 @@
+@import "tailwindcss";
+
+// SCSS Theme Color Variables
+$color-aioncy: #A153FF;
+$color-neutral-black: #1C1C1C;
+$color-neutral-darkgrey: #201D1D;
+$color-neutral-lightgrey: #757575;
+$color-neutral-offwhite: #F4F4F4;
+$color-border-light: #C3C3C3;
+$color-border-dark: #D9D9D9;
+$color-placeholder: #8C8C8C;
+$color-elevation-light: #FFFFFF;
+$color-utility-yellow: #FFFF62;
+$color-utility-bluishpurple: #6840FF;
+$color-utility-green: #98E891;
+
+// SCSS Typography Variables
+$font-size-h1: 64px;
+$line-height-h1: 1.12;
+$weight-h1: 800;
+$letter-spacing-h1: -0.02em;
+
+$font-size-h2: 48px;
+$line-height-h2: 1.20;
+$weight-h2: 600;
+$letter-spacing-h2: -0.02em;
+
+$font-size-h3: 32px;
+$line-height-h3: 1.20;
+$weight-h3: 600;
+$letter-spacing-h3: -0.02em;
+
+$font-size-body-xl: 24px;
+$line-height-body-xl: 1.40;
+$letter-spacing-body-xl: -0.02em;
+
+$font-size-body-lg: 20px;
+$line-height-body-lg: 1.40;
+$letter-spacing-body-lg: -0.02em;
+
+$font-size-body-md: 18px;
+$line-height-body-md: 1.40;
+$letter-spacing-body-md: -0.02em;
+
+$font-size-body-re: 16px;
+$line-height-body-re: 1.40;
+$letter-spacing-body-re: -0.02em;
+
+$font-size-label: 12px;
+$line-height-label: 1.20;
+$weight-label: 500;
+$letter-spacing-label: -0.02em;
+
+$font-size-button: 16px;
+$line-height-button: 1.20;
+$weight-button: 600;
+$letter-spacing-button: -0.04em;
+
+$font-size-extra: 20px;
+$line-height-extra: normal;
+$weight-extra: 400;
+$letter-spacing-extra: 0em;
+
+// SCSS Typography Mixins
+@mixin typography-h1 {
+  font-size: $font-size-h1;
+  line-height: $line-height-h1;
+  font-weight: $weight-h1;
+  letter-spacing: $letter-spacing-h1;
+}
+@mixin typography-h2 {
+  font-size: $font-size-h2;
+  line-height: $line-height-h2;
+  font-weight: $weight-h2;
+  letter-spacing: $letter-spacing-h2;
+}
+@mixin typography-h3 {
+  font-size: $font-size-h3;
+  line-height: $line-height-h3;
+  font-weight: $weight-h3;
+  letter-spacing: $letter-spacing-h3;
+}
+@mixin typography-body-xl-500 {
+  font-size: $font-size-body-xl;
+  line-height: $line-height-body-xl;
+  font-weight: 500;
+  letter-spacing: $letter-spacing-body-xl;
+}
+@mixin typography-body-xl-400 {
+  font-size: $font-size-body-xl;
+  line-height: $line-height-body-xl;
+  font-weight: 400;
+  letter-spacing: $letter-spacing-body-xl;
+}
+@mixin typography-body-lg-500 {
+  font-size: $font-size-body-lg;
+  line-height: $line-height-body-lg;
+  font-weight: 500;
+  letter-spacing: $letter-spacing-body-lg;
+}
+@mixin typography-body-lg-400 {
+  font-size: $font-size-body-lg;
+  line-height: $line-height-body-lg;
+  font-weight: 400;
+  letter-spacing: $letter-spacing-body-lg;
+}
+@mixin typography-body-md-400 {
+  font-size: $font-size-body-md;
+  line-height: $line-height-body-md;
+  font-weight: 400;
+  letter-spacing: $letter-spacing-body-md;
+}
+@mixin typography-body-re-400 {
+  font-size: $font-size-body-re;
+  line-height: $line-height-body-re;
+  font-weight: 400;
+  letter-spacing: $letter-spacing-body-re;
+}
+@mixin typography-label {
+  font-size: $font-size-label;
+  line-height: $line-height-label;
+  font-weight: $weight-label;
+  letter-spacing: $letter-spacing-label;
+}
+@mixin typography-button {
+  font-size: $font-size-button;
+  line-height: $line-height-button;
+  font-weight: $weight-button;
+  letter-spacing: $letter-spacing-button;
+}
+@mixin typography-extra {
+  font-size: $font-size-extra;
+  line-height: $line-height-extra;
+  font-weight: $weight-extra;
+  letter-spacing: $letter-spacing-extra;
+  font-style: italic;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  // Primary
+  --color-aioncy: #A153FF;
+
+  // Neutral
+  --color-neutral-black: #1C1C1C;
+  --color-neutral-darkgrey: #201D1D;
+  --color-neutral-lightgrey: #757575;
+  --color-neutral-offwhite: #F4F4F4;
+
+  // Component
+  --color-border-light: #C3C3C3;
+  --color-border-dark: #D9D9D9;
+
+  // Extras
+  --color-placeholder: #8C8C8C;
+
+  // Elevation
+  --color-elevation-light: #FFFFFF;
+
+  // Utility
+  --color-utility-yellow: #FFFF62;
+  --color-utility-bluishpurple: #6840FF;
+  --color-utility-green: #98E891;
+}
+
+// Tailwind v4 Typography Utility Classes
+@utility text-heading-h1 {
+  font-size: 64px;
+  line-height: 1.12;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+@utility text-heading-h2 {
+  font-size: 48px;
+  line-height: 1.20;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-heading-h3 {
+  font-size: 32px;
+  line-height: 1.20;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-body-xl-500 {
+  font-size: 24px;
+  line-height: 1.40;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+@utility text-body-xl-400 {
+  font-size: 24px;
+  line-height: 1.40;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+@utility text-body-lg-500 {
+  font-size: 20px;
+  line-height: 1.40;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+@utility text-body-lg-400 {
+  font-size: 20px;
+  line-height: 1.40;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+@utility text-body-md-400 {
+  font-size: 18px;
+  line-height: 1.40;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+@utility text-body-re-400 {
+  font-size: 16px;
+  line-height: 1.40;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+@utility text-label {
+  font-size: 12px;
+  line-height: 1.20;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+@utility text-button {
+  font-size: 16px;
+  line-height: 1.20;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+@utility text-extra {
+  font-size: 20px;
+  line-height: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-style: italic;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+
+  // Verify SCSS nesting works out-of-the-box
+  &::selection {
+    background-color: rgba(var(--foreground), 0.1);
+  }
+}
+
+// Hero feature cards — fanned arc layout
+.hero-card-arc {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.5rem;
+  min-height: 300px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+
+  @media (max-width: 1024px) {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    min-height: auto;
+  }
+}
+
+// Dynamic tilted card effects with smooth transitions
+.arc-card {
+  transform: translateY(var(--card-y-offset, 0px)) rotate(var(--card-rotate, 0deg))
+    scale(var(--card-scale, 1));
+  transition:
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.6s ease,
+    border-color 0.6s ease;
+
+  &:hover {
+    transform: translateY(calc(var(--card-y-offset, 0px) - 10px)) rotate(0deg)
+      scale(calc(var(--card-scale, 1) * 1.06)) !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .arc-card {
+    transform: translateY(0) rotate(0deg) scale(1) !important;
+
+    &:hover {
+      transform: translateY(-6px) rotate(0deg) scale(1.04) !important;
+    }
+  }
+}
+
+// Custom scrollbar helper class
+.scrollbar-thin {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.16);
+    }
+  }
+}
+
+// Fade-in-up animation for mobile slider chat bubbles
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -12,7 +12,7 @@ interface SlideData {
   title: string;
   description: string;
   statusText: string;
-  statusColor: string; // Tailwind color class
+  statusColor: string;
   messages: ChatMessage[];
 }
 
@@ -39,7 +39,7 @@ const SLIDES: SlideData[] = [
     description:
       "Qualify website visitors in real-time, capture contact details, and sync high-intent prospects directly to your CRM.",
     statusText: "Lead Captured & Synced.",
-    statusColor: "bg-[#FFFF62]", // Utility yellow
+    statusColor: "bg-[#FFFF62]",
     messages: [
       {
         role: "user",
@@ -106,7 +106,7 @@ const SLIDES: SlideData[] = [
     description:
       "Fine-tune the AI's guidelines, tone, and vocabulary to fit your brand identity and voice guidelines perfectly.",
     statusText: "Voice Personality Updated.",
-    statusColor: "bg-[#FF6B9D]", // Pink status indicator
+    statusColor: "bg-[#FF6B9D]",
     messages: [
       {
         role: "user",
@@ -120,146 +120,245 @@ const SLIDES: SlideData[] = [
   },
 ];
 
-export default function ActiveWorkerSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+const SLIDE_COUNT = SLIDES.length;
+// 100vh pinned panel + (n-1) viewport-heights of scroll to advance slides
+const RUNWAY_VH = 100 + (SLIDE_COUNT - 1) * 100;
 
-  useEffect(() => {
-    // Start progress interval
-    const intervalTime = 50; // ms
-    const duration = 5000; // 5 seconds per slide
-    const increment = (intervalTime / duration) * 100;
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
 
-    timerRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          // Advance to next slide
-          setActiveIndex((prevIdx) => (prevIdx + 1) % SLIDES.length);
-          return 0;
-        }
-        return prev + increment;
-      });
-    }, intervalTime);
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [activeIndex]);
-
-  const selectSlide = (index: number) => {
-    setActiveIndex(index);
-    setProgress(0);
-  };
-
-  const activeSlide = SLIDES[activeIndex];
-
+function SlidePhone({ slide }: { slide: SlideData }) {
   return (
-    <section className="w-full bg-utility-bluishpurple text-white py-24 px-6 relative overflow-hidden flex items-center justify-center">
-      {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aioncy/10 blur-[120px] rounded-full pointer-events-none" />
-
-      <div className="w-full max-w-5xl flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24 relative z-10">
-        
-        {/* Left Column: Carousel Details */}
-        <div className="flex-1 flex flex-col items-start gap-6 text-left max-w-md">
-          {/* Progress Indicators (exactly 142px total width, 3px indicator height) */}
-          <div className="flex gap-1.5 w-[142px] h-[3px] mb-2">
-            {SLIDES.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => selectSlide(idx)}
-                className="h-full flex-1 rounded-full bg-white/25 overflow-hidden relative cursor-pointer border-none outline-none"
-              >
-                <div
-                  className="h-full bg-white transition-all duration-[50ms] ease-linear"
-                  style={{
-                    width:
-                      activeIndex === idx
-                        ? `${progress}%`
-                        : activeIndex > idx
-                        ? "100%"
-                        : "0%",
-                  }}
-                />
-              </button>
-            ))}
-          </div>
-
-          {/* Heading and Paragraph (Title font-size, subtitle max-w-[440px]) */}
-          <div className="flex flex-col gap-4 min-h-[160px]">
-            <h2 className="text-[44px] font-extrabold leading-[1.12] tracking-tight text-white transition-all duration-300">
-              {activeSlide.title}
-            </h2>
-            <p className="max-w-[440px] text-[16px] text-white/80 leading-[1.5] transition-all duration-300">
-              {activeSlide.description}
-            </p>
-          </div>
-
-          {/* Action Buttons (Exactly 243px combined width, 48px height) */}
-          <div className="flex items-center gap-[13px] w-[243px] h-12 mt-4">
-            <button className="flex-1 h-full bg-utility-yellow text-neutral-black hover:bg-[#F2F250] active:scale-[0.97] rounded-xl font-extrabold text-[14px] flex items-center justify-center shadow-md transition-all duration-200 cursor-pointer border-none outline-none">
-              Test the AI
-            </button>
-            <button className="flex-1 h-full bg-white text-neutral-black hover:bg-neutral-offwhite active:scale-[0.97] rounded-xl font-extrabold text-[14px] flex items-center justify-center shadow-md transition-all duration-200 cursor-pointer border-none outline-none">
-              Join Early
-            </button>
-          </div>
+    <div className="flex-shrink-0 flex flex-col items-center justify-center">
+      <div className="w-[290px] h-[510px] rounded-[36px] border-[8px] border-[#0A0A0C] bg-[#0A0A0C] shadow-[0_24px_50px_rgba(0,0,0,0.3)] overflow-hidden relative flex flex-col">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-4 bg-[#0A0A0C] rounded-b-xl z-30 flex items-center justify-center">
+          <span className="w-6 h-0.5 bg-neutral-darkgrey rounded-full" />
         </div>
 
-        {/* Right Column: Mobile Screen Mockup */}
-        <div className="flex-shrink-0 flex flex-col items-center justify-center">
-          {/* Phone Frame (Proportional w-290, h-510) */}
-          <div className="w-[290px] h-[510px] rounded-[36px] border-[8px] border-[#0A0A0C] bg-[#0A0A0C] shadow-[0_24px_50px_rgba(0,0,0,0.3)] overflow-hidden relative flex flex-col">
-            
-            {/* Speaker/Camera Notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-4 bg-[#0A0A0C] rounded-b-xl z-30 flex items-center justify-center">
-              <span className="w-6 h-0.5 bg-neutral-darkgrey rounded-full" />
+        <div className="flex-1 relative flex flex-col pt-7 pb-4 px-3.5 bg-[#0E0E11] justify-end overflow-hidden">
+          <div
+            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+              backgroundSize: "16px 16px",
+            }}
+          />
+
+          <div className="flex flex-col gap-3 relative z-10">
+            {slide.messages.map((msg, i) => (
+              <div
+                key={i}
+                className="flex flex-col gap-0.5 max-w-[85%] rounded-[12px] p-3 text-[11.5px] leading-[1.4]"
+                style={{
+                  alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
+                  background: msg.role === "user" ? "#0D4E41" : "#1E1E22",
+                  color: "white",
+                  borderBottomRightRadius: msg.role === "user" ? "2px" : "12px",
+                  borderBottomLeftRadius:
+                    msg.role === "assistant" ? "2px" : "12px",
+                }}
+              >
+                <p className="whitespace-pre-line">{msg.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`w-[290px] h-12 flex items-center justify-center ${slide.statusColor} text-neutral-black text-center font-extrabold text-[13px] px-4 rounded-xl shadow-md tracking-wider mt-4 uppercase`}
+      >
+        {slide.statusText}
+      </div>
+    </div>
+  );
+}
+
+export default function ActiveWorkerSection() {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const stickyRef = useRef<HTMLDivElement | null>(null);
+  const snapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isSnappingRef = useRef(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const getScrollMetrics = useCallback(() => {
+    const wrapper = wrapperRef.current;
+    const sticky = stickyRef.current;
+    if (!wrapper || !sticky) return null;
+
+    const panelHeight = sticky.offsetHeight;
+    const scrollableDistance = wrapper.offsetHeight - panelHeight;
+    if (scrollableDistance <= 0) return null;
+
+    const rect = wrapper.getBoundingClientRect();
+    const scrolled = clamp(-rect.top, 0, scrollableDistance);
+    const segment = scrollableDistance / (SLIDE_COUNT - 1);
+    const index = clamp(Math.round(scrolled / segment), 0, SLIDE_COUNT - 1);
+
+    return { scrolled, segment, index, wrapperTop: wrapper.offsetTop };
+  }, []);
+
+  const snapToSlide = useCallback(
+    (index: number, smooth = true) => {
+      const wrapper = wrapperRef.current;
+      const metrics = getScrollMetrics();
+      if (!wrapper || !metrics || isSnappingRef.current) return;
+
+      const rect = wrapper.getBoundingClientRect();
+      const isPinned =
+        rect.top <= 0 && rect.bottom > (stickyRef.current?.offsetHeight ?? 0);
+      if (!isPinned) return;
+
+      const target = metrics.wrapperTop + index * metrics.segment;
+      if (Math.abs(window.scrollY - target) < 2) return;
+
+      isSnappingRef.current = true;
+      window.scrollTo({ top: target, behavior: smooth ? "smooth" : "auto" });
+
+      window.setTimeout(
+        () => {
+          isSnappingRef.current = false;
+        },
+        smooth ? 400 : 0,
+      );
+    },
+    [getScrollMetrics],
+  );
+
+  const updateFromScroll = useCallback(() => {
+    const metrics = getScrollMetrics();
+    if (!metrics) {
+      setActiveIndex(0);
+      return;
+    }
+
+    setActiveIndex(metrics.index);
+
+    if (isSnappingRef.current) return;
+
+    if (snapTimerRef.current) clearTimeout(snapTimerRef.current);
+    snapTimerRef.current = setTimeout(() => {
+      snapToSlide(metrics.index);
+    }, 80);
+  }, [getScrollMetrics, snapToSlide]);
+
+  useEffect(() => {
+    let frame = 0;
+
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateFromScroll);
+    };
+
+    updateFromScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      if (snapTimerRef.current) clearTimeout(snapTimerRef.current);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [updateFromScroll]);
+
+  const scrollToSlide = (index: number) => {
+    setActiveIndex(index);
+    snapToSlide(index);
+  };
+
+  const translatePercent = (activeIndex / SLIDE_COUNT) * 100;
+  const slideTransition = "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
+
+  return (
+    <div
+      ref={wrapperRef}
+      style={{ height: `${RUNWAY_VH}vh` }}
+      className="w-full relative shrink-0"
+    >
+      <div
+        ref={stickyRef}
+        className="sticky top-0 z-30 w-full h-[100vh] min-h-[100vh] max-h-[100vh] overflow-visible"
+      >
+        <section className="w-full h-[100vh] bg-utility-bluishpurple text-white px-6 relative overflow-visible flex items-center justify-center">
+          <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aioncy/10 blur-[120px] rounded-full pointer-events-none" />
+
+          <div className="w-full max-w-5xl h-full relative z-10 flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
+            <div className="flex-1 flex flex-col items-start gap-6 text-left max-w-md self-center">
+              <div className="flex gap-1.5 w-[142px] h-[3px] mb-2 shrink-0">
+                {SLIDES.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => scrollToSlide(idx)}
+                    className="h-full flex-1 rounded-full bg-white/25 overflow-hidden relative cursor-pointer border-none outline-none"
+                    aria-label={`Go to slide ${idx + 1}`}
+                  >
+                    <div
+                      className="h-full bg-white transition-all duration-300"
+                      style={{
+                        width: idx <= activeIndex ? "100%" : "0%",
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
+
+              <div className="w-full h-[220px] overflow-hidden">
+                <div
+                  className="will-change-transform"
+                  style={{
+                    transform: `translate3d(0, -${translatePercent}%, 0)`,
+                    transition: slideTransition,
+                  }}
+                >
+                  {SLIDES.map((slide) => (
+                    <div
+                      key={slide.title}
+                      className="h-[220px] flex flex-col gap-4"
+                    >
+                      <h2 className="text-[44px] font-extrabold leading-[1.12] tracking-tight text-white">
+                        {slide.title}
+                      </h2>
+                      <p className="max-w-[440px] text-[16px] text-white/80 leading-[1.5]">
+                        {slide.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-[13px] w-[243px] h-12 mt-4 shrink-0">
+                <button className="flex-1 h-full bg-utility-yellow text-neutral-black hover:bg-[#F2F250] active:scale-[0.97] rounded-xl font-extrabold text-[14px] flex items-center justify-center shadow-md transition-all duration-200 cursor-pointer border-none outline-none">
+                  Test the AI
+                </button>
+                <button className="flex-1 h-full bg-white text-neutral-black hover:bg-neutral-offwhite active:scale-[0.97] rounded-xl font-extrabold text-[14px] flex items-center justify-center shadow-md transition-all duration-200 cursor-pointer border-none outline-none">
+                  Join Early
+                </button>
+              </div>
             </div>
 
-            {/* Screen Content */}
-            <div className="flex-1 relative flex flex-col pt-7 pb-4 px-3.5 bg-[#0E0E11] justify-end overflow-hidden">
-              
-              {/* Dark Subtle Dot/Grid Background */}
-              <div 
-                className="absolute inset-0 opacity-[0.04] pointer-events-none"
+            <div className="flex-shrink-0 h-[100vh] overflow-visible self-center">
+              <div
+                className="will-change-transform"
                 style={{
-                  backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-                  backgroundSize: "16px 16px"
+                  transform: `translate3d(0, -${translatePercent}%, 0)`,
+                  transition: slideTransition,
                 }}
-              />
-
-              {/* Chat Thread */}
-              <div className="flex flex-col gap-3 relative z-10">
-                {activeSlide.messages.map((msg, i) => (
+              >
+                {SLIDES.map((slide) => (
                   <div
-                    key={`${activeIndex}-${i}`}
-                    className={`flex flex-col gap-0.5 max-w-[85%] rounded-[12px] p-3 text-[11.5px] leading-[1.4] transition-all duration-500 ease-out animate-fade-in-up`}
-                    style={{
-                      animationDelay: `${i * 120}ms`,
-                      alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
-                      background: msg.role === "user" ? "#0D4E41" : "#1E1E22",
-                      color: "white",
-                      borderBottomRightRadius: msg.role === "user" ? "2px" : "12px",
-                      borderBottomLeftRadius: msg.role === "assistant" ? "2px" : "12px",
-                    }}
+                    key={slide.title}
+                    className="h-[100vh] flex items-center justify-center"
                   >
-                    <p className="whitespace-pre-line">{msg.text}</p>
+                    <SlidePhone slide={slide} />
                   </div>
                 ))}
               </div>
             </div>
           </div>
-
-          {/* Status Badge Pill (exact same width as phone frame) */}
-          <div
-            className={`w-[290px] h-12 flex items-center justify-center ${activeSlide.statusColor} text-neutral-black text-center font-extrabold text-[13px] px-4 rounded-xl shadow-md tracking-wider mt-4 uppercase transition-all duration-300 ease-out`}
-          >
-            {activeSlide.statusText}
-          </div>
-        </div>
-
+        </section>
       </div>
-    </section>
+    </div>
   );
 }

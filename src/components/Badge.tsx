@@ -6,7 +6,11 @@ interface BadgeProps {
   className?: string;
 }
 
-export default function Badge({ text, variant = "yellow", className = "" }: BadgeProps) {
+export default function Badge({
+  text,
+  variant = "yellow",
+  className = "",
+}: BadgeProps) {
   const getVariantStyles = () => {
     switch (variant) {
       case "yellow":
@@ -24,7 +28,7 @@ export default function Badge({ text, variant = "yellow", className = "" }: Badg
 
   return (
     <span
-      className={`inline-flex items-center justify-center px-4 py-1 rounded-full text-[11px] tracking-wider uppercase transition-all duration-300 ${getVariantStyles()} ${className}`}
+      className={`border border-[#00000033] inline-flex items-center justify-center px-4 py-2 rounded-full css-misc--label text-[#000000] ${getVariantStyles()} ${className}`}
     >
       {text}
     </span>

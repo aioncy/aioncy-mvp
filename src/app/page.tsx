@@ -2,35 +2,28 @@
 
 import React from "react";
 import Badge from "@/components/Badge";
-import Card from "@/components/Card";
 import WingmanChat from "@/components/WingmanChat";
+import HeroCardArc from "@/components/HeroCardArc";
 import ActiveWorkerSection from "@/components/ActiveWorkerSection";
 import PricingSection from "@/components/PricingSection";
 import FaqSection from "@/components/FaqSection";
 import EarlyAccessSection from "@/components/EarlyAccessSection";
 import Footer from "@/components/Footer";
-import {
-  CaptureAutomationGraphic,
-  ConversationsGraphic,
-  UnifiedInboxGraphic,
-  ContinuousImprovementGraphic,
-  PersonalizedAgentsGraphic,
-} from "@/components/CardGraphics";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#F6F6F6] text-neutral-black font-sans selection:bg-aioncy selection:text-white overflow-x-hidden relative flex flex-col justify-between">
+    <div className="min-h-screen bg-[#F6F6F6] text-neutral-black font-sans selection:bg-aioncy selection:text-white relative flex flex-col justify-between">
       {/* Hero Header Section */}
-      <main className="pt-20 pb-8 px-6 text-center flex flex-col items-center gap-6 max-w-7xl mx-auto w-full">
-        <Badge text="Launching Soon" variant="yellow" />
+      <main className="pt-20 pb-8 px-6 text-center max-w-7xl mx-auto w-full">
+        <Badge text="Launching Soon" variant="yellow" className="mb-3.5" />
 
-        <h1 className="text-heading-h1 leading-[1.08] tracking-tight text-neutral-black max-w-4xl font-extrabold">
+        <h1 className="css-heading--h1 text-neutral-black mb-5">
           Your <span className="text-[#A153FF]">AI Employee</span> for
           <br />
           Conversations, Leads & Support
         </h1>
 
-        <p className="text-body-xl-400 text-neutral-lightgrey leading-relaxed max-w-[848px]">
+        <p className="css-body--xl-400 text-neutral-lightgrey mx-auto max-w-[848px]">
           Send links, answer questions, collect leads, and close sales —
           automatically —<br className="hidden md:inline" />
           and stop treating engagement like a full-time job.
@@ -38,63 +31,14 @@ export default function Home() {
       </main>
 
       {/* Curved Cards Arc Section */}
-      <section
-        id="features"
-        className="w-full max-w-7xl mx-auto px-6 py-24 overflow-hidden"
-      >
-        <div className="hero-card-arc">
-          <Card
-            title="Capture Automation"
-            preview="light"
-            rotation={-22}
-            yOffset={48}
-          >
-            <CaptureAutomationGraphic />
-          </Card>
-
-          <Card
-            title="AI Conversations in Action"
-            preview="dark"
-            rotation={-11}
-            yOffset={14}
-          >
-            <ConversationsGraphic />
-          </Card>
-
-          <Card
-            title="Unified Inbox"
-            preview="light"
-            rotation={0}
-            yOffset={0}
-            scale={1.06}
-          >
-            <UnifiedInboxGraphic />
-          </Card>
-
-          <Card
-            title="Continuous AI Improvement"
-            preview="dark"
-            rotation={11}
-            yOffset={14}
-          >
-            <ContinuousImprovementGraphic />
-          </Card>
-
-          <Card
-            title="Personalized AI Agents"
-            preview="light"
-            rotation={22}
-            yOffset={48}
-          >
-            <PersonalizedAgentsGraphic />
-          </Card>
-        </div>
+      <section id="features" className="relative z-20 w-full pt-6 pb-0 overflow-hidden">
+        <HeroCardArc />
       </section>
 
-      {/* Interactive Chat Console Section */}
+      {/* Wingman chat — tucked under the arc; no section bg so edge cards stay visible */}
       <section
         id="demo"
-        className="w-full max-w-7xl mx-auto px-6 pt-6 pb-24 flex justify-center z-20 relative bg-[#F6F6F6]"
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-32 pb-24 flex justify-center pointer-events-none"
       >
         <WingmanChat />
       </section>

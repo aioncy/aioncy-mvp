@@ -105,8 +105,8 @@ export default function ReviewPage() {
           </h2>
           <div className="flex flex-col gap-8 w-full border border-border-light dark:border-neutral-darkgrey rounded-lg p-6 bg-neutral-offwhite dark:bg-neutral-black">
             <div>
-              <div className="text-[10px] text-placeholder mb-1">Heading/H1 (.text-heading-h1) — 64px / 112% / ExtraBold / -2%</div>
-              <div className="text-heading-h1 text-neutral-black dark:text-elevation-light">Heading/H1</div>
+              <div className="text-[10px] text-placeholder mb-1">Heading/H1 (.css-heading--h1) — 64px / 112% / ExtraBold / -2%</div>
+              <div className="css-heading--h1 text-neutral-black dark:text-elevation-light">Heading/H1</div>
             </div>
 
             <hr className="border-border-light dark:border-neutral-darkgrey" />

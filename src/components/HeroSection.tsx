@@ -7,7 +7,7 @@ export default function HeroSection() {
       <div className="flex flex-col gap-6 max-w-4xl mx-auto items-center">
         {/* Reusable Badge */}
         <Badge text="Launching Soon" variant="yellow" />
-        <h1 className="text-heading-h1 leading-[1.08] tracking-tight text-neutral-black max-w-3xl">
+        <h1 className="css-heading--h1 leading-[1.08] tracking-tight text-neutral-black max-w-3xl">
           Your <span className="text-aioncy">AI Employee</span> for Conversations, Leads &amp; Support
         </h1>
         <p className="text-body-xl-400 text-neutral-lightgrey leading-relaxed max-w-2xl">

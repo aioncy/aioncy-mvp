@@ -1,0 +1,106 @@
+@use "variables" as variable;
+@use "mixins";
+
+// ---------------------------------------------------------------------------
+// Headings — tablet min → desktop max (per design spec)
+// ---------------------------------------------------------------------------
+
+.css-heading--h1 {
+  font-family: variable.$font-family-heading;
+  @include mixins.fontSize(52px, 64px);
+  line-height: 112%;
+  font-weight: 800;
+  letter-spacing: variable.$letter-spacing-default;
+}
+
+.css-heading--h2 {
+  font-family: variable.$font-family-heading;
+  @include mixins.fontSize(42px, 48px);
+  line-height: 110%;
+  font-weight: 800;
+  letter-spacing: variable.$letter-spacing-default;
+
+  @media (min-width: variable.$desktop) {
+    line-height: 120%;
+    font-weight: 600;
+  }
+}
+
+.css-heading--h3 {
+  font-family: variable.$font-family-heading;
+  @include mixins.fontSize(30px, 32px);
+  line-height: 120%;
+  font-weight: 600;
+  letter-spacing: variable.$letter-spacing-default;
+}
+
+// ---------------------------------------------------------------------------
+// Body
+// ---------------------------------------------------------------------------
+
+.css-body--xl-500 {
+  @include mixins.fontSize(22px, 24px);
+  line-height: 140%;
+  font-weight: 500;
+  letter-spacing: variable.$letter-spacing-default;
+}
+
+.css-body--xl-400 {
+  @include mixins.fontSize(22px, 24px);
+  line-height: 140%;
+  font-weight: 400;
+  letter-spacing: variable.$letter-spacing-default;
+}
+
+.css-body--lg-500 {
+  @include mixins.fontSize(19px, 20px);
+  line-height: 140%;
+  font-weight: 500;
+  letter-spacing: variable.$letter-spacing-default;
+}
+
+.css-body--lg-400 {
+  @include mixins.fontSize(19px, 20px);
+  line-height: 140%;
+  font-weight: 400;
+  letter-spacing: variable.$letter-spacing-default;
+}
+
+.css-body--md-400 {
+  font-size: 18px;
+  line-height: 140%;
+  font-weight: 400;
+  letter-spacing: variable.$letter-spacing-default;
+}
+
+.css-body--re-400 {
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 400;
+  letter-spacing: variable.$letter-spacing-default;
+}
+
+// ---------------------------------------------------------------------------
+// Misc
+// ---------------------------------------------------------------------------
+
+.css-misc--label {
+  @include mixins.fontSize(12px, 12px);
+  line-height: 120%;
+  font-weight: 500; // Medium
+  letter-spacing: -0.02em; // -2%
+}
+
+.css-misc--button {
+  @include mixins.fontSize(16px, 16px);
+  line-height: 120%;
+  font-weight: 600; // Semi Bold
+  letter-spacing: -0.04em; // -4%
+}
+
+.css-misc--extra {
+  @include mixins.fontSize(20px, 20px);
+  line-height: auto; // AUTO
+  font-weight: 400; // Regular
+  letter-spacing: 0; // 0%
+}

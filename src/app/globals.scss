@@ -1,18 +1,22 @@
+@use "../styles/variables" as variable;
+@use "../styles/mixins";
+@use "../styles/typography";
+
 @import "tailwindcss";
 
 // SCSS Theme Color Variables
-$color-aioncy: #A153FF;
-$color-neutral-black: #1C1C1C;
-$color-neutral-darkgrey: #201D1D;
+$color-aioncy: #a153ff;
+$color-neutral-black: #1c1c1c;
+$color-neutral-darkgrey: #201d1d;
 $color-neutral-lightgrey: #757575;
-$color-neutral-offwhite: #F4F4F4;
-$color-border-light: #C3C3C3;
-$color-border-dark: #D9D9D9;
-$color-placeholder: #8C8C8C;
-$color-elevation-light: #FFFFFF;
-$color-utility-yellow: #FFFF62;
-$color-utility-bluishpurple: #6840FF;
-$color-utility-green: #98E891;
+$color-neutral-offwhite: #f4f4f4;
+$color-border-light: #c3c3c3;
+$color-border-dark: #d9d9d9;
+$color-placeholder: #8c8c8c;
+$color-elevation-light: #ffffff;
+$color-utility-yellow: #ffff62;
+$color-utility-bluishpurple: #6840ff;
+$color-utility-green: #98e891;
 
 // SCSS Typography Variables
 $font-size-h1: 64px;
@@ -21,38 +25,38 @@ $weight-h1: 800;
 $letter-spacing-h1: -0.02em;
 
 $font-size-h2: 48px;
-$line-height-h2: 1.20;
+$line-height-h2: 1.2;
 $weight-h2: 600;
 $letter-spacing-h2: -0.02em;
 
 $font-size-h3: 32px;
-$line-height-h3: 1.20;
+$line-height-h3: 1.2;
 $weight-h3: 600;
 $letter-spacing-h3: -0.02em;
 
 $font-size-body-xl: 24px;
-$line-height-body-xl: 1.40;
+$line-height-body-xl: 1.4;
 $letter-spacing-body-xl: -0.02em;
 
 $font-size-body-lg: 20px;
-$line-height-body-lg: 1.40;
+$line-height-body-lg: 1.4;
 $letter-spacing-body-lg: -0.02em;
 
 $font-size-body-md: 18px;
-$line-height-body-md: 1.40;
+$line-height-body-md: 1.4;
 $letter-spacing-body-md: -0.02em;
 
 $font-size-body-re: 16px;
-$line-height-body-re: 1.40;
+$line-height-body-re: 1.4;
 $letter-spacing-body-re: -0.02em;
 
 $font-size-label: 12px;
-$line-height-label: 1.20;
+$line-height-label: 1.2;
 $weight-label: 500;
 $letter-spacing-label: -0.02em;
 
 $font-size-button: 16px;
-$line-height-button: 1.20;
+$line-height-button: 1.2;
 $weight-button: 600;
 $letter-spacing-button: -0.04em;
 
@@ -148,32 +152,32 @@ $letter-spacing-extra: 0em;
   --font-mono: var(--font-geist-mono);
 
   // Primary
-  --color-aioncy: #A153FF;
+  --color-aioncy: #a153ff;
 
   // Neutral
-  --color-neutral-black: #1C1C1C;
-  --color-neutral-darkgrey: #201D1D;
+  --color-neutral-black: #1c1c1c;
+  --color-neutral-darkgrey: #201d1d;
   --color-neutral-lightgrey: #757575;
-  --color-neutral-offwhite: #F4F4F4;
+  --color-neutral-offwhite: #f4f4f4;
 
   // Component
-  --color-border-light: #C3C3C3;
-  --color-border-dark: #D9D9D9;
+  --color-border-light: #c3c3c3;
+  --color-border-dark: #d9d9d9;
 
   // Extras
-  --color-placeholder: #8C8C8C;
+  --color-placeholder: #8c8c8c;
 
   // Elevation
-  --color-elevation-light: #FFFFFF;
+  --color-elevation-light: #ffffff;
 
   // Utility
-  --color-utility-yellow: #FFFF62;
-  --color-utility-bluishpurple: #6840FF;
-  --color-utility-green: #98E891;
+  --color-utility-yellow: #ffff62;
+  --color-utility-bluishpurple: #6840ff;
+  --color-utility-green: #98e891;
 }
 
 // Tailwind v4 Typography Utility Classes
-@utility text-heading-h1 {
+@utility css-heading--h1 {
   font-size: 64px;
   line-height: 1.12;
   font-weight: 800;
@@ -181,61 +185,61 @@ $letter-spacing-extra: 0em;
 }
 @utility text-heading-h2 {
   font-size: 48px;
-  line-height: 1.20;
+  line-height: 1.2;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 @utility text-heading-h3 {
   font-size: 32px;
-  line-height: 1.20;
+  line-height: 1.2;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 @utility text-body-xl-500 {
   font-size: 24px;
-  line-height: 1.40;
+  line-height: 1.4;
   font-weight: 500;
   letter-spacing: -0.02em;
 }
 @utility text-body-xl-400 {
   font-size: 24px;
-  line-height: 1.40;
+  line-height: 1.4;
   font-weight: 400;
   letter-spacing: -0.02em;
 }
 @utility text-body-lg-500 {
   font-size: 20px;
-  line-height: 1.40;
+  line-height: 1.4;
   font-weight: 500;
   letter-spacing: -0.02em;
 }
 @utility text-body-lg-400 {
   font-size: 20px;
-  line-height: 1.40;
+  line-height: 1.4;
   font-weight: 400;
   letter-spacing: -0.02em;
 }
 @utility text-body-md-400 {
   font-size: 18px;
-  line-height: 1.40;
+  line-height: 1.4;
   font-weight: 400;
   letter-spacing: -0.02em;
 }
 @utility text-body-re-400 {
   font-size: 16px;
-  line-height: 1.40;
+  line-height: 1.4;
   font-weight: 400;
   letter-spacing: -0.02em;
 }
 @utility text-label {
   font-size: 12px;
-  line-height: 1.20;
+  line-height: 1.2;
   font-weight: 500;
   letter-spacing: -0.02em;
 }
 @utility text-button {
   font-size: 16px;
-  line-height: 1.20;
+  line-height: 1.2;
   font-weight: 600;
   letter-spacing: -0.04em;
 }
@@ -265,29 +269,106 @@ body {
   }
 }
 
-// Hero feature cards — fanned arc layout
+// Hero feature cards — circular arc marquee (top semicircle visible)
 .hero-card-arc {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 0.5rem;
-  min-height: 300px;
-  padding-top: 0.5rem;
-  padding-bottom: 0.25rem;
+  --arc-radius: clamp(480px, 56vw, 720px);
+  --orbit-size: calc(var(--arc-radius) * 2);
+  --card-w: 300px;
+  --card-h: 250px;
+  --arc-viewport-h: calc(var(--arc-radius) + var(--card-h) / 2 + 0.5rem);
+
+  position: relative;
+  width: 100%;
+  height: var(--arc-viewport-h);
+  margin-bottom: -5rem;
+  overflow: hidden;
+  contain: paint;
+
+  .arc-viewport {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    overflow: hidden;
+    contain: strict;
+  }
+
+  .arc-orbit {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: var(--orbit-size);
+    height: var(--orbit-size);
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    animation: arc-orbit-spin 40s linear infinite;
+    will-change: transform;
+  }
+
+  .card-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    width: var(--card-w);
+    height: var(--card-h);
+    margin-left: calc(var(--card-w) / -2);
+    margin-top: calc(var(--card-h) / -2);
+    transform: rotate(var(--orbit-angle))
+      translateY(calc(-1 * var(--arc-radius)));
+    transform-origin: center center;
+  }
+
+  .card-wrapper > .arc-card {
+    width: var(--card-w) !important;
+    height: var(--card-h) !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  @keyframes arc-orbit-spin {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(-180deg);
+    }
+  }
+
+  .arc-viewport,
+  .arc-orbit,
+  .card-wrapper,
+  .arc-card {
+    pointer-events: none !important;
+  }
+
+  .arc-card:hover,
+  .arc-card:active,
+  .card-wrapper:hover .arc-card {
+    transform: none !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.14) !important;
+  }
 
   @media (max-width: 1024px) {
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1.25rem;
-    min-height: auto;
+    --arc-radius: clamp(400px, 68vw, 620px);
+    --card-w: 200px;
+    --card-h: 236px;
+
+    .arc-orbit {
+      animation-duration: 48s;
+    }
+  }
+
+  @media (max-width: 640px) {
+    --arc-radius: clamp(340px, 82vw, 480px);
+    --card-w: 184px;
+    --card-h: 218px;
   }
 }
 
 // Dynamic tilted card effects with smooth transitions
 .arc-card {
-  transform: translateY(var(--card-y-offset, 0px)) rotate(var(--card-rotate, 0deg))
-    scale(var(--card-scale, 1));
+  transform: translateY(var(--card-y-offset, 0px))
+    rotate(var(--card-rotate, 0deg)) scale(var(--card-scale, 1));
   transition:
     transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.6s ease,
@@ -320,7 +401,7 @@ body {
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.08);
     border-radius: 10px;
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.16);
     }
@@ -343,4 +424,3 @@ body {
   opacity: 0;
   animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-

@@ -43,17 +43,15 @@ export default function WingmanChat() {
   };
 
   return (
-    <div className="relative w-full max-w-[460px] mx-auto z-10">
+    <div className="relative z-30 w-full max-w-[460px] mx-auto pointer-events-auto">
       {/* Chat Widget Container */}
       <div className="w-full bg-white rounded-[24px] border border-border-light/50 shadow-[0_8px_40px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(0,0,0,0.1)]">
         {/* Header (Dark Theme) */}
         <div className="flex items-center justify-between px-6 py-4.5 bg-neutral-black text-white">
           <div className="flex flex-col gap-0.5">
-            <h3 className="text-[18px] font-extrabold tracking-tight">
-              Wingman
-            </h3>
-            <p className="text-[12px] text-placeholder">
-              Ask anything about aioncy
+            <h3 className="css-body--xl--500">Wingman</h3>
+            <p className="css-body--re-400 text-[#FFFFFF99]">
+              Try me. I don't bite.
             </p>
           </div>
           <button
@@ -176,12 +174,12 @@ export default function WingmanChat() {
           <path
             d="M25.031 25.0586C27.031 34.5586 14.031 46.0586 2.03101 46.0586"
             stroke="#FF0D49"
-            stroke-width="0.5"
+            strokeWidth="0.5"
           />
           <path
             d="M3.53101 47.5586C3.03101 47.0586 1.63101 46.0586 0.0310058 46.0586C1.36434 45.8919 3.93101 45.2586 3.53101 44.0586"
             stroke="#FF0D49"
-            stroke-width="0.5"
+            strokeWidth="0.5"
           />
         </svg>
       </div>

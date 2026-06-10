@@ -1,0 +1,33 @@
+@use "sass:math";
+@use "variables" as variable;
+
+@function strip-unit($value) {
+  @if math.is-unitless($value) {
+    @return $value;
+  }
+  @return math.div($value, ($value * 0 + 1));
+}
+
+/// Fluid font size between tablet (min) and desktop (max) viewports.
+/// @param {Length} $min-size — size at tablet / narrow viewports
+/// @param {Length} $max-size — size at desktop / wide viewports
+@mixin fontSize(
+  $min-size,
+  $max-size,
+  $min-width: variable.$tablet,
+  $max-width: variable.$fluid-max
+) {
+  $min: strip-unit($min-size);
+  $max: strip-unit($max-size);
+  $min-vw: strip-unit($min-width);
+  $max-vw: strip-unit($max-width);
+
+  font-size: clamp(
+    #{$min-size},
+    calc(
+      #{$min-size} + (#{$max} - #{$min}) *
+        ((100vw - #{$min-width}) / (#{$max-vw} - #{$min-vw}))
+    ),
+    #{$max-size}
+  );
+}

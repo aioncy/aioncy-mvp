@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Button from "./Button";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -272,39 +273,102 @@ export default function ActiveWorkerSection() {
   const slideTransition = "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
 
   return (
-    <div
-      ref={wrapperRef}
-      style={{ height: `${RUNWAY_VH}vh` }}
-      className="w-full relative shrink-0"
-    >
-      <div
-        ref={stickyRef}
-        className="sticky top-0 z-30 w-full h-[100vh] min-h-[100vh] max-h-[100vh] overflow-visible"
-      >
-        <section className="w-full h-[100vh] bg-utility-bluishpurple text-white px-6 relative overflow-visible flex items-center justify-center">
-          <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aioncy/10 blur-[120px] rounded-full pointer-events-none" />
+    <>
+      {/* MOBILE LAYOUT (Sequential Stack) */}
+      <div className="w-full bg-utility-bluishpurple text-white px-6 py-20 flex lg:hidden flex-col items-center gap-20 relative overflow-hidden">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-aioncy/10 blur-[80px] rounded-full pointer-events-none" />
 
-          <div className="w-full max-w-5xl h-full relative z-10 flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
-            <div className="flex-1 flex flex-col items-start gap-6 text-left max-w-md self-center">
-              <div className="flex gap-1.5 w-[142px] h-[3px] mb-2 shrink-0">
-                {SLIDES.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => scrollToSlide(idx)}
-                    className="h-full flex-1 rounded-full bg-white/25 overflow-hidden relative cursor-pointer border-none outline-none"
-                    aria-label={`Go to slide ${idx + 1}`}
+        {SLIDES.map((slide, idx) => (
+          <div key={idx} className="flex flex-col items-center gap-10 text-center w-full relative z-10">
+            <div className="flex flex-col gap-4">
+              <h2 className="text-[32px] font-extrabold leading-[1.12] tracking-tight text-white">
+                {slide.title}
+              </h2>
+              <p className="text-[16px] text-white/80 leading-[1.5] max-w-sm mx-auto">
+                {slide.description}
+              </p>
+            </div>
+            
+            <SlidePhone slide={slide} />
+            
+            {idx === 0 && (
+              <div className="w-full flex items-center gap-4 mt-2 max-w-[290px]">
+                <Button className="flex-1">Test the AI</Button>
+                <Button variant="secondary" className="flex-1 text-neutral-black">
+                  Join Early
+                </Button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* DESKTOP LAYOUT (Sticky Slider) */}
+      <div
+        ref={wrapperRef}
+        style={{ height: `${RUNWAY_VH}vh` }}
+        className="hidden lg:block w-full relative shrink-0"
+      >
+        <div
+          ref={stickyRef}
+          className="sticky top-0 z-30 w-full h-[100vh] min-h-[100vh] max-h-[100vh] overflow-visible"
+        >
+          <section className="w-full h-[100vh] bg-utility-bluishpurple text-white px-6 relative overflow-visible flex items-center justify-center">
+            <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aioncy/10 blur-[120px] rounded-full pointer-events-none" />
+
+            <div className="w-full max-w-5xl h-full relative z-10 flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24">
+              <div className="flex-1 flex flex-col items-start gap-6 text-left max-w-md self-center">
+                <div className="flex gap-1.5 w-[142px] h-[3px] mb-2 shrink-0 mx-auto lg:mx-0">
+                  {SLIDES.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => scrollToSlide(idx)}
+                      className="h-full flex-1 rounded-full bg-white/25 overflow-hidden relative cursor-pointer border-none outline-none"
+                      aria-label={`Go to slide ${idx + 1}`}
+                    >
+                      <div
+                        className="h-full bg-white transition-all duration-300"
+                        style={{
+                          width: idx <= activeIndex ? "100%" : "0%",
+                        }}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                <div className="w-full h-[220px] overflow-hidden">
+                  <div
+                    className="will-change-transform"
+                    style={{
+                      transform: `translate3d(0, -${translatePercent}%, 0)`,
+                      transition: slideTransition,
+                    }}
                   >
-                    <div
-                      className="h-full bg-white transition-all duration-300"
-                      style={{
-                        width: idx <= activeIndex ? "100%" : "0%",
-                      }}
-                    />
-                  </button>
-                ))}
+                    {SLIDES.map((slide) => (
+                      <div
+                        key={slide.title}
+                        className="h-[220px] flex flex-col gap-4 text-left"
+                      >
+                        <h2 className="text-[44px] font-extrabold leading-[1.12] tracking-tight text-white">
+                          {slide.title}
+                        </h2>
+                        <p className="max-w-[440px] text-[16px] text-white/80 leading-[1.5]">
+                          {slide.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-[13px] w-[243px] h-12 mt-4 shrink-0 mx-auto lg:mx-0">
+                  <Button className="flex-1 h-full">Test the AI</Button>
+                  <Button variant="secondary" className="flex-1 h-full">
+                    Join Early
+                  </Button>
+                </div>
               </div>
 
-              <div className="w-full h-[220px] overflow-hidden">
+              <div className="flex-shrink-0 h-[100vh] overflow-visible self-center">
                 <div
                   className="will-change-transform"
                   style={{
@@ -315,50 +379,17 @@ export default function ActiveWorkerSection() {
                   {SLIDES.map((slide) => (
                     <div
                       key={slide.title}
-                      className="h-[220px] flex flex-col gap-4"
+                      className="h-[100vh] flex items-center justify-center"
                     >
-                      <h2 className="text-[44px] font-extrabold leading-[1.12] tracking-tight text-white">
-                        {slide.title}
-                      </h2>
-                      <p className="max-w-[440px] text-[16px] text-white/80 leading-[1.5]">
-                        {slide.description}
-                      </p>
+                      <SlidePhone slide={slide} />
                     </div>
                   ))}
                 </div>
               </div>
-
-              <div className="flex items-center gap-[13px] w-[243px] h-12 mt-4 shrink-0">
-                <button className="flex-1 h-full bg-utility-yellow text-neutral-black hover:bg-[#F2F250] active:scale-[0.97] rounded-xl font-extrabold text-[14px] flex items-center justify-center shadow-md transition-all duration-200 cursor-pointer border-none outline-none">
-                  Test the AI
-                </button>
-                <button className="flex-1 h-full bg-white text-neutral-black hover:bg-neutral-offwhite active:scale-[0.97] rounded-xl font-extrabold text-[14px] flex items-center justify-center shadow-md transition-all duration-200 cursor-pointer border-none outline-none">
-                  Join Early
-                </button>
-              </div>
             </div>
-
-            <div className="flex-shrink-0 h-[100vh] overflow-visible self-center">
-              <div
-                className="will-change-transform"
-                style={{
-                  transform: `translate3d(0, -${translatePercent}%, 0)`,
-                  transition: slideTransition,
-                }}
-              >
-                {SLIDES.map((slide) => (
-                  <div
-                    key={slide.title}
-                    className="h-[100vh] flex items-center justify-center"
-                  >
-                    <SlidePhone slide={slide} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

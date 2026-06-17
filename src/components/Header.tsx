@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Button from "./Button";
 
 export default function Header() {
   return (
@@ -13,7 +13,7 @@ export default function Header() {
             Aioncy<span className="text-aioncy">.</span>
           </span>
         </div>
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-8">
           <a href="#features" className="text-body-re-400 text-placeholder hover:text-neutral-black transition-colors">
             Features
           </a>
@@ -28,9 +28,9 @@ export default function Header() {
           </Link>
         </nav>
         <div>
-          <button className="text-button px-5 py-2.5 rounded-full bg-neutral-black text-white hover:bg-neutral-darkgrey transition-all cursor-pointer">
+          <Button variant="dark" size="small" className="rounded-full">
             Launch Console
-          </button>
+          </Button>
         </div>
       </div>
     </header>

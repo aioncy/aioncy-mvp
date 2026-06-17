@@ -96,41 +96,43 @@ export default function FaqSection() {
   };
 
   return (
-    <section id="faq" className="w-full bg-[#F6F6F6] text-neutral-black py-28 px-6 flex flex-col items-center justify-center border-t border-border-light/20 relative overflow-hidden">
+    <section id="faq" className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-28 px-6 flex flex-col items-center justify-center border-t border-border-light/20 relative overflow-hidden">
       
       {/* Header (628px max width) */}
       <div className="max-w-[628px] w-full text-center flex flex-col items-center gap-6 mb-12">
-        <h2 className="text-[52px] font-extrabold leading-[1.12] tracking-tight text-neutral-black">
+        <h2 className="text-[40px] lg:text-[52px] font-extrabold leading-[1.12] tracking-tight text-neutral-black">
           Got questions?<br />
           We've got <span className="text-aioncy">answers</span>.
         </h2>
 
-        {/* Tab Pills Bar */}
-        <div className="inline-flex items-center h-10 bg-white border border-border-light rounded-full overflow-hidden select-none">
-          {CATEGORIES.map((cat, idx) => {
-            const isActive = activeCategory === cat.id;
-            const prevIsActive = idx > 0 && activeCategory === CATEGORIES[idx - 1].id;
-            const showDivider = idx > 0 && !isActive && !prevIsActive;
+        {/* Tab Pills Bar Wrapper for Mobile Scrolling */}
+        <div className="w-full max-w-full overflow-x-auto pb-2 flex justify-center">
+          <div className="inline-flex items-center h-10 bg-white border border-border-light rounded-full overflow-hidden select-none whitespace-nowrap min-w-max">
+            {CATEGORIES.map((cat, idx) => {
+              const isActive = activeCategory === cat.id;
+              const prevIsActive = idx > 0 && activeCategory === CATEGORIES[idx - 1].id;
+              const showDivider = idx > 0 && !isActive && !prevIsActive;
 
-            return (
-              <div key={cat.id} className="flex items-center h-full">
-                {/* Short vertical divider between inactive tabs */}
-                {showDivider && (
-                  <div className="w-px h-4 bg-border-light flex-shrink-0" />
-                )}
-                <button
-                  onClick={() => selectCategory(cat.id)}
-                  className={`h-full flex items-center px-5 font-bold text-[13.5px] cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
-                    isActive
-                      ? "bg-utility-yellow text-neutral-black"
-                      : "bg-transparent text-neutral-black hover:text-neutral-darkgrey"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              </div>
-            );
-          })}
+              return (
+                <div key={cat.id} className="flex items-center h-full">
+                  {/* Short vertical divider between inactive tabs */}
+                  {showDivider && (
+                    <div className="w-px h-4 bg-border-light flex-shrink-0" />
+                  )}
+                  <button
+                    onClick={() => selectCategory(cat.id)}
+                    className={`h-full flex items-center px-5 font-bold text-[13.5px] cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
+                      isActive
+                        ? "bg-utility-yellow text-neutral-black"
+                        : "bg-transparent text-neutral-black hover:text-neutral-darkgrey"
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -147,7 +149,7 @@ export default function FaqSection() {
               {/* Accordion Title Question */}
               <button
                 onClick={() => handleToggle(i)}
-                className="w-full flex items-center justify-between text-left font-bold text-[16px] md:text-[18px] text-neutral-black hover:text-aioncy transition-colors cursor-pointer border-none outline-none"
+                className="w-full flex items-center justify-between text-left font-bold text-[16px] lg:text-[18px] text-neutral-black hover:text-aioncy transition-colors cursor-pointer border-none outline-none"
               >
                 <span>{faq.question}</span>
                 <span className="flex-shrink-0 ml-4 w-6 h-6 rounded-full border border-neutral-darkgrey/20 hover:border-aioncy flex items-center justify-center transition-all">
@@ -171,7 +173,7 @@ export default function FaqSection() {
                   isOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
                 }`}
               >
-                <p className="text-[14px] md:text-[15px] leading-[1.6] text-neutral-lightgrey whitespace-pre-line pr-10">
+                <p className="text-[14px] lg:text-[15px] leading-[1.6] text-neutral-lightgrey whitespace-pre-line pr-10">
                   {faq.answer}
                 </p>
               </div>

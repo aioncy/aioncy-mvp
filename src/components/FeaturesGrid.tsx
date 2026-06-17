@@ -8,7 +8,7 @@ export default function FeaturesGrid() {
             Aioncy eliminates human bandwidth bottlenecks by introducing zero-latency collaboration layers for multi-agent tasks.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Feature 1 */}
           <div className="p-8 rounded-2xl border border-border-light bg-white hover:border-aioncy/30 hover:shadow-xl transition-all group duration-300">
             <div className="w-12 h-12 rounded-xl bg-aioncy/10 border border-aioncy/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">

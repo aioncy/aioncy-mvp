@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Button from "./Button";
 
 interface FeatureItem {
   name: string;
@@ -77,11 +78,11 @@ export default function PricingSection() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
 
   return (
-    <section id="pricing" className="w-full bg-[#F6F6F6] text-neutral-black py-28 px-6 flex flex-col items-center justify-center relative overflow-hidden">
+    <section id="pricing" className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-28 px-6 flex flex-col items-center justify-center relative overflow-hidden">
       
       {/* Header Container (628px max width) */}
-      <div className="max-w-[628px] w-full text-center flex flex-col items-center gap-8 mb-16">
-        <h2 className="text-[52px] font-extrabold leading-[1.12] tracking-tight text-neutral-black">
+      <div className="max-w-[628px] w-full text-center flex flex-col items-center gap-6 lg:gap-8 mb-12 lg:mb-16">
+        <h2 className="text-[40px] lg:text-[52px] font-extrabold leading-[1.12] tracking-tight text-neutral-black">
           Start Small.<br />
           <span className="text-aioncy">Scale</span> With AI.
         </h2>
@@ -116,7 +117,7 @@ export default function PricingSection() {
           </div>
 
           {/* Cursive Pink Callout (pointing to Annually toggle) */}
-          <div className="absolute left-[calc(100%+16px)] top-[2px] hidden md:flex items-start gap-1 select-none pointer-events-none whitespace-nowrap">
+          <div className="absolute left-[calc(100%+16px)] top-[2px] hidden lg:flex items-start gap-1 select-none pointer-events-none whitespace-nowrap">
             {/* SVG Arrow */}
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="flex-shrink-0 mt-0.5">
               <path
@@ -143,16 +144,16 @@ export default function PricingSection() {
       </div>
 
       {/* Pricing Cards Grid (411px width proportional mockup) */}
-      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch justify-center px-4">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch justify-center px-0 lg:px-4">
         {PLANS.map((plan) => {
           const price = billingCycle === "monthly" ? plan.monthlyPrice : plan.annualPrice;
           
           return (
             <div
               key={plan.name}
-              className={`flex flex-col justify-between rounded-3xl p-8 transition-all duration-300 shadow-sm ${
+              className={`flex flex-col justify-between rounded-3xl p-6 lg:p-8 transition-all duration-300 shadow-sm ${
                 plan.isFeatured
-                  ? "bg-aioncy text-white border-none shadow-[0_12px_40px_rgba(161,83,255,0.25)] scale-[1.03] z-10"
+                  ? "bg-aioncy text-white border-none shadow-[0_12px_40px_rgba(161,83,255,0.25)] lg:scale-[1.03] z-10"
                   : "bg-white text-neutral-black border border-border-light/50 hover:border-border-light hover:shadow-md"
               }`}
               style={{ minHeight: "560px" }}
@@ -191,22 +192,19 @@ export default function PricingSection() {
                 {/* CTA Action Button */}
                 <div className="mt-2">
                   {plan.buttonVariant === "primary" && (
-                    <button className="w-full h-12 rounded-xl bg-aioncy text-white font-extrabold text-[14px] hover:bg-utility-bluishpurple active:scale-[0.98] transition-all cursor-pointer shadow-md shadow-aioncy/10 border-none outline-none">
+                    <Button variant="purple" size="full">
                       {plan.buttonText}
-                    </button>
+                    </Button>
                   )}
                   {plan.buttonVariant === "secondary" && (
-                    <button className="w-full h-12 rounded-xl bg-utility-yellow text-neutral-black font-extrabold text-[14px] hover:bg-[#F2F250] active:scale-[0.98] transition-all cursor-pointer shadow-md border-none outline-none">
+                    <Button variant="primary" size="full">
                       {plan.buttonText}
-                    </button>
+                    </Button>
                   )}
                   {plan.buttonVariant === "disabled" && (
-                    <button
-                      disabled
-                      className="w-full h-12 rounded-xl bg-neutral-offwhite text-[#8C8C8C] font-extrabold text-[14px] cursor-not-allowed border-none outline-none"
-                    >
+                    <Button variant="disabled" size="full">
                       {plan.buttonText}
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>

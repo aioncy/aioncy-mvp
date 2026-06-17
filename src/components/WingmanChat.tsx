@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Button from "./Button";
 
 interface Message {
   role: "assistant" | "user";
@@ -54,20 +55,20 @@ export default function WingmanChat() {
               Try me. I don't bite.
             </p>
           </div>
-          <button
+          <Button
+            size="small"
             onClick={() =>
               alert(
                 "Booking a premium demo console with Aioncy Founder Agent...",
               )
             }
-            className="text-[13px] font-bold px-4.5 py-2.5 bg-utility-yellow text-neutral-black hover:bg-[#F2F250] active:scale-[0.97] rounded-xl shadow-md transition-all duration-200 cursor-pointer"
           >
             Book a demo
-          </button>
+          </Button>
         </div>
 
         {/* Message Thread */}
-        <div className="flex-1 min-h-[280px] max-h-[340px] overflow-y-auto p-5 flex flex-col gap-4 scrollbar-thin">
+        <div className="flex-1 min-h-[280px] max-h-[340px] overflow-y-auto p-5 flex flex-col justify-end scrollbar-thin">
           {messages.map((msg, i) => (
             <div
               key={i}
@@ -141,17 +142,37 @@ export default function WingmanChat() {
               }`}
             >
               <svg
-                width="14"
-                height="14"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
               >
-                <line x1="22" y1="2" x2="11" y2="13" />
-                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                <g clipPath="url(#clip0_4278_150)">
+                  <mask
+                    id="mask0_4278_150"
+                    maskUnits="userSpaceOnUse"
+                    x="0"
+                    y="0"
+                    width="24"
+                    height="24"
+                  >
+                    <path d="M24 0H0V24H24V0Z" fill="white" />
+                  </mask>
+                  <g mask="url(#mask0_4278_150)">
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M1.84648 7.15129C1.54567 7.21614 1.31499 7.45817 1.26465 7.76176C1.21431 8.06534 1.35453 8.36887 1.61831 8.52735L8.13475 12.4422L14.3544 8.08711C14.6938 7.84953 15.1614 7.93199 15.399 8.27129C15.6366 8.6106 15.5541 9.07826 15.2148 9.31584L8.99538 13.6708L10.4455 21.134C10.5042 21.4361 10.7415 21.6716 11.044 21.7282C11.3465 21.7847 11.6528 21.6507 11.8166 21.3902L22.7919 3.93899C22.9526 3.68355 22.9445 3.35671 22.7714 3.10953C22.5983 2.86234 22.294 2.74296 21.999 2.80655L1.84648 7.15129Z"
+                      fill="#8C8C8C"
+                    />
+                  </g>
+                </g>
+                <defs>
+                  <clipPath id="clip0_4278_150">
+                    <rect width="24" height="24" fill="white" />
+                  </clipPath>
+                </defs>
               </svg>
             </button>
           </div>
@@ -159,7 +180,7 @@ export default function WingmanChat() {
       </div>
 
       {/* Handwritten Callout alongside the chat input */}
-      <div className="absolute left-[calc(100%+16px)] bottom-[20px] hidden md:flex items-start gap-1 select-none pointer-events-none whitespace-nowrap">
+      <div className="absolute left-[calc(100%+16px)] bottom-[20px] hidden lg:flex items-start gap-1 select-none pointer-events-none whitespace-nowrap">
         <svg
           width="200"
           height="48"

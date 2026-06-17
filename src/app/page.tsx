@@ -38,10 +38,11 @@ export default function Home() {
       {/* Wingman chat — tucked under the arc; no section bg so edge cards stay visible */}
       <section
         id="demo"
-        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-32 pb-24 flex justify-center pointer-events-none"
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-[14rem] md:-mt-32 pb-12 md:pb-24 flex justify-center pointer-events-none"
       >
         <WingmanChat />
       </section>
+
 
       {/* 24/7 Active Digital Worker Slide Section */}
       <ActiveWorkerSection />

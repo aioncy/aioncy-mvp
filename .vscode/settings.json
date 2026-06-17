@@ -1,0 +1,19 @@
+{
+  "tailwindCSS.includeLanguages": {
+    "typescriptreact": "html",
+    "javascriptreact": "html"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["className\\s*=\\s*[{]?[`'\"]([^`'\"]*)[`'\"]", "([\\w-/:]+)"],
+    ["className\\s*=\\s*\\{`([^`]*)`\\}", "([\\w-/:]+)"]
+  ],
+  "files.associations": {
+    "*.scss": "scss"
+  },
+  "scss.validate": false,
+  "css.validate": false,
+  "tailwindCSS.experimental.configFile": "./src/app/globals.scss"
+}

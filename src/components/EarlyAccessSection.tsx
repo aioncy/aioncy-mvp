@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Button from "./Button";
 
 export default function EarlyAccessSection() {
   return (
@@ -29,12 +30,9 @@ export default function EarlyAccessSection() {
           </p>
 
           <div className="pt-1">
-            <button
-              type="button"
-              className="bg-utility-yellow text-neutral-black font-bold text-[13px] px-6 py-[11px] rounded-xl border-none cursor-pointer hover:bg-[#F2F250] active:scale-[0.98] transition-all duration-150"
-            >
+            <Button size="small">
               Request Early Access
-            </button>
+            </Button>
           </div>
         </div>
       </div>

@@ -150,6 +150,7 @@ $letter-spacing-extra: 0em;
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-bricolage);
 
   // Primary
   --color-aioncy: #a153ff;
@@ -178,52 +179,68 @@ $letter-spacing-extra: 0em;
 
 // Tailwind v4 Typography Utility Classes
 @utility css-heading--h1 {
-  font-size: 64px;
-  line-height: 1.12;
+  font-size: 40px;
+  line-height: 1.1;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
+  @media (min-width: 768px) { font-size: 52px; line-height: 1.12; letter-spacing: -0.02em; }
+  @media (min-width: 1024px) { font-size: 64px; }
 }
 @utility text-heading-h2 {
-  font-size: 48px;
-  line-height: 1.2;
-  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.1;
+  font-weight: 800;
   letter-spacing: -0.02em;
+  @media (min-width: 768px) { font-size: 42px; }
+  @media (min-width: 1024px) { font-size: 48px; line-height: 1.2; font-weight: 600; }
 }
 @utility text-heading-h3 {
-  font-size: 32px;
+  font-size: 28px;
   line-height: 1.2;
   font-weight: 600;
   letter-spacing: -0.02em;
+  @media (min-width: 768px) { font-size: 30px; }
+  @media (min-width: 1024px) { font-size: 32px; }
 }
 @utility text-body-xl-500 {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.4;
   font-weight: 500;
   letter-spacing: -0.02em;
+  @media (min-width: 768px) { font-size: 22px; }
+  @media (min-width: 1024px) { font-size: 24px; }
 }
 @utility text-body-xl-400 {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.4;
   font-weight: 400;
   letter-spacing: -0.02em;
+  @media (min-width: 768px) { font-size: 22px; }
+  @media (min-width: 1024px) { font-size: 24px; }
 }
 @utility text-body-lg-500 {
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.4;
   font-weight: 500;
   letter-spacing: -0.02em;
+  @media (min-width: 768px) { font-size: 18px; }
+  @media (min-width: 1024px) { font-size: 20px; }
 }
 @utility text-body-lg-400 {
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.4;
   font-weight: 400;
   letter-spacing: -0.02em;
+  @media (min-width: 768px) { font-size: 18px; }
+  @media (min-width: 1024px) { font-size: 20px; }
 }
 @utility text-body-md-400 {
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1.4;
   font-weight: 400;
   letter-spacing: -0.02em;
+  @media (min-width: 768px) { font-size: 15px; }
+  @media (min-width: 1024px) { font-size: 18px; }
 }
 @utility text-body-re-400 {
   font-size: 16px;
@@ -261,12 +278,16 @@ $letter-spacing-extra: 0em;
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 
   // Verify SCSS nesting works out-of-the-box
   &::selection {
     background-color: rgba(var(--foreground), 0.1);
   }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bricolage), Arial, Helvetica, sans-serif;
 }
 
 // Hero feature cards — circular arc marquee (top semicircle visible)

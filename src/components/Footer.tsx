@@ -1,3 +1,6 @@
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import FooterBrandBar, { FooterBrandAnchor } from "@/components/FooterBrandBar";
 
@@ -5,13 +8,57 @@ const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
-] as const;
+];
 
 const SOCIAL_LINKS = [
   { label: "Instagram", href: "https://instagram.com" },
   { label: "Linkedin", href: "https://linkedin.com" },
   { label: "Facebook", href: "https://facebook.com" },
-] as const;
+];
+
+function FooterAccordion({ title, links, isExternal = false }: { title: string, links: any[], isExternal?: boolean }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b border-border-light/50 py-4 lg:border-none lg:py-0 w-full lg:w-auto">
+      <button 
+        onClick={() => setIsOpen(!isOpen)} 
+        className="flex items-center justify-between w-full lg:hidden text-[16px] font-bold text-neutral-black"
+      >
+        <span>{title}</span>
+        <span className="text-xl font-light">{isOpen ? "-" : "+"}</span>
+      </button>
+      
+      {/* Desktop always shows, Mobile toggles */}
+      <nav
+        className={`flex-col gap-4 pt-4 lg:pt-2 lg:flex ${isOpen ? "flex" : "hidden"}`}
+        aria-label={title}
+      >
+        {links.map((link) => (
+          isExternal ? (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[15px] font-semibold text-neutral-black hover:text-aioncy transition-colors w-fit"
+            >
+              {link.label}
+            </a>
+          ) : (
+            <Link
+              key={link.label}
+              href={link.href}
+              className="text-[15px] font-semibold text-neutral-black hover:text-aioncy transition-colors w-fit"
+            >
+              {link.label}
+            </Link>
+          )
+        ))}
+      </nav>
+    </div>
+  );
+}
 
 export default function Footer() {
   return (
@@ -19,43 +66,16 @@ export default function Footer() {
       <FooterBrandBar />
 
       <footer className="w-full bg-[#F6F6F6] border-t border-border-light/50">
-        <div className="max-w-7xl mx-auto px-6 py-14 md:py-16">
-          <div className="flex flex-col lg:flex-row lg:items-start gap-12 lg:gap-16 xl:gap-24">
+        <div className="max-w-7xl mx-auto px-6 py-10 lg:py-16">
+          <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-16 xl:gap-24">
             <div className="flex-1 max-w-[680px]">
               <FooterBrandAnchor />
             </div>
 
-            <nav
-              className="flex flex-col gap-4 pt-1 lg:pt-2"
-              aria-label="Footer navigation"
-            >
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-[15px] font-semibold text-neutral-black hover:text-aioncy transition-colors w-fit"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-
-            <nav
-              className="flex flex-col gap-4 pt-1 lg:pt-2"
-              aria-label="Social media"
-            >
-              {SOCIAL_LINKS.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[15px] font-semibold text-neutral-black hover:text-aioncy transition-colors w-fit"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
+            <div className="w-full lg:w-auto flex flex-col lg:flex-row gap-0 lg:gap-16">
+              <FooterAccordion title="Product" links={NAV_LINKS} />
+              <FooterAccordion title="Socials" links={SOCIAL_LINKS} isExternal />
+            </div>
           </div>
         </div>
       </footer>

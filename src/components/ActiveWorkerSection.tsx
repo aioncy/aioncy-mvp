@@ -132,7 +132,7 @@ function clamp(value: number, min: number, max: number) {
 function SlidePhone({ slide }: { slide: SlideData }) {
   return (
     <div className="flex-shrink-0 flex flex-col items-center justify-center">
-      <div className="w-[290px] h-[510px] rounded-[36px] border-[8px] border-[#0A0A0C] bg-[#0A0A0C] shadow-[0_24px_50px_rgba(0,0,0,0.3)] overflow-hidden relative flex flex-col">
+      <div className="w-[350px] h-[592px] rounded-[18px] border-[8px] border-[#0A0A0C] bg-[#0A0A0C] shadow-[0_24px_50px_rgba(0,0,0,0.3)] overflow-hidden relative flex flex-col">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-4 bg-[#0A0A0C] rounded-b-xl z-30 flex items-center justify-center">
           <span className="w-6 h-0.5 bg-neutral-darkgrey rounded-full" />
         </div>
@@ -279,7 +279,10 @@ export default function ActiveWorkerSection() {
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-aioncy/10 blur-[80px] rounded-full pointer-events-none" />
 
         {SLIDES.map((slide, idx) => (
-          <div key={idx} className="flex flex-col items-center gap-10 text-center w-full relative z-10">
+          <div
+            key={idx}
+            className="flex flex-col items-center gap-10 text-center w-full relative z-10"
+          >
             <div className="flex flex-col gap-4">
               <h2 className="text-[32px] font-extrabold leading-[1.12] tracking-tight text-white">
                 {slide.title}
@@ -288,13 +291,16 @@ export default function ActiveWorkerSection() {
                 {slide.description}
               </p>
             </div>
-            
+
             <SlidePhone slide={slide} />
-            
+
             {idx === 0 && (
               <div className="w-full flex items-center gap-4 mt-2 max-w-[290px]">
                 <Button className="flex-1">Test the AI</Button>
-                <Button variant="secondary" className="flex-1 text-neutral-black">
+                <Button
+                  variant="secondary"
+                  className="flex-1 text-neutral-black"
+                >
                   Join Early
                 </Button>
               </div>

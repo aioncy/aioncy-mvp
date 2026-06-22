@@ -340,7 +340,7 @@ h6 {
   --arc-viewport-h: 800px; /* Large enough so tilted corners are never cut off */
 
   --layout-height: 500px; /* Desired physical layout space before Wingman chat */
-  
+
   position: relative;
   width: 100%;
   height: var(--arc-viewport-h);
@@ -412,38 +412,24 @@ h6 {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.14) !important;
   }
 
-  .orbit-mobile {
-    display: none;
-  }
-  .orbit-desktop {
-    display: block;
-  }
-
   @media (max-width: 1024px) {
     --arc-radius: clamp(700px, 120vw, 1000px);
     --card-w: 200px;
     --card-h: 236px;
     --arc-viewport-h: 600px;
-    --layout-height: 400px;
+    --layout-height: 500px;
 
     .arc-orbit {
       animation-duration: 70s;
     }
   }
 
-  @media (max-width: 640px) {
-    .orbit-mobile {
-      display: block;
-    }
-    .orbit-desktop {
-      display: none;
-    }
-
-    --arc-radius: clamp(340px, 82vw, 480px);
-    --card-w: 184px;
-    --card-h: 218px;
-    --arc-viewport-h: 600px;
-    --layout-height: 380px;
+  @media (max-width: 840px) {
+    --arc-radius: clamp(450px, 110vw, 600px);
+    --card-w: 220px;
+    --card-h: 184px;
+    --arc-viewport-h: 550px;
+    --layout-height: 550px;
 
     .arc-orbit {
       animation-duration: 48s;

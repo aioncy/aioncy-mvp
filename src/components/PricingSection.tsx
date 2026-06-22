@@ -134,7 +134,7 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-28 px-6 flex flex-col items-center justify-center relative overflow-hidden"
+      className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-28 lg:px-6 flex flex-col items-center justify-center relative overflow-hidden"
     >
       {/* Header Container (628px max width) */}
       <div className="max-w-[628px] w-full text-center flex flex-col items-center gap-6 lg:gap-8 mb-16 lg:mb-20">
@@ -174,7 +174,7 @@ export default function PricingSection() {
             </button>
           </div>
 
-          {/* Cursive Pink Callout (pointing to Annually toggle) */}
+          {/* Cursive Pink Callout - Desktop (pointing to Annually toggle) */}
           <div className="absolute left-[calc(100%+16px)] top-[50%] hidden lg:flex flex-col gap-2 select-none pointer-events-none whitespace-nowrap">
             {/* SVG Arrow */}
             <svg
@@ -207,11 +207,43 @@ export default function PricingSection() {
               Save 19% with annual billing
             </span>
           </div>
+
+          {/* Cursive Pink Callout - Mobile */}
+          <div className="absolute top-[calc(100%+16px)] left-1/2 -translate-x-1/2 flex lg:hidden items-center justify-center select-none pointer-events-none whitespace-nowrap">
+            <span
+              className="text-[18px] font-normal italic tracking-wide text-[#FF0D49]"
+              style={{
+                fontFamily:
+                  "'Segoe Script', 'Comic Sans MS', 'Brush Script MT', cursive",
+              }}
+            >
+              Save 19% with annual billing
+            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="26"
+              height="23"
+              viewBox="0 0 26 23"
+              fill="none"
+              className="absolute bottom-[80%] left-[85%]"
+            >
+              <path
+                d="M25.031 22.6768C27.031 13.1768 14.031 1.67676 2.03101 1.67676"
+                stroke="#FF0D49"
+                strokeWidth="0.5"
+              />
+              <path
+                d="M3.53101 0.176758C3.03101 0.676758 1.63101 1.67676 0.0310058 1.67676C1.36434 1.84342 3.93101 2.47676 3.53101 3.67676"
+                stroke="#FF0D49"
+                strokeWidth="0.5"
+              />
+            </svg>
+          </div>
         </div>
       </div>
 
       {/* Pricing Cards Grid (411px width proportional mockup) */}
-      <div className="w-full css-container grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch justify-center px-0 lg:px-4">
+      <div className="w-full max-w-7xl mx-auto grid md:flex lg:grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch justify-start lg:justify-center px-4 md:px-8 lg:px-4 md:overflow-x-auto md:snap-x md:snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {PLANS.map((plan) => {
           const price =
             billingCycle === "monthly" ? plan.monthlyPrice : plan.annualPrice;
@@ -219,7 +251,7 @@ export default function PricingSection() {
           return (
             <div
               key={plan.name}
-              className={`flex flex-col justify-between rounded-[12px] px-8 py-12 ${
+              className={`flex flex-col justify-between rounded-[12px] px-8 py-12 md:min-w-[360px] md:snap-center lg:min-w-0 ${
                 plan.isFeatured
                   ? "bg-aioncy text-white border-none z-10"
                   : "bg-white text-neutral-black border border-border-light/50 hover:border-border-light hover:shadow-md"

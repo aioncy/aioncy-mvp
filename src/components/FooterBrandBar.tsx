@@ -86,7 +86,7 @@ export default function FooterBrandBar() {
   return (
     <div
       ref={barRef}
-      className={`fixed rounded-[12px] z-50 flex items-center bg-neutral-black shadow-[0_8px_32px_rgba(0,0,0,0.18)] transition-[border-radius,padding] duration-300 ease-out ${
+      className={`hidden lg:flex fixed rounded-[12px] z-50 items-center bg-neutral-black shadow-[0_8px_32px_rgba(0,0,0,0.18)] transition-[border-radius,padding] duration-300 ease-out ${
         expanded ? "justify-between" : "justify-start"
       }`}
       style={{

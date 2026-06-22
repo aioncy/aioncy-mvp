@@ -338,19 +338,18 @@ export default function ActiveWorkerSection() {
 
             <SlidePhone slide={slide} />
 
-            {idx === 0 && (
-              <div className="w-full flex items-center gap-4 mt-2 max-w-[290px]">
-                <Button className="flex-1">Test the AI</Button>
-                <Button
-                  variant="secondary"
-                  className="flex-1 text-neutral-black"
-                >
-                  Join Early
-                </Button>
-              </div>
-            )}
           </div>
         ))}
+
+        <div className="w-full flex items-center gap-4 mt-2 max-w-[290px] relative z-10">
+          <Button className="flex-1">Test the AI</Button>
+          <Button
+            variant="secondary"
+            className="flex-1 text-neutral-black"
+          >
+            Join Early
+          </Button>
+        </div>
       </div>
 
       {/* DESKTOP LAYOUT (Sticky Slider) */}

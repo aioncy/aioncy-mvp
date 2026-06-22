@@ -57,7 +57,8 @@ export default function HeroCardArc() {
   return (
     <div className="hero-card-arc">
       <div className="arc-viewport" aria-hidden="true" tabIndex={-1}>
-        <div className="arc-orbit orbit-desktop">
+        {/* Desktop Orbit (20 cards) - Hidden on mobile, visible on sm and up */}
+        <div className="arc-orbit hidden lg:block">
           {orbitCardsDesktop.map(({ card, angle }, index) => (
             <div
               key={`desktop-${card.title}-${index}`}
@@ -74,7 +75,8 @@ export default function HeroCardArc() {
             </div>
           ))}
         </div>
-        <div className="arc-orbit orbit-mobile">
+        {/* Mobile Orbit (10 cards) - Visible on mobile, hidden on sm and up */}
+        <div className="arc-orbit block lg:hidden">
           {orbitCardsMobile.map(({ card, angle }, index) => (
             <div
               key={`mobile-${card.title}-${index}`}

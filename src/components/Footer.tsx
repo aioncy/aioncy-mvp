@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
+import Image from "next/image";
+import Button from "@/components/Button";
 import FooterBrandBar, { FooterBrandAnchor } from "@/components/FooterBrandBar";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
+  { label: "Try Demo", href: "#demo" },
 ];
 
 const SOCIAL_LINKS = [
@@ -16,77 +19,67 @@ const SOCIAL_LINKS = [
   { label: "Facebook", href: "https://facebook.com" },
 ];
 
-function FooterAccordion({
-  title,
-  links,
-  isExternal = false,
-}: {
-  title: string;
-  links: any[];
-  isExternal?: boolean;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="border-b border-border-light/50 py-4 lg:border-none lg:py-0 w-full lg:w-auto">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full lg:hidden text-[16px] font-bold text-neutral-black"
-      >
-        <span>{title}</span>
-        <span className="text-xl font-light">{isOpen ? "-" : "+"}</span>
-      </button>
-
-      {/* Desktop always shows, Mobile toggles */}
-      <nav
-        className={`flex-col gap-4 pt-4 lg:pt-2 lg:flex ${isOpen ? "flex" : "hidden"}`}
-        aria-label={title}
-      >
-        {links.map((link) =>
-          isExternal ? (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="css-body--lg-500 text-neutral-black hover:text-aioncy transition-colors w-fit"
-            >
-              {link.label}
-            </a>
-          ) : (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="css-body--lg-500 text-neutral-black hover:text-aioncy transition-colors w-fit"
-            >
-              {link.label}
-            </Link>
-          ),
-        )}
-      </nav>
-    </div>
-  );
-}
-
 export default function Footer() {
   return (
     <>
       <FooterBrandBar />
 
-      <footer className="css-container w-full bg-[#F6F6F6] border-t border-border-light/50">
-        <div className="mx-auto px-6 py-10 lg:py-16">
-          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-8 lg:gap-16 xl:gap-24">
-            <div className="flex-1 max-w-[680px]">
+      <footer className="css-container w-full bg-[#F6F6F6]">
+        <div className="mx-auto lg:px-6 py-10 lg:py-16">
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-12 lg:gap-16 xl:gap-24">
+            {/* Mobile-only static brand card */}
+            <div className="lg:hidden">
+              <div className="inline-flex w-full flex-col gap-4 bg-neutral-black rounded-[12px] p-4 align-left">
+                <Image
+                  alt="Aioncy"
+                  src="/logo.svg"
+                  width={160}
+                  height={54}
+                  className="h-10 w-fit shrink-0 mb-8"
+                />
+                <div className="flex items-center gap-2.5">
+                  <Button size="small">Test the AI</Button>
+                  <Button variant="dark" size="small">
+                    Join Early
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Brand anchor (desktop only) */}
+            <div className="hidden lg:block flex-1 max-w-[680px]">
               <FooterBrandAnchor />
             </div>
 
-            <div className="w-full lg:w-auto flex flex-col lg:flex-row gap-0 lg:gap-16 pr-20">
-              <FooterAccordion title="Product" links={NAV_LINKS} />
-              <FooterAccordion
-                title="Socials"
-                links={SOCIAL_LINKS}
-                isExternal
-              />
+            {/* Link columns */}
+            <div className="w-full lg:w-auto flex flex-row lg:flex-row justify-between sm:justify-start gap-16 lg:gap-16 pr-4 lg:pr-20 pl-4 lg:pl-0">
+              {/* Socials column */}
+              <nav className="flex flex-col gap-5" aria-label="Socials">
+                {SOCIAL_LINKS.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="css-body--lg-500 text-neutral-black hover:text-aioncy transition-colors w-fit"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+
+              {/* Product column */}
+              <nav className="flex flex-col gap-5" aria-label="Product">
+                {NAV_LINKS.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className="css-body--lg-500 text-neutral-black hover:text-aioncy transition-colors w-fit"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
             </div>
           </div>
         </div>

@@ -5,16 +5,17 @@ import Button from "./Button";
 
 export default function EarlyAccessSection() {
   return (
-    <section id="early-access" className="w-full px-6 py-16 bg-[#F6F6F6]">
-      <div className="css-container mx-auto flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch min-h-[497px]">
+    <section id="early-access" className="w-full px-4 sm:px-6 py-10 sm:py-16 bg-[#F6F6F6]">
+      <div className="css-container mx-auto flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:min-h-[497px]">
         {/* Left: dark panel with semicircle left edge + flow image */}
         <div
-          className="flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[240px] sm:min-h-0 px-6 py-10 sm:py-8"
-          style={{ borderRadius: "999px 12px 12px 999px" }}
+          className="flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[240px] sm:min-h-0 px-6 py-10 sm:py-8 rounded-[12px] sm:rounded-none"
+          style={{ borderRadius: undefined }}
         >
+          <style>{`.early-access-dark { border-radius: 12px; } @media (min-width: 640px) { .early-access-dark { border-radius: 999px 12px 12px 999px; } }`}</style>
           <div className="relative w-full max-w-[380px]">
             {/* Cursive Yellow Callout */}
-            <div className="absolute -top-16 -right-20 hidden md:flex items-end gap-1.5 select-none pointer-events-none whitespace-nowrap z-20">
+            <div className="absolute -top-12 right-0 sm:-top-16 sm:-right-20 flex items-end gap-1.5 select-none pointer-events-none whitespace-nowrap z-20">
               {/* SVG Arrow */}
               <svg
                 width="15"
@@ -60,7 +61,7 @@ export default function EarlyAccessSection() {
         </div>
 
         {/* Right: purple CTA card */}
-        <div className="flex-1 flex flex-col justify-between bg-aioncy rounded-[12px] px-12 py-16 gap-5">
+        <div className="flex-1 flex flex-col justify-between bg-aioncy rounded-[12px] px-8 sm:px-12 py-10 sm:py-16 gap-8 sm:gap-5">
           <div>
             <h2 className="text-white css-heading--h1 mb-4">
               Need Early

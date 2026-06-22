@@ -14,13 +14,12 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#F6F6F6] text-neutral-black font-sans selection:bg-aioncy selection:text-white relative flex flex-col justify-between">
       {/* Hero Header Section */}
-      <main className="pt-20 pb-8 px-6 text-center max-w-7xl mx-auto w-full">
+      <main className="pt-20 pb-8 px-4 lg:px-6 text-center max-w-7xl mx-auto w-full">
         <Badge text="Launching Soon" variant="yellow" className="mb-3.5" />
 
         <h1 className="css-heading--h1 text-neutral-black mb-5">
           Your <span className="text-[#A153FF]">AI Employee</span> for
-          <br />
-          Conversations, Leads & Support
+          <br className="hidden lg:block" /> Conversations, Leads & Support
         </h1>
 
         <p className="css-body--xl-400 text-neutral-lightgrey mx-auto max-w-[848px]">
@@ -31,18 +30,20 @@ export default function Home() {
       </main>
 
       {/* Curved Cards Arc Section */}
-      <section id="features" className="relative z-20 w-full pt-6 pb-0 overflow-hidden">
+      <section
+        id="features"
+        className="relative z-20 w-full pt-6 pb-0 overflow-hidden"
+      >
         <HeroCardArc />
       </section>
 
       {/* Wingman chat — tucked under the arc; no section bg so edge cards stay visible */}
       <section
         id="demo"
-        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-[14rem] md:-mt-32 pb-12 md:pb-24 flex justify-center pointer-events-none"
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-[14rem] lg:-mt-32 pb-12 md:pb-24 flex justify-center pointer-events-none"
       >
         <WingmanChat />
       </section>
-
 
       {/* 24/7 Active Digital Worker Slide Section */}
       <ActiveWorkerSection />

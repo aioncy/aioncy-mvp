@@ -98,6 +98,24 @@ export default function FaqSection() {
   const [tabStyle, setTabStyle] = useState({ left: 0, width: 0 });
   const tabsRef = React.useRef<(HTMLButtonElement | null)[]>([]);
 
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 2);
+    }
+  };
+
+  React.useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
+
   React.useEffect(() => {
     const activeIdx = CATEGORIES.findIndex((cat) => cat.id === activeCategory);
     const activeTab = tabsRef.current[activeIdx];
@@ -107,6 +125,8 @@ export default function FaqSection() {
         width: activeTab.offsetWidth,
       });
     }
+    // Re-check scroll on category change in case layout shifts
+    checkScroll();
   }, [activeCategory]);
 
   return (
@@ -123,43 +143,63 @@ export default function FaqSection() {
         </h2>
 
         {/* Tab Pills Bar Wrapper for Mobile Scrolling */}
-        <div className="w-full max-w-full overflow-x-auto pb-2 flex justify-center">
-          <div className="relative inline-flex items-center h-10 bg-white border border-[#00000033] rounded-full overflow-hidden select-none whitespace-nowrap min-w-max">
-            {/* Sliding Pill Background */}
-            <div
-              className="absolute top-0 bottom-0 bg-utility-yellow transition-all duration-300 ease-out z-0"
-              style={{
-                left: `${tabStyle.left}px`,
-                width: `${tabStyle.width}px`,
-              }}
-            />
+        <div className="relative w-[calc(100%+3rem)] -mx-6 sm:w-full sm:mx-0 flex mb-2 sm:mb-0">
+          {/* Left Gradient Shadow */}
+          <div
+            className={`absolute top-0 left-0 bottom-0 w-12 bg-gradient-to-r from-[#F6F6F6] to-transparent z-20 pointer-events-none transition-opacity duration-300 ${
+              canScrollLeft ? "opacity-100" : "opacity-0"
+            }`}
+          />
 
-            {CATEGORIES.map((cat, idx) => {
-              const isActive = activeCategory === cat.id;
+          <div
+            ref={scrollContainerRef}
+            onScroll={checkScroll}
+            className="w-full overflow-x-auto flex justify-start sm:justify-center px-6 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-1"
+          >
+            <div className="relative inline-flex items-center h-10 bg-white border border-[#00000033] rounded-full overflow-hidden select-none whitespace-nowrap shrink-0">
+              {/* Sliding Pill Background */}
+              <div
+                className="absolute top-0 bottom-0 bg-utility-yellow transition-all duration-300 ease-out z-0"
+                style={{
+                  left: `${tabStyle.left}px`,
+                  width: `${tabStyle.width}px`,
+                }}
+              />
 
-              return (
-                <React.Fragment key={cat.id}>
-                  {/* Short vertical divider between tabs */}
-                  {idx > 0 && (
-                    <div className="w-[1px] h-full bg-[#00000033] flex-shrink-0 z-10" />
-                  )}
-                  <button
-                    ref={(el) => {
-                      tabsRef.current[idx] = el;
-                    }}
-                    onClick={() => selectCategory(cat.id)}
-                    className={`relative z-10 h-full flex items-center px-5 font-bold text-[13.5px] cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
-                      isActive
-                        ? "text-neutral-black"
-                        : "text-neutral-black hover:text-neutral-darkgrey"
-                    } bg-transparent`}
-                  >
-                    {cat.label}
-                  </button>
-                </React.Fragment>
-              );
-            })}
+              {CATEGORIES.map((cat, idx) => {
+                const isActive = activeCategory === cat.id;
+
+                return (
+                  <React.Fragment key={cat.id}>
+                    {/* Short vertical divider between tabs */}
+                    {idx > 0 && (
+                      <div className="w-[1px] h-full bg-[#00000033] flex-shrink-0 z-10" />
+                    )}
+                    <button
+                      ref={(el) => {
+                        tabsRef.current[idx] = el;
+                      }}
+                      onClick={() => selectCategory(cat.id)}
+                      className={`relative z-10 h-full flex items-center px-5 font-bold text-[13.5px] cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
+                        isActive
+                          ? "text-neutral-black"
+                          : "text-neutral-black hover:text-neutral-darkgrey"
+                      } bg-transparent`}
+                    >
+                      {cat.label}
+                    </button>
+                  </React.Fragment>
+                );
+              })}
+            </div>
           </div>
+
+          {/* Right Gradient Shadow */}
+          <div
+            className={`absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-[#F6F6F6] to-transparent z-20 pointer-events-none transition-opacity duration-300 ${
+              canScrollRight ? "opacity-100" : "opacity-0"
+            }`}
+          />
         </div>
       </div>
 

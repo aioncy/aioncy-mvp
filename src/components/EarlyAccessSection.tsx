@@ -5,14 +5,13 @@ import Button from "./Button";
 
 export default function EarlyAccessSection() {
   return (
-    <section id="early-access" className="w-full px-4 lg:px-6 py-10 lg:py-16 bg-[#F6F6F6]">
+    <section
+      id="early-access"
+      className="w-full px-4 lg:px-6 py-10 lg:py-16 bg-[#F6F6F6]"
+    >
       <div className="css-container mx-auto flex flex-col lg:flex-row gap-3 lg:gap-4 items-stretch lg:min-h-[497px]">
         {/* Left: dark panel with semicircle left edge + flow image */}
-        <div
-          className="flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[320px] sm:min-h-[400px] lg:min-h-0 px-6 py-10 lg:py-8 rounded-[12px] lg:rounded-none"
-          style={{ borderRadius: undefined }}
-        >
-          <style>{`.early-access-dark { border-radius: 12px; } @media (min-width: 1024px) { .early-access-dark { border-radius: 999px 12px 12px 999px; } }`}</style>
+        <div className="flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[320px] sm:min-h-[400px] lg:min-h-0 px-6 py-10 lg:py-8 rounded-[12px] lg:rounded-l-full lg:rounded-r-md">
           <div className="relative w-full max-w-[380px]">
             {/* Cursive Yellow Callout */}
             <div className="absolute -top-12 right-0 lg:-top-16 lg:-right-20 flex items-end gap-1.5 select-none pointer-events-none whitespace-nowrap z-20">

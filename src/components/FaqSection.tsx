@@ -95,41 +95,68 @@ export default function FaqSection() {
     setOpenIndex(0); // Open first item of the new category
   };
 
+  const [tabStyle, setTabStyle] = useState({ left: 0, width: 0 });
+  const tabsRef = React.useRef<(HTMLButtonElement | null)[]>([]);
+
+  React.useEffect(() => {
+    const activeIdx = CATEGORIES.findIndex((cat) => cat.id === activeCategory);
+    const activeTab = tabsRef.current[activeIdx];
+    if (activeTab) {
+      setTabStyle({
+        left: activeTab.offsetLeft,
+        width: activeTab.offsetWidth,
+      });
+    }
+  }, [activeCategory]);
+
   return (
-    <section id="faq" className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-28 px-6 flex flex-col items-center justify-center border-t border-border-light/20 relative overflow-hidden">
-      
+    <section
+      id="faq"
+      className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-28 px-6 flex flex-col items-center justify-center border-t border-border-light/20 relative overflow-hidden"
+    >
       {/* Header (628px max width) */}
       <div className="max-w-[628px] w-full text-center flex flex-col items-center gap-6 mb-12">
-        <h2 className="text-[40px] lg:text-[52px] font-extrabold leading-[1.12] tracking-tight text-neutral-black">
-          Got questions?<br />
+        <h2 className="css-heading--h1 text-neutral-black">
+          Got questions?
+          <br />
           We've got <span className="text-aioncy">answers</span>.
         </h2>
 
         {/* Tab Pills Bar Wrapper for Mobile Scrolling */}
         <div className="w-full max-w-full overflow-x-auto pb-2 flex justify-center">
-          <div className="inline-flex items-center h-10 bg-white border border-border-light rounded-full overflow-hidden select-none whitespace-nowrap min-w-max">
+          <div className="relative inline-flex items-center h-10 bg-white border border-[#00000033] rounded-full overflow-hidden select-none whitespace-nowrap min-w-max">
+            {/* Sliding Pill Background */}
+            <div
+              className="absolute top-0 bottom-0 bg-utility-yellow transition-all duration-300 ease-out z-0"
+              style={{
+                left: `${tabStyle.left}px`,
+                width: `${tabStyle.width}px`,
+              }}
+            />
+
             {CATEGORIES.map((cat, idx) => {
               const isActive = activeCategory === cat.id;
-              const prevIsActive = idx > 0 && activeCategory === CATEGORIES[idx - 1].id;
-              const showDivider = idx > 0 && !isActive && !prevIsActive;
 
               return (
-                <div key={cat.id} className="flex items-center h-full">
-                  {/* Short vertical divider between inactive tabs */}
-                  {showDivider && (
-                    <div className="w-px h-4 bg-border-light flex-shrink-0" />
+                <React.Fragment key={cat.id}>
+                  {/* Short vertical divider between tabs */}
+                  {idx > 0 && (
+                    <div className="w-[1px] h-full bg-[#00000033] flex-shrink-0 z-10" />
                   )}
                   <button
+                    ref={(el) => {
+                      tabsRef.current[idx] = el;
+                    }}
                     onClick={() => selectCategory(cat.id)}
-                    className={`h-full flex items-center px-5 font-bold text-[13.5px] cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
+                    className={`relative z-10 h-full flex items-center px-5 font-bold text-[13.5px] cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
                       isActive
-                        ? "bg-utility-yellow text-neutral-black"
-                        : "bg-transparent text-neutral-black hover:text-neutral-darkgrey"
-                    }`}
+                        ? "text-neutral-black"
+                        : "text-neutral-black hover:text-neutral-darkgrey"
+                    } bg-transparent`}
                   >
                     {cat.label}
                   </button>
-                </div>
+                </React.Fragment>
               );
             })}
           </div>
@@ -149,19 +176,41 @@ export default function FaqSection() {
               {/* Accordion Title Question */}
               <button
                 onClick={() => handleToggle(i)}
-                className="w-full flex items-center justify-between text-left font-bold text-[16px] lg:text-[18px] text-neutral-black hover:text-aioncy transition-colors cursor-pointer border-none outline-none"
+                className="w-full flex items-center justify-between text-left css-body--lg-500 text-neutral-black hover:text-aioncy transition-colors cursor-pointer border-none outline-none"
               >
                 <span>{faq.question}</span>
                 <span className="flex-shrink-0 ml-4 w-6 h-6 rounded-full border border-neutral-darkgrey/20 hover:border-aioncy flex items-center justify-center transition-all">
                   {isOpen ? (
                     // Minus Icon
-                    <svg width="10" height="2" viewBox="0 0 10 2" fill="none" className="text-current">
-                      <path d="M0 1H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <svg
+                      width="10"
+                      height="2"
+                      viewBox="0 0 10 2"
+                      fill="none"
+                      className="text-current"
+                    >
+                      <path
+                        d="M0 1H10"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
                     </svg>
                   ) : (
                     // Plus Icon
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="text-current">
-                      <path d="M5 0V10M0 5H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      className="text-current"
+                    >
+                      <path
+                        d="M5 0V10M0 5H10"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
                     </svg>
                   )}
                 </span>
@@ -169,11 +218,11 @@ export default function FaqSection() {
 
               {/* Accordion Answer Content */}
               <div
-                className={`overflow-hidden transition-all duration-300 ease-out ${
+                className={`overflow-hidden transition-all duration-300 ease-out max-w-[550px] ${
                   isOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
                 }`}
               >
-                <p className="text-[14px] lg:text-[15px] leading-[1.6] text-neutral-lightgrey whitespace-pre-line pr-10">
+                <p className="css-body--re-400 text-neutral-lightgrey whitespace-pre-line">
                   {faq.answer}
                 </p>
               </div>
@@ -181,7 +230,6 @@ export default function FaqSection() {
           );
         })}
       </div>
-
     </section>
   );
 }

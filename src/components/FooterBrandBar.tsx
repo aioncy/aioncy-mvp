@@ -86,7 +86,7 @@ export default function FooterBrandBar() {
   return (
     <div
       ref={barRef}
-      className={`fixed z-50 flex items-center bg-neutral-black shadow-[0_8px_32px_rgba(0,0,0,0.18)] transition-[border-radius,padding] duration-300 ease-out ${
+      className={`fixed rounded-[12px] z-50 flex items-center bg-neutral-black shadow-[0_8px_32px_rgba(0,0,0,0.18)] transition-[border-radius,padding] duration-300 ease-out ${
         expanded ? "justify-between" : "justify-start"
       }`}
       style={{
@@ -94,16 +94,15 @@ export default function FooterBrandBar() {
         left,
         width,
         opacity: ready ? 1 : 0,
-        borderRadius: `${22 - 6 * progress}px`,
         padding: `${10 + 6 * progress}px ${16 + 4 * progress}px`,
       }}
     >
       <Image
         alt="Aioncy"
         src="/logo.svg"
-        width={100}
-        height={32}
-        className="h-7 w-auto shrink-0"
+        width={160}
+        height={54}
+        className="h-10 w-auto shrink-0"
         priority
       />
 

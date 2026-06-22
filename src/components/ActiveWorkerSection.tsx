@@ -123,7 +123,7 @@ const SLIDES: SlideData[] = [
 
 const SLIDE_COUNT = SLIDES.length;
 // 100vh pinned panel + (n-1) viewport-heights of scroll to advance slides
-const RUNWAY_VH = 100 + (SLIDE_COUNT - 1) * 100;
+const RUNWAY_VH = 100 + (SLIDE_COUNT - 1) * 50;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -168,7 +168,7 @@ function SlidePhone({ slide }: { slide: SlideData }) {
       </div>
 
       <div
-        className={`w-[290px] h-12 flex items-center justify-center ${slide.statusColor} text-neutral-black text-center font-extrabold text-[13px] px-4 rounded-xl shadow-md tracking-wider mt-4 uppercase`}
+        className={`w-full h-[56px] flex items-center  ${slide.statusColor} text-neutral-black text-center css-body--lg-500 px-4 rounded-b-xl mt-4`}
       >
         {slide.statusText}
       </div>
@@ -181,6 +181,7 @@ export default function ActiveWorkerSection() {
   const stickyRef = useRef<HTMLDivElement | null>(null);
   const snapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isSnappingRef = useRef(false);
+  const lastWheelTime = useRef<number>(0);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const getScrollMetrics = useCallback(() => {
@@ -230,11 +231,13 @@ export default function ActiveWorkerSection() {
   const updateFromScroll = useCallback(() => {
     const metrics = getScrollMetrics();
     if (!metrics) {
-      setActiveIndex(0);
+      if (!isSnappingRef.current) setActiveIndex(0);
       return;
     }
 
-    setActiveIndex(metrics.index);
+    if (!isSnappingRef.current) {
+      setActiveIndex(metrics.index);
+    }
 
     if (isSnappingRef.current) return;
 
@@ -264,10 +267,51 @@ export default function ActiveWorkerSection() {
     };
   }, [updateFromScroll]);
 
-  const scrollToSlide = (index: number) => {
+  const scrollToSlide = useCallback((index: number) => {
     setActiveIndex(index);
     snapToSlide(index);
-  };
+  }, [snapToSlide]);
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (e.ctrlKey) return; // Allow pinch-to-zoom
+
+      const wrapper = wrapperRef.current;
+      const sticky = stickyRef.current;
+      if (!wrapper || !sticky) return;
+
+      const rect = wrapper.getBoundingClientRect();
+      const stickyHeight = sticky.offsetHeight;
+      const maxScroll = wrapper.offsetHeight - stickyHeight;
+      const scrolledIntoWrapper = -rect.top;
+
+      const isPinned = rect.top <= 1 && rect.bottom >= stickyHeight - 1;
+      if (!isPinned) return;
+
+      if (scrolledIntoWrapper <= 2 && e.deltaY < 0) return;
+      if (scrolledIntoWrapper >= maxScroll - 2 && e.deltaY > 0) return;
+
+      e.preventDefault();
+
+      if (isSnappingRef.current) return;
+
+      const now = Date.now();
+      if (now - lastWheelTime.current < 600) return;
+
+      if (Math.abs(e.deltaY) < 15) return;
+
+      lastWheelTime.current = now;
+
+      if (e.deltaY > 0) {
+        if (activeIndex < SLIDE_COUNT - 1) scrollToSlide(activeIndex + 1);
+      } else {
+        if (activeIndex > 0) scrollToSlide(activeIndex - 1);
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [activeIndex, scrollToSlide]);
 
   const translatePercent = (activeIndex / SLIDE_COUNT) * 100;
   const slideTransition = "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
@@ -319,58 +363,60 @@ export default function ActiveWorkerSection() {
           ref={stickyRef}
           className="sticky top-0 z-30 w-full h-[100vh] min-h-[100vh] max-h-[100vh] overflow-visible"
         >
-          <section className="w-full h-[100vh] bg-utility-bluishpurple text-white px-6 relative overflow-visible flex items-center justify-center">
+          <section className="w-full h-[100vh] bg-utility-bluishpurple text-white relative overflow-visible flex items-center justify-center">
             <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aioncy/10 blur-[120px] rounded-full pointer-events-none" />
 
-            <div className="w-full max-w-5xl h-full relative z-10 flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24">
-              <div className="flex-1 flex flex-col items-start gap-6 text-left max-w-md self-center">
-                <div className="flex gap-1.5 w-[142px] h-[3px] mb-2 shrink-0 mx-auto lg:mx-0">
-                  {SLIDES.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => scrollToSlide(idx)}
-                      className="h-full flex-1 rounded-full bg-white/25 overflow-hidden relative cursor-pointer border-none outline-none"
-                      aria-label={`Go to slide ${idx + 1}`}
-                    >
-                      <div
-                        className="h-full bg-white transition-all duration-300"
-                        style={{
-                          width: idx <= activeIndex ? "100%" : "0%",
-                        }}
-                      />
-                    </button>
-                  ))}
-                </div>
-
-                <div className="w-full h-[220px] overflow-hidden">
-                  <div
-                    className="will-change-transform"
-                    style={{
-                      transform: `translate3d(0, -${translatePercent}%, 0)`,
-                      transition: slideTransition,
-                    }}
-                  >
-                    {SLIDES.map((slide) => (
-                      <div
-                        key={slide.title}
-                        className="h-[220px] flex flex-col gap-4 text-left"
+            <div className="w-full css-container h-full relative z-10 grid grid-cols-1 lg:grid-cols-2 flex-col lg:flex-row items-center">
+              <div className="flex-1 flex flex-col items-start gap-6 text-left self-center justify-center">
+                <div className="w-full">
+                  <div className="flex gap-1.5 w-[142px] h-[3px] mb-12 shrink-0 mx-auto ">
+                    {SLIDES.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => scrollToSlide(idx)}
+                        className="h-full flex-1 rounded-full bg-white/25 overflow-hidden relative cursor-pointer border-none outline-none"
+                        aria-label={`Go to slide ${idx + 1}`}
                       >
-                        <h2 className="text-[44px] font-extrabold leading-[1.12] tracking-tight text-white">
-                          {slide.title}
-                        </h2>
-                        <p className="max-w-[440px] text-[16px] text-white/80 leading-[1.5]">
-                          {slide.description}
-                        </p>
-                      </div>
+                        <div
+                          className="h-full bg-white transition-all duration-300"
+                          style={{
+                            width: idx <= activeIndex ? "100%" : "0%",
+                          }}
+                        />
+                      </button>
                     ))}
                   </div>
-                </div>
 
-                <div className="flex items-center gap-[13px] w-[243px] h-12 mt-4 shrink-0 mx-auto lg:mx-0">
-                  <Button className="flex-1 h-full">Test the AI</Button>
-                  <Button variant="secondary" className="flex-1 h-full">
-                    Join Early
-                  </Button>
+                  <div className="w-full h-[220px] overflow-hidden mx-auto">
+                    <div
+                      className="will-change-transform"
+                      style={{
+                        transform: `translate3d(0, -${translatePercent}%, 0)`,
+                        transition: slideTransition,
+                      }}
+                    >
+                      {SLIDES.map((slide) => (
+                        <div
+                          key={slide.title}
+                          className="h-[250px] flex flex-col gap-4 text-center"
+                        >
+                          <h2 className="css-heading--h2 tracking-tight text-white">
+                            {slide.title}
+                          </h2>
+                          <p className="max-w-[440px] mx-auto css-body--lg-500">
+                            {slide.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-[13px] w-[243px] h-12 mt-4 shrink-0 mx-auto">
+                    <Button className="flex-1 h-full">Test the AI</Button>
+                    <Button variant="secondary" className="flex-1 h-full">
+                      Join Early
+                    </Button>
+                  </div>
                 </div>
               </div>
 

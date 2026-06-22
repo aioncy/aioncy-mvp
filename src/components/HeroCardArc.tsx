@@ -39,25 +39,45 @@ const CARDS = [
 ];
 
 /** Evenly spaced around the full circle — ~5 visible on top, seamless -180° loop */
-const ORBIT_COUNT = 10;
+const ORBIT_COUNT = 22;
 
-function buildOrbitCards() {
-  return Array.from({ length: ORBIT_COUNT }, (_, index) => ({
+function buildOrbitCards(count: number) {
+  return Array.from({ length: count }, (_, index) => ({
     card: CARDS[index % CARDS.length],
-    angle: (360 / ORBIT_COUNT) * index,
+    angle: (360 / count) * index,
   }));
 }
 
 export default function HeroCardArc() {
-  const orbitCards = buildOrbitCards();
+  // Desktop uses 20 cards for a dense, flat arc. (20 works perfectly for seamless 180° loop since 20/2=10 is a multiple of 5)
+  const orbitCardsDesktop = buildOrbitCards(20);
+  // Mobile uses 10 cards for a steep arc so they don't overlap horizontally.
+  const orbitCardsMobile = buildOrbitCards(10);
 
   return (
     <div className="hero-card-arc">
       <div className="arc-viewport" aria-hidden="true" tabIndex={-1}>
-        <div className="arc-orbit">
-          {orbitCards.map(({ card, angle }, index) => (
+        <div className="arc-orbit orbit-desktop">
+          {orbitCardsDesktop.map(({ card, angle }, index) => (
             <div
-              key={`${card.title}-${index}`}
+              key={`desktop-${card.title}-${index}`}
+              className="card-wrapper"
+              style={
+                {
+                  "--orbit-angle": `${angle}deg`,
+                } as React.CSSProperties
+              }
+            >
+              <Card title={card.title} preview={card.preview} rotation={0}>
+                {card.graphic}
+              </Card>
+            </div>
+          ))}
+        </div>
+        <div className="arc-orbit orbit-mobile">
+          {orbitCardsMobile.map(({ card, angle }, index) => (
+            <div
+              key={`mobile-${card.title}-${index}`}
               className="card-wrapper"
               style={
                 {

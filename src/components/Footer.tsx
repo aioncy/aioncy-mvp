@@ -2,8 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import Button from "@/components/Button";
+import Logo from "@/components/Logo";
 import FooterBrandBar, { FooterBrandAnchor } from "@/components/FooterBrandBar";
 
 const NAV_LINKS = [
@@ -24,22 +24,17 @@ export default function Footer() {
     <>
       <FooterBrandBar />
 
-      <footer className="css-container w-full bg-[#F6F6F6]">
-        <div className="mx-auto lg:px-6 py-10 lg:py-16">
+      <div className="w-full bg-[#F6F6F6] border-t border-border-light">
+        <footer className="css-container w-full">
+          <div className="mx-auto lg:px-6 py-10 lg:py-16">
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-12 lg:gap-16 xl:gap-24">
             {/* Mobile-only static brand card */}
             <div className="lg:hidden w-full flex lg:justify-center px-4 sm:px-0 mb-8">
               <div className="flex w-full max-w-[559px] flex-col sm:flex-row items-center sm:justify-between gap-6 sm:gap-4 bg-neutral-black rounded-[12px] px-6 py-6 sm:py-5">
-                <Image
-                  alt="Aioncy"
-                  src="/logo.svg"
-                  width={140}
-                  height={40}
-                  className="h-8 sm:h-10 w-auto shrink-0"
-                />
+                <Logo />
                 <div className="flex items-center gap-2.5">
-                  <Button size="small">Test the AI</Button>
-                  <Button variant="dark" size="small">
+                  <Button size="default">Test the AI</Button>
+                  <Button variant="dark" size="default">
                     Join Early
                   </Button>
                 </div>
@@ -84,6 +79,7 @@ export default function Footer() {
           </div>
         </div>
       </footer>
+      </div>
     </>
   );
 }

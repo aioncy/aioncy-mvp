@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import Button from "@/components/Button";
+import Logo from "@/components/Logo";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const COLLAPSED_WIDTH = 148;
@@ -86,7 +87,7 @@ export default function FooterBrandBar() {
   return (
     <div
       ref={barRef}
-      className={`hidden lg:flex fixed rounded-[12px] z-50 items-center bg-neutral-black shadow-[0_8px_32px_rgba(0,0,0,0.18)] transition-[border-radius,padding] duration-300 ease-out ${
+      className={`hidden lg:flex fixed rounded-[12px] z-50 items-center bg-neutral-black transition-[border-radius,padding] duration-300 ease-out ${
         expanded ? "justify-between" : "justify-start"
       }`}
       style={{
@@ -97,14 +98,7 @@ export default function FooterBrandBar() {
         padding: `${10 + 6 * progress}px ${16 + 4 * progress}px`,
       }}
     >
-      <Image
-        alt="Aioncy"
-        src="/logo.svg"
-        width={160}
-        height={54}
-        className="h-10 w-auto shrink-0"
-        priority
-      />
+      <Logo />
 
       <div
         className="flex items-center gap-2.5 ml-auto overflow-hidden justify-end"
@@ -113,18 +107,10 @@ export default function FooterBrandBar() {
           opacity: progress ? 1 : 0,
         }}
       >
-        <Link
-          href="#demo"
-          className="bg-utility-yellow text-neutral-black font-bold text-[13px] px-5 py-2.5 rounded-xl hover:bg-[#F2F250] active:scale-[0.98] transition-all whitespace-nowrap"
-        >
-          Test the AI
-        </Link>
-        <Link
-          href="#early-access"
-          className="bg-[#3a3a3a] text-white font-bold text-[13px] px-5 py-2.5 rounded-xl hover:bg-[#4a4a4a] active:scale-[0.98] transition-all whitespace-nowrap"
-        >
-          Join Early
-        </Link>
+        <Button size="default">Test the AI</Button>
+                         <Button variant="dark" size="default">
+                           Join Early
+                         </Button>
       </div>
     </div>
   );

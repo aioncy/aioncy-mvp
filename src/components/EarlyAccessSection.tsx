@@ -7,7 +7,7 @@ export default function EarlyAccessSection() {
   return (
     <section
       id="early-access"
-      className="w-full px-4 lg:px-6 py-10 lg:py-16 bg-[#F6F6F6]"
+      className="w-full px-4 lg:px-6 py-10 lg:py-16 bg-[#F6F6F6] mb-18 lg:mb-24"
     >
       <div className="css-container mx-auto flex flex-col lg:flex-row gap-3 lg:gap-4 items-stretch lg:min-h-[497px]">
         {/* Left: dark panel with semicircle left edge + flow image */}
@@ -75,7 +75,7 @@ export default function EarlyAccessSection() {
           </div>
 
           <div>
-            <Button size="small">Request Early Access</Button>
+            <Button size="default">Request Early Access</Button>
           </div>
         </div>
       </div>

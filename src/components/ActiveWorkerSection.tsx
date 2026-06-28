@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Button from "./Button";
 
 interface ChatMessage {
@@ -14,7 +15,7 @@ interface SlideData {
   description: string;
   statusText: string;
   statusColor: string;
-  messages: ChatMessage[];
+  image: string;
 }
 
 const SLIDES: SlideData[] = [
@@ -24,16 +25,7 @@ const SLIDES: SlideData[] = [
       "Your AI stays active even when your team is offline, replying instantly to customer questions and capturing leads.",
     statusText: "Always On. Always Replying.",
     statusColor: "bg-utility-green",
-    messages: [
-      {
-        role: "user",
-        text: "Hello, could you tell me about the services you provide?",
-      },
-      {
-        role: "assistant",
-        text: "Hi there! 👋 We provide AI-powered customer support and lead generation tools for businesses. Think of Aioncy as a digital team member that can answer questions, capture leads, schedule bookings, and support customers around the clock. What type of business do you run? I can show you a few examples.",
-      },
-    ],
+    image: "/ActiveWorkerSection/active-digital-worker.png",
   },
   {
     title: "Capture Leads Automatically",
@@ -41,24 +33,7 @@ const SLIDES: SlideData[] = [
       "Qualify website visitors in real-time, capture contact details, and sync high-intent prospects directly to your CRM.",
     statusText: "Lead Captured & Synced.",
     statusColor: "bg-[#FFFF62]",
-    messages: [
-      {
-        role: "user",
-        text: "I want to schedule a call to see how this fits my agency.",
-      },
-      {
-        role: "assistant",
-        text: "I'd love to help you with that! 📅 Could you please share your business email and website URL so I can prepare a custom demo?",
-      },
-      {
-        role: "user",
-        text: "Sure, it is sarah@agency.co and agency.co",
-      },
-      {
-        role: "assistant",
-        text: "Perfect! Lead captured. I have sent a calendar scheduling link to your email. Talk to you soon, Sarah!",
-      },
-    ],
+    image: "/ActiveWorkerSection/lead-capture.png",
   },
   {
     title: "Zero Delay Support Desk",
@@ -66,16 +41,7 @@ const SLIDES: SlideData[] = [
       "Instantly resolve complex product inquiries and FAQs by reading directly from your documentation database.",
     statusText: "Resolved in 0.4 seconds.",
     statusColor: "bg-utility-green",
-    messages: [
-      {
-        role: "user",
-        text: "Does Aioncy integrate with Slack and Shopify?",
-      },
-      {
-        role: "assistant",
-        text: "Yes, absolutely! 🔌 We support one-click integrations with Slack, Shopify, HubSpot, and WhatsApp. You can sync customer records and trigger workflows in real-time.",
-      },
-    ],
+    image: "/ActiveWorkerSection/zero-delay-support.png",
   },
   {
     title: "Autopilot Meeting Scheduler",
@@ -83,24 +49,7 @@ const SLIDES: SlideData[] = [
       "Eliminate manual scheduling back-and-forth. The AI books qualified meetings directly into your calendar.",
     statusText: "Meeting Confirmed.",
     statusColor: "bg-utility-green",
-    messages: [
-      {
-        role: "user",
-        text: "Can I book a demo for this Thursday afternoon?",
-      },
-      {
-        role: "assistant",
-        text: "Checking availability... 🗓️ I have Thursday at 2:00 PM or 4:30 PM EST available. Which one works best for you?",
-      },
-      {
-        role: "user",
-        text: "Let's do 4:30 PM.",
-      },
-      {
-        role: "assistant",
-        text: "Done! Calendar invite sent for Thursday, June 4th at 4:30 PM EST.",
-      },
-    ],
+    image: "/ActiveWorkerSection/autopilot-scheduler.png",
   },
   {
     title: "Tailored Brand Personality",
@@ -108,16 +57,7 @@ const SLIDES: SlideData[] = [
       "Fine-tune the AI's guidelines, tone, and vocabulary to fit your brand identity and voice guidelines perfectly.",
     statusText: "Voice Personality Updated.",
     statusColor: "bg-[#FF6B9D]",
-    messages: [
-      {
-        role: "user",
-        text: "Can you speak more casually and use emojis?",
-      },
-      {
-        role: "assistant",
-        text: "Yo! You got it! 😎 I can totally chill out and speak your brand's language. Just adjust the Tone slider in the dashboard!",
-      },
-    ],
+    image: "/ActiveWorkerSection/brand-personality.png",
   },
 ];
 
@@ -131,44 +71,23 @@ function clamp(value: number, min: number, max: number) {
 
 function SlidePhone({ slide }: { slide: SlideData }) {
   return (
-    <div className="flex-shrink-0 flex flex-col items-center justify-center">
-      <div className="w-[350px] h-[592px] rounded-[18px] border-[8px] border-[#0A0A0C] bg-[#0A0A0C] shadow-[0_24px_50px_rgba(0,0,0,0.3)] overflow-hidden relative flex flex-col">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-4 bg-[#0A0A0C] rounded-b-xl z-30 flex items-center justify-center">
-          <span className="w-6 h-0.5 bg-neutral-darkgrey rounded-full" />
-        </div>
+    <div className="w-full flex-shrink-0 flex flex-col items-center justify-center mb-20 lg:mb-0">
+      <div className="w-full lg:w-[350px] h-[592px] rounded-[18px] border-[#0A0A0C] bg-[#0A0A0C] overflow-hidden relative flex flex-col">
 
-        <div className="flex-1 relative flex flex-col pt-7 pb-4 px-3.5 bg-[#0E0E11] justify-end overflow-hidden">
-          <div
-            className="absolute inset-0 opacity-[0.04] pointer-events-none"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: "16px 16px",
-            }}
-          />
-
-          <div className="flex flex-col gap-3 relative z-10">
-            {slide.messages.map((msg, i) => (
-              <div
-                key={i}
-                className="flex flex-col gap-0.5 max-w-[85%] rounded-[12px] p-3 text-[11.5px] leading-[1.4]"
-                style={{
-                  alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
-                  background: msg.role === "user" ? "#0D4E41" : "#1E1E22",
-                  color: "white",
-                  borderBottomRightRadius: msg.role === "user" ? "2px" : "12px",
-                  borderBottomLeftRadius:
-                    msg.role === "assistant" ? "2px" : "12px",
-                }}
-              >
-                <p className="whitespace-pre-line">{msg.text}</p>
-              </div>
-            ))}
+        <div className="flex-1 relative flex flex-col justify-end overflow-hidden">
+          <div className="relative w-full h-full">
+            <Image
+              src={slide.image}
+              alt={slide.title}
+              fill
+              className="object-cover rounded-[4px]"
+            />
           </div>
         </div>
       </div>
 
       <div
-        className={`w-full h-[56px] flex items-center  ${slide.statusColor} text-neutral-black text-center css-body--lg-500 px-4 rounded-b-xl mt-4`}
+        className={`w-full lg:w-[350px] h-[56px] flex items-center  ${slide.statusColor} text-neutral-black text-center css-body--lg-400 px-4 rounded-b-xl mt-4`}
       >
         {slide.statusText}
       </div>
@@ -319,7 +238,7 @@ export default function ActiveWorkerSection() {
   return (
     <>
       {/* MOBILE LAYOUT (Sequential Stack) */}
-      <div className="w-full bg-utility-bluishpurple text-white px-6 py-20 flex lg:hidden flex-col items-center gap-20 relative overflow-hidden">
+      <div className="w-full bg-utility-bluishpurple text-white px-6 py-20 flex lg:hidden flex-col items-center gap-3 lg:gap-20 relative overflow-hidden">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-aioncy/10 blur-[80px] rounded-full pointer-events-none" />
 
         {SLIDES.map((slide, idx) => (
@@ -331,7 +250,7 @@ export default function ActiveWorkerSection() {
               <h2 className="text-[32px] font-extrabold leading-[1.12] tracking-tight text-white">
                 {slide.title}
               </h2>
-              <p className="text-[16px] text-white/80 leading-[1.5] max-w-sm mx-auto">
+              <p className="css-body--lg-400 max-w-sm mx-auto">
                 {slide.description}
               </p>
             </div>
@@ -341,7 +260,7 @@ export default function ActiveWorkerSection() {
           </div>
         ))}
 
-        <div className="w-full flex items-center gap-4 mt-2 max-w-[290px] relative z-10">
+        <div className="mt-[-80px] lg:mt-0 w-full flex items-center gap-4 mt-2 max-w-[350px] relative z-10">
           <Button className="flex-1">Test the AI</Button>
           <Button
             variant="secondary"
@@ -402,7 +321,7 @@ export default function ActiveWorkerSection() {
                           <h2 className="css-heading--h2 tracking-tight text-white">
                             {slide.title}
                           </h2>
-                          <p className="max-w-[440px] mx-auto css-body--lg-500">
+                          <p className="max-w-[440px] mx-auto css-body--lg-400">
                             {slide.description}
                           </p>
                         </div>

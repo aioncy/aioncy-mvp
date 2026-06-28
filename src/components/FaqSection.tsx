@@ -180,7 +180,7 @@ export default function FaqSection() {
                         tabsRef.current[idx] = el;
                       }}
                       onClick={() => selectCategory(cat.id)}
-                      className={`relative z-10 h-full flex items-center px-5 font-bold text-[13.5px] cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
+                      className={`relative z-10 h-full flex items-center px-5 css-misc--button cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
                         isActive
                           ? "text-neutral-black"
                           : "text-neutral-black hover:text-neutral-darkgrey"
@@ -219,39 +219,29 @@ export default function FaqSection() {
                 className="w-full flex items-center justify-between text-left css-body--lg-500 text-neutral-black hover:text-aioncy transition-colors cursor-pointer border-none outline-none"
               >
                 <span>{faq.question}</span>
-                <span className="flex-shrink-0 ml-4 w-6 h-6 rounded-full border border-neutral-darkgrey/20 hover:border-aioncy flex items-center justify-center transition-all">
+                <span className="flex-shrink-0 ml-4 w-8 h-8 rounded-full hover:border-aioncy flex items-center justify-center transition-all">
                   {isOpen ? (
                     // Minus Icon
-                    <svg
-                      width="10"
-                      height="2"
-                      viewBox="0 0 10 2"
-                      fill="none"
-                      className="text-current"
-                    >
-                      <path
-                        d="M0 1H10"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_4278_359"  maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+<rect width="32" height="32" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_4278_359)">
+<path d="M8 16.6668V15.3335H24V16.6668H8Z" fill="#1C1B1F"/>
+</g>
+</svg>
+
                   ) : (
                     // Plus Icon
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 10 10"
-                      fill="none"
-                      className="text-current"
-                    >
-                      <path
-                        d="M5 0V10M0 5H10"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_4278_365"  maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+<rect width="32" height="32" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_4278_365)">
+<path d="M15.3333 16.6667H8V15.3333H15.3333V8H16.6667V15.3333H24V16.6667H16.6667V24H15.3333V16.6667Z" fill="#211E1C"/>
+</g>
+</svg>
+
                   )}
                 </span>
               </button>

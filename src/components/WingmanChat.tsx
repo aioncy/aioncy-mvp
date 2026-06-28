@@ -18,9 +18,12 @@ export default function WingmanChat() {
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   const handleSend = () => {
@@ -44,13 +47,13 @@ export default function WingmanChat() {
   };
 
   return (
-    <div className="relative z-30 w-full max-w-[460px] mx-auto pointer-events-auto">
+    <div className="relative z-30 w-full max-w-[628px] h-[628px] mx-auto pointer-events-auto">
       {/* Chat Widget Container */}
-      <div className="w-full bg-white rounded-[24px] border border-border-light/50 shadow-[0_8px_40px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(0,0,0,0.1)]">
+      <div className="w-full bg-white rounded-[24px] h-full border border-border-light/50 shadow-[0_8px_40px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(0,0,0,0.1)]">
         {/* Header (Dark Theme) */}
         <div className="flex items-center justify-between px-6 py-4.5 bg-neutral-black text-white">
           <div className="flex flex-col gap-0.5">
-            <h3 className="css-body--xl--500">Wingman</h3>
+            <h3 className="css-body--xl-500">Wingman</h3>
             <p className="css-body--re-400 text-[#FFFFFF99]">
               Try me. I don't bite.
             </p>
@@ -68,11 +71,11 @@ export default function WingmanChat() {
         </div>
 
         {/* Message Thread */}
-        <div className="flex-1 min-h-[280px] max-h-[340px] overflow-y-auto p-5 flex flex-col justify-end scrollbar-thin">
+        <div ref={messagesContainerRef} className="flex-1 min-h-[280px] h-full overflow-y-auto p-5 flex flex-col justify-end scrollbar-thin">
           {messages.map((msg, i) => (
             <div
               key={i}
-              className={`flex items-end gap-2.5 max-w-[85%] ${
+              className={`flex items-end gap-2.5 max-w-[85%] mt-3 ${
                 msg.role === "user" ? "self-end flex-row-reverse" : "self-start"
               }`}
             >
@@ -85,7 +88,7 @@ export default function WingmanChat() {
 
               {/* Message Bubble */}
               <div
-                className={`px-4.5 py-3 rounded-[18px] text-[13.5px] leading-[1.5] ${
+                className={`px-4.5 py-3 rounded-[18px] css-body--re-400 ${
                   msg.role === "user"
                     ? "bg-neutral-black text-white rounded-br-sm"
                     : "bg-neutral-offwhite text-neutral-black rounded-bl-sm"
@@ -123,14 +126,19 @@ export default function WingmanChat() {
 
         {/* Input Area */}
         <div className="p-4 border-t border-neutral-offwhite bg-white">
-          <div className="flex items-center border border-border-light/70 focus-within:border-aioncy focus-within:ring-2 focus-within:ring-aioncy/10 rounded-full px-5 py-1 transition-all duration-200 bg-white">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSend();
+            }}
+            className="flex items-center border border-border-light/70 focus-within:border-aioncy focus-within:ring-2 focus-within:ring-aioncy/10 rounded-full px-5 py-1 transition-all duration-200 bg-white"
+          >
             <input
               type="text"
               placeholder="Message..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              className="flex-1 bg-transparent border-none outline-none text-[13.5px] py-2 text-neutral-black placeholder-placeholder"
+              className="flex-1 bg-transparent border-none outline-none css-body--re-400 py-2 text-neutral-black placeholder-placeholder"
             />
             <button
               onClick={handleSend}
@@ -175,7 +183,7 @@ export default function WingmanChat() {
                 </defs>
               </svg>
             </button>
-          </div>
+          </form>
         </div>
       </div>
 

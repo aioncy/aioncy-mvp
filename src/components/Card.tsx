@@ -38,7 +38,7 @@ export default function Card({
     >
       {/* Top ~2/3: product preview */}
       <div
-        className={`flex-[2] w-full flex items-center justify-center p-3 relative overflow-hidden ${
+        className={`flex-[2] w-full flex items-center justify-center p-0 relative overflow-hidden ${
           isLightPreview ? "bg-[#F4F4F4]" : "bg-[#141414]"
         }`}
       >
@@ -47,7 +47,7 @@ export default function Card({
 
       {/* Bottom ~1/3: title bar */}
       <div className="flex-1 p-3 w-full bg-neutral-black flex items-center justify-center border-t border-white/10 max-h-12">
-        <span className="text-[13px] font-semibold text-white tracking-tight text-center leading-snug">
+        <span className="css-body--re-400 text-white tracking-tight text-center leading-snug">
           {title}
         </span>
       </div>

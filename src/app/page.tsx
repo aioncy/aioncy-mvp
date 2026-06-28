@@ -40,7 +40,7 @@ export default function Home() {
       {/* Wingman chat — tucked under the arc; no section bg so edge cards stay visible */}
       <section
         id="demo"
-        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-[14rem] lg:-mt-32 pb-12 md:pb-24 flex justify-center pointer-events-none"
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-[10rem] lg:-mt-10 pb-12 md:pb-24 flex justify-center pointer-events-none"
       >
         <WingmanChat />
       </section>

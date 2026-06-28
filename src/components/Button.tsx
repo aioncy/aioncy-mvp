@@ -17,7 +17,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   dark: "bg-neutral-black text-white hover:bg-neutral-darkgrey active:scale-[0.97]",
   purple:
     "bg-aioncy text-white hover:bg-utility-bluishpurple active:scale-[0.98] shadow-md shadow-aioncy/10",
-  disabled: "bg-neutral-offwhite text-[#8C8C8C] cursor-not-allowed",
+  disabled: "bg-neutral-offwhite cursor-not-allowed",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

@@ -1,40 +1,34 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Card from "@/components/Card";
-import {
-  CaptureAutomationGraphic,
-  ConversationsGraphic,
-  UnifiedInboxGraphic,
-  ContinuousImprovementGraphic,
-  PersonalizedAgentsGraphic,
-} from "@/components/CardGraphics";
 
 const CARDS = [
   {
     title: "Lead Capture Automation",
     preview: "light" as const,
-    graphic: <CaptureAutomationGraphic />,
+    image: "/card images/lead-capture-automation.png",
   },
   {
     title: "AI Conversations in Action",
     preview: "dark" as const,
-    graphic: <ConversationsGraphic />,
+    image: "/card images/ai-conversations.png",
   },
   {
     title: "Unified Inbox",
     preview: "light" as const,
-    graphic: <UnifiedInboxGraphic />,
+    image: "/card images/unified-inbox.png",
   },
   {
     title: "Continuous AI Improvement",
     preview: "dark" as const,
-    graphic: <ContinuousImprovementGraphic />,
+    image: "/card images/continuous-improvement.png",
   },
   {
     title: "Personalized AI Agents",
     preview: "light" as const,
-    graphic: <PersonalizedAgentsGraphic />,
+    image: "/card images/personalized-agents.png",
   },
 ];
 
@@ -70,7 +64,14 @@ export default function HeroCardArc() {
               }
             >
               <Card title={card.title} preview={card.preview} rotation={0}>
-                {card.graphic}
+                <div className="relative w-full h-full bg-[#201D1D]">
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    className="object-cover rounded-[4px]"
+                  />
+                </div>
               </Card>
             </div>
           ))}
@@ -88,7 +89,15 @@ export default function HeroCardArc() {
               }
             >
               <Card title={card.title} preview={card.preview} rotation={0}>
-                {card.graphic}
+                <div className="relative w-full h-full">
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    className="object-cover rounded-[4px]"
+                    style={{ padding: "8px" }}
+                  />
+                </div>
               </Card>
             </div>
           ))}

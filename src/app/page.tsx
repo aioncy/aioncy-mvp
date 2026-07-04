@@ -24,7 +24,7 @@ export default function Home() {
 
         <p className="css-body--xl-400 text-neutral-lightgrey mx-auto max-w-[848px]">
           Send links, answer questions, collect leads, and close sales —
-          automatically —<br className="hidden md:inline" />
+          automatically —<br className="hidden xl:inline" />
           and stop treating engagement like a full-time job.
         </p>
       </main>
@@ -32,7 +32,7 @@ export default function Home() {
       {/* Curved Cards Arc Section */}
       <section
         id="features"
-        className="relative z-20 w-full pt-6 pb-0 overflow-hidden"
+        className="relative z-20 w-full pt-6 pb-0 overflow-visible"
       >
         <HeroCardArc />
       </section>
@@ -40,7 +40,7 @@ export default function Home() {
       {/* Wingman chat — tucked under the arc; no section bg so edge cards stay visible */}
       <section
         id="demo"
-        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-[10rem] lg:-mt-10 pb-12 md:pb-24 flex justify-center pointer-events-none"
+        className="relative z-10 w-full max-w-7xl mx-auto px-6 -mt-[10rem] sm:-mt-[2rem] lg:mt-24 pb-12 md:pb-[164px] flex justify-center pointer-events-none"
       >
         <WingmanChat />
       </section>

@@ -134,7 +134,7 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-28 lg:px-6 flex flex-col items-center justify-center relative overflow-hidden"
+      className="w-full bg-[#F6F6F6] text-neutral-black pt-16 lg:pt-[200px] lg:px-6 flex flex-col items-center justify-center relative overflow-hidden"
     >
       {/* Header Container (628px max width) */}
       <div className="max-w-[628px] w-full text-center flex flex-col items-center gap-6 lg:gap-8 mb-16 lg:mb-20">
@@ -359,16 +359,20 @@ export default function PricingSection() {
 
                         {/* Floating Tooltip Box */}
                         <div
-                          className={`absolute bottom-full mb-2 right-0 w-52 py-2 px-3 rounded-xl opacity-0 pointer-events-none group-hover/feat:opacity-100 transition-all duration-200 z-30 shadow-lg css-body--re-400 border ${
+                          className={`absolute bottom-full mb-2 w-52 py-2 px-3 rounded-xl opacity-0 pointer-events-none group-hover/feat:opacity-100 transition-all duration-200 z-30 shadow-lg css-body--re-400 border ${
                             plan.isFeatured
                               ? "bg-white text-neutral-black border-border-light/40"
                               : "bg-neutral-black text-white border-neutral-darkgrey"
-                          }`}
+                          } ${plan.name === "Growth Plan" ? "right-0" : "left-1/2 -translate-x-1/2"}`}
                         >
                           {feature.tooltip}
                           {/* Tooltip Arrow */}
                           <div
-                            className={`absolute top-full right-[18px] transform translate-x-1/2 border-4 border-transparent ${
+                            className={`absolute top-full border-4 border-transparent ${
+                              plan.name === "Growth Plan"
+                                ? "right-[18px]"
+                                : "left-1/2 -translate-x-1/2"
+                            } ${
                               plan.isFeatured
                                 ? "border-t-white"
                                 : "border-t-neutral-black"

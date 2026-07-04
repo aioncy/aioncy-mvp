@@ -24,9 +24,6 @@ export default function FaqSection() {
     setOpenIndex(0); // Open first item of the new category
   };
 
-  const [tabStyle, setTabStyle] = useState({ left: 0, width: 0 });
-  const tabsRef = React.useRef<(HTMLButtonElement | null)[]>([]);
-
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -45,23 +42,11 @@ export default function FaqSection() {
     return () => window.removeEventListener("resize", checkScroll);
   }, []);
 
-  React.useEffect(() => {
-    const activeIdx = CATEGORIES.findIndex((cat) => cat.id === activeCategory);
-    const activeTab = tabsRef.current[activeIdx];
-    if (activeTab) {
-      setTabStyle({
-        left: activeTab.offsetLeft,
-        width: activeTab.offsetWidth,
-      });
-    }
-    // Re-check scroll on category change in case layout shifts
-    checkScroll();
-  }, [activeCategory]);
 
   return (
     <section
       id="faq"
-      className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-28 px-6 flex flex-col items-center justify-center border-t border-border-light/20 relative overflow-hidden"
+      className="w-full bg-[#F6F6F6] text-neutral-black py-16 lg:py-[200px] px-6 flex flex-col items-center justify-center border-t border-border-light/20 relative overflow-hidden"
     >
       {/* Header (628px max width) */}
       <div className="max-w-[628px] w-full text-center flex flex-col items-center gap-6 mb-12">
@@ -86,15 +71,6 @@ export default function FaqSection() {
             className="w-full overflow-x-auto flex justify-start sm:justify-center px-6 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-1"
           >
             <div className="relative inline-flex items-center h-10 bg-white border border-[#00000033] rounded-full overflow-hidden select-none whitespace-nowrap shrink-0">
-              {/* Sliding Pill Background */}
-              <div
-                className="absolute top-0 bottom-0 bg-utility-yellow transition-all duration-300 ease-out z-0"
-                style={{
-                  left: `${tabStyle.left}px`,
-                  width: `${tabStyle.width}px`,
-                }}
-              />
-
               {CATEGORIES.map((cat, idx) => {
                 const isActive = activeCategory === cat.id;
 
@@ -105,15 +81,12 @@ export default function FaqSection() {
                       <div className="w-[1px] h-full bg-[#00000033] flex-shrink-0 z-10" />
                     )}
                     <button
-                      ref={(el) => {
-                        tabsRef.current[idx] = el;
-                      }}
                       onClick={() => selectCategory(cat.id)}
                       className={`relative z-10 h-full flex items-center px-5 css-misc--button cursor-pointer border-none outline-none whitespace-nowrap transition-colors duration-150 ${
                         isActive
-                          ? "text-neutral-black"
+                          ? "bg-utility-yellow text-neutral-black"
                           : "text-neutral-black hover:text-neutral-darkgrey"
-                      } bg-transparent`}
+                      }`}
                     >
                       {cat.label}
                     </button>

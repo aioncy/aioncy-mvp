@@ -15,6 +15,7 @@ interface SlideData {
   description: string;
   statusText: string;
   statusColor: string;
+  textColor: string;
   image: string;
 }
 
@@ -24,7 +25,8 @@ const SLIDES: SlideData[] = [
     description:
       "Your AI stays active even when your team is offline, replying instantly to customer questions and capturing leads.",
     statusText: "Always On. Always Replying.",
-    statusColor: "bg-utility-green",
+    statusColor: "bg-[#98E891]",
+    textColor: "text-neutral-black",
     image: "/ActiveWorkerSection/active-digital-worker.png",
   },
   {
@@ -32,7 +34,8 @@ const SLIDES: SlideData[] = [
     description:
       "Qualify website visitors in real-time, capture contact details, and sync high-intent prospects directly to your CRM.",
     statusText: "Lead Captured & Synced.",
-    statusColor: "bg-[#FFFF62]",
+    statusColor: "bg-[#A153FF]",
+    textColor: "text-white",
     image: "/ActiveWorkerSection/lead-capture.png",
   },
   {
@@ -40,7 +43,8 @@ const SLIDES: SlideData[] = [
     description:
       "Instantly resolve complex product inquiries and FAQs by reading directly from your documentation database.",
     statusText: "Resolved in 0.4 seconds.",
-    statusColor: "bg-utility-green",
+    statusColor: "bg-[#98E891]",
+    textColor: "text-neutral-black",
     image: "/ActiveWorkerSection/zero-delay-support.png",
   },
   {
@@ -48,7 +52,8 @@ const SLIDES: SlideData[] = [
     description:
       "Eliminate manual scheduling back-and-forth. The AI books qualified meetings directly into your calendar.",
     statusText: "Meeting Confirmed.",
-    statusColor: "bg-utility-green",
+    statusColor: "bg-[#A153FF]",
+    textColor: "text-white",
     image: "/ActiveWorkerSection/autopilot-scheduler.png",
   },
   {
@@ -56,7 +61,8 @@ const SLIDES: SlideData[] = [
     description:
       "Fine-tune the AI's guidelines, tone, and vocabulary to fit your brand identity and voice guidelines perfectly.",
     statusText: "Voice Personality Updated.",
-    statusColor: "bg-[#FF6B9D]",
+    statusColor: "bg-[#98E891]",
+    textColor: "text-neutral-black",
     image: "/ActiveWorkerSection/brand-personality.png",
   },
 ];
@@ -72,7 +78,7 @@ function clamp(value: number, min: number, max: number) {
 function SlidePhone({ slide }: { slide: SlideData }) {
   return (
     <div className="w-full flex-shrink-0 flex flex-col items-center justify-center mb-20 lg:mb-0">
-      <div className="w-full lg:w-[350px] h-[592px] rounded-[18px] border-[#0A0A0C] bg-[#0A0A0C] overflow-hidden relative flex flex-col">
+      <div className="w-full max-w-[300px] lg:max-w-none lg:w-[350px] h-[592px] rounded-[18px] border-[#0A0A0C] bg-[#0A0A0C] overflow-hidden relative flex flex-col">
 
         <div className="flex-1 relative flex flex-col justify-end overflow-hidden">
           <div className="relative w-full h-full">
@@ -87,7 +93,7 @@ function SlidePhone({ slide }: { slide: SlideData }) {
       </div>
 
       <div
-        className={`w-full lg:w-[350px] h-[56px] flex items-center  ${slide.statusColor} text-neutral-black text-center css-body--lg-400 px-4 rounded-b-xl mt-4`}
+        className={`w-full max-w-[300px] lg:max-w-none lg:w-[350px] h-[56px] flex items-center  ${slide.statusColor} ${slide.textColor} text-center css-body--lg-500 px-4 rounded-b-xl mt-4`}
       >
         {slide.statusText}
       </div>
@@ -260,7 +266,7 @@ export default function ActiveWorkerSection() {
           </div>
         ))}
 
-        <div className="mt-[-80px] lg:mt-0 w-full flex items-center gap-4 mt-2 max-w-[350px] relative z-10">
+        <div className="mt-[-80px] lg:mt-0 w-full flex items-center gap-4 mt-2 max-w-[300px] relative z-10">
           <Button className="flex-1">Test the AI</Button>
           <Button
             variant="secondary"
@@ -279,7 +285,7 @@ export default function ActiveWorkerSection() {
       >
         <div
           ref={stickyRef}
-          className="sticky top-0 z-30 w-full h-[100vh] min-h-[100vh] max-h-[100vh] overflow-visible"
+          className="sticky top-0 z-30 w-full h-[100vh] min-h-[100vh] max-h-[100vh] overflow-hidden"
         >
           <section className="w-full h-[100vh] bg-utility-bluishpurple text-white relative overflow-visible flex items-center justify-center">
             <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aioncy/10 blur-[120px] rounded-full pointer-events-none" />

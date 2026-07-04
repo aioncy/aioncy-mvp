@@ -32,9 +32,6 @@ const CARDS = [
   },
 ];
 
-/** Evenly spaced around the full circle — ~5 visible on top, seamless -180° loop */
-const ORBIT_COUNT = 22;
-
 function buildOrbitCards(count: number) {
   return Array.from({ length: count }, (_, index) => ({
     card: CARDS[index % CARDS.length],
@@ -95,7 +92,6 @@ export default function HeroCardArc() {
                     alt={card.title}
                     fill
                     className="object-cover rounded-[4px]"
-                    style={{ padding: "8px" }}
                   />
                 </div>
               </Card>

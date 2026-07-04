@@ -75,7 +75,7 @@ export default function WingmanChat() {
           {messages.map((msg, i) => (
             <div
               key={i}
-              className={`flex items-end gap-2.5 max-w-[85%] mt-3 ${
+              className={`flex items-end gap-2.5 max-w-[386px] mt-3 ${
                 msg.role === "user" ? "self-end flex-row-reverse" : "self-start"
               }`}
             >
@@ -101,7 +101,7 @@ export default function WingmanChat() {
 
           {/* Typing Indicator */}
           {isTyping && (
-            <div className="flex items-end gap-2.5 max-w-[85%] self-start">
+            <div className="flex items-end gap-2.5 max-w-[386px] self-start">
               <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-utility-yellow to-yellow-400 flex items-center justify-center shadow-sm flex-shrink-0">
                 <span className="text-[14px]">🤖</span>
               </div>
@@ -143,9 +143,9 @@ export default function WingmanChat() {
             <button
               onClick={handleSend}
               disabled={!inputValue.trim()}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+              className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
                 inputValue.trim()
-                  ? "bg-neutral-black text-white hover:bg-neutral-darkgrey cursor-pointer"
+                  ? "text-neutral-black hover:text-neutral-darkgrey cursor-pointer"
                   : "text-placeholder opacity-40 cursor-default"
               }`}
             >
@@ -188,7 +188,7 @@ export default function WingmanChat() {
       </div>
 
       {/* Handwritten Callout alongside the chat input */}
-      <div className="absolute left-[calc(100%+16px)] bottom-[20px] hidden lg:flex items-start gap-1 select-none pointer-events-none whitespace-nowrap">
+      <div className="absolute left-[calc(100%+16px)] bottom-[20px] hidden xl:flex items-start gap-1 select-none pointer-events-none whitespace-nowrap">
         <svg
           width="200"
           height="48"

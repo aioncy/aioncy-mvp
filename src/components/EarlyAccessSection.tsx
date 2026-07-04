@@ -7,14 +7,14 @@ export default function EarlyAccessSection() {
   return (
     <section
       id="early-access"
-      className="w-full px-4 lg:px-6 py-10 lg:py-16 bg-[#F6F6F6] mb-18 lg:mb-24"
+      className="w-full px-4 xl:px-6 pb-[120px] md:pb-[200px] bg-[#F6F6F6]"
     >
-      <div className="css-container mx-auto flex flex-col lg:flex-row gap-3 lg:gap-4 items-stretch lg:min-h-[497px]">
+      <div className="css-container mx-auto flex flex-col xl:flex-row gap-3 xl:gap-4 items-stretch xl:min-h-[497px]">
         {/* Left: dark panel with semicircle left edge + flow image */}
-        <div className="flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[320px] sm:min-h-[400px] lg:min-h-0 px-6 py-10 lg:py-8 rounded-[12px] lg:rounded-l-full lg:rounded-r-md">
+        <div className="flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[320px] sm:min-h-[400px] xl:min-h-0 px-6 py-10 xl:py-8 rounded-[12px] xl:rounded-l-full xl:rounded-r-md">
           <div className="relative w-full max-w-[380px]">
             {/* Cursive Yellow Callout */}
-            <div className="absolute -top-12 right-0 lg:-top-16 lg:-right-20 flex items-end gap-1.5 select-none pointer-events-none whitespace-nowrap z-20">
+            <div className="absolute -top-12 right-0 xl:-top-16 xl:-right-20 flex items-end gap-1.5 select-none pointer-events-none whitespace-nowrap z-20">
               {/* SVG Arrow */}
               <svg
                 width="15"
@@ -60,11 +60,11 @@ export default function EarlyAccessSection() {
         </div>
 
         {/* Right: purple CTA card */}
-        <div className="flex-1 flex flex-col justify-between items-center text-center lg:items-start lg:text-left bg-aioncy rounded-[12px] px-8 lg:px-12 py-10 lg:py-16 gap-8 lg:gap-5 min-h-[320px] sm:min-h-[400px] lg:min-h-0">
-          <div className="flex flex-col items-center lg:items-start">
+        <div className="flex-1 flex flex-col justify-between items-center text-center xl:items-start xl:text-left bg-aioncy rounded-[12px] px-8 xl:px-12 py-10 xl:py-16 gap-8 xl:gap-5 min-h-[320px] sm:min-h-[400px] xl:min-h-0">
+          <div className="flex flex-col items-center xl:items-start">
             <h2 className="text-white css-heading--h1 mb-4">
-              Need Early<span className="hidden lg:inline">{"\n"}</span>
-              <span className="lg:hidden"> </span>Access?
+              Need Early<span className="hidden xl:inline">{"\n"}</span>
+              <span className="xl:hidden"> </span>Access?
             </h2>
 
             <p className="text-white css-body--lg-400 max-w-[440px]">

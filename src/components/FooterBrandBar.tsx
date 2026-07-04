@@ -87,7 +87,7 @@ export default function FooterBrandBar() {
   return (
     <div
       ref={barRef}
-      className={`hidden lg:flex fixed rounded-[12px] z-50 items-center bg-neutral-black transition-[border-radius,padding] duration-300 ease-out ${
+      className={`hidden xl:flex fixed rounded-[12px] z-50 items-center bg-neutral-black transition-[border-radius,padding] duration-300 ease-out ${
         expanded ? "justify-between" : "justify-start"
       }`}
       style={{
@@ -101,10 +101,10 @@ export default function FooterBrandBar() {
       <Logo />
 
       <div
-        className="flex items-center gap-2.5 ml-auto overflow-hidden justify-end"
+        className="flex items-center gap-2.5 ml-auto overflow-hidden justify-end transition-all duration-300"
         style={{
-          // maxWidth: expanded ? 280 : 0,
-          opacity: progress ? 1 : 0,
+          opacity: progress,
+          maxWidth: progress * 280,
         }}
       >
         <Button size="default">Test the AI</Button>

@@ -27,7 +27,7 @@ const SLIDES: SlideData[] = [
     statusText: "Always On. Always Replying.",
     statusColor: "bg-[#98E891]",
     textColor: "text-neutral-black",
-    image: "/ActiveWorkerSection/active-digital-worker.png",
+    image: "/ActiveWorkerSection/active-digital-worker.avif",
   },
   {
     title: "Capture Leads Automatically",
@@ -36,7 +36,7 @@ const SLIDES: SlideData[] = [
     statusText: "Lead Captured & Synced.",
     statusColor: "bg-[#A153FF]",
     textColor: "text-white",
-    image: "/ActiveWorkerSection/lead-capture.png",
+    image: "/ActiveWorkerSection/lead-capture.avif",
   },
   {
     title: "Zero Delay Support Desk",
@@ -45,7 +45,7 @@ const SLIDES: SlideData[] = [
     statusText: "Resolved in 0.4 seconds.",
     statusColor: "bg-[#98E891]",
     textColor: "text-neutral-black",
-    image: "/ActiveWorkerSection/zero-delay-support.png",
+    image: "/ActiveWorkerSection/zero-delay-support.avif",
   },
   {
     title: "Autopilot Meeting Scheduler",
@@ -54,7 +54,7 @@ const SLIDES: SlideData[] = [
     statusText: "Meeting Confirmed.",
     statusColor: "bg-[#A153FF]",
     textColor: "text-white",
-    image: "/ActiveWorkerSection/autopilot-scheduler.png",
+    image: "/ActiveWorkerSection/autopilot-scheduler.avif",
   },
   {
     title: "Tailored Brand Personality",
@@ -63,7 +63,7 @@ const SLIDES: SlideData[] = [
     statusText: "Voice Personality Updated.",
     statusColor: "bg-[#98E891]",
     textColor: "text-neutral-black",
-    image: "/ActiveWorkerSection/brand-personality.png",
+    image: "/ActiveWorkerSection/brand-personality.avif",
   },
 ];
 

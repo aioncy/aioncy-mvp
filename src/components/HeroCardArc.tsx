@@ -8,27 +8,27 @@ const CARDS = [
   {
     title: "Lead Capture Automation",
     preview: "light" as const,
-    image: "/card images/lead-capture-automation.png",
+    image: "/card images/lead-capture-automation.avif",
   },
   {
     title: "AI Conversations in Action",
     preview: "dark" as const,
-    image: "/card images/ai-conversations.png",
+    image: "/card images/ai-conversations.avif",
   },
   {
     title: "Unified Inbox",
     preview: "light" as const,
-    image: "/card images/unified-inbox.png",
+    image: "/card images/unified-inbox.avif",
   },
   {
     title: "Continuous AI Improvement",
     preview: "dark" as const,
-    image: "/card images/continuous-improvement.png",
+    image: "/card images/continuous-improvement.avif",
   },
   {
     title: "Personalized AI Agents",
     preview: "light" as const,
-    image: "/card images/personalized-agents.png",
+    image: "/card images/personalized-agents.avif",
   },
 ];
 

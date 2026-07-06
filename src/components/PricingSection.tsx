@@ -287,7 +287,7 @@ export default function PricingSection() {
 
                 {/* Description */}
                 <p
-                  className={`text-[13.5px] leading-[1.5] ${
+                  className={`css-body--re-400 ${
                     plan.isFeatured ? "text-white/80" : "text-neutral-lightgrey"
                   }`}
                 >

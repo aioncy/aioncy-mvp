@@ -1,14 +1,14 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://aioncy.com'
+  const baseUrl = "https://aioncy-mvp.netlify.app";
 
   return [
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: "daily",
       priority: 1,
     },
-  ]
+  ];
 }

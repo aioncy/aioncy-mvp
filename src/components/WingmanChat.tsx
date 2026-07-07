@@ -26,24 +26,50 @@ export default function WingmanChat() {
     }
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!inputValue.trim()) return;
     const userMsg = inputValue.trim();
     setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      const response = await fetch("https://n8n.apsan.com.np/webhook/db52b5a8-4f10-42fb-8e89-981bcb477395/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chatInput: userMsg,
+          sessionId: "session_" + Math.random().toString(36).substr(2, 12),
+          timestamp: new Date().toISOString(),
+          metaData: { business_id: "3" }
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to get response");
+
+      const json = await response.json();
+      let reply = "";
+
+      if (Array.isArray(json)) {
+        const item = json[0];
+        reply = item?.response?.output?.reply || item?.output?.reply || item?.reply || JSON.stringify(item);
+      } else {
+        reply = json?.output?.reply || json?.reply || json?.message || JSON.stringify(json);
+      }
+
+      setIsTyping(false);
+      setMessages((prev) => [...prev, { role: "assistant", text: reply }]);
+    } catch (error) {
+      console.error("Chat error:", error);
       setIsTyping(false);
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          text: "Thanks for checking out Aioncy! Our AI employees connect your channels, generate leads, and operate 24/7 autonomously. Click the Book a Demo button to schedule a personal onboarding call with us!",
+          text: "Sorry, I couldn't connect right now. Please try again later.",
         },
       ]);
-    }, 1500);
+    }
   };
 
   return (

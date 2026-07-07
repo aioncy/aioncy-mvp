@@ -78,7 +78,7 @@ function clamp(value: number, min: number, max: number) {
 function SlidePhone({ slide }: { slide: SlideData }) {
   return (
     <div className="w-full flex-shrink-0 flex flex-col items-center justify-center mb-20 lg:mb-0">
-      <div className="w-full max-w-[300px] lg:max-w-none lg:w-[350px] h-[592px] rounded-[18px] border-[#0A0A0C] bg-[#0A0A0C] overflow-hidden relative flex flex-col">
+      <div className="w-full max-w-[300px] lg:max-w-none lg:w-[350px] h-[506px] lg:h-[592px] rounded-[18px] border-[#0A0A0C] bg-[#0A0A0C] overflow-hidden relative flex flex-col">
 
         <div className="flex-1 relative flex flex-col justify-end overflow-hidden">
           <div className="relative w-full h-full">

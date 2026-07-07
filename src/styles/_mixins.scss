@@ -32,12 +32,8 @@
   );
 }
 
-@function stripUnit($value) {
-  @return $value / ($value * 0 + 1);
-}
-
 @function rem($pxValue) {
-  @return math.div(stripUnit($pxValue), 16) * 1rem;
+  @return math.div(strip-unit($pxValue), 16) * 1rem;
 }
 
 .css {

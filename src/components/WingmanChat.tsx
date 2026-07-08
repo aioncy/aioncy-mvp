@@ -97,7 +97,7 @@ export default function WingmanChat() {
         </div>
 
         {/* Message Thread */}
-        <div ref={messagesContainerRef} className="flex-1 min-h-[280px] h-full overflow-y-auto p-5 flex flex-col justify-end scrollbar-thin">
+        <div ref={messagesContainerRef} className="flex-1 min-h-[280px] h-full overflow-y-auto p-5 flex flex-col scrollbar-thin">
           {messages.map((msg, i) => (
             <div
               key={i}

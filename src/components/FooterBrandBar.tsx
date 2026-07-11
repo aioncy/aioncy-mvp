@@ -23,6 +23,7 @@ export function FooterBrandAnchor() {
 
 export default function FooterBrandBar() {
   const barRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [style, setStyle] = useState<{
     top: number;
@@ -34,15 +35,14 @@ export default function FooterBrandBar() {
   const updatePosition = useCallback(() => {
     const anchor = document.querySelector<HTMLElement>(".footer-brand-anchor");
     const bar = barRef.current;
-    if (!anchor || !bar) return;
+    const container = containerRef.current;
+    if (!anchor || !bar || !container) return;
 
     const anchorRect = anchor.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    const container = anchor.closest(".max-w-7xl");
-    const containerRect = container?.getBoundingClientRect();
-    const containerLeft = containerRect?.left ?? 24;
 
-    const collapsedLeft = containerLeft + 24;
+    const collapsedLeft = containerRect.left + 24;
     const collapsedTop = viewportHeight - bar.offsetHeight - 20;
     const expandedWidth = Math.min(EXPANDED_MAX_WIDTH, anchorRect.width);
     const expandStart = viewportHeight - 96;
@@ -85,32 +85,34 @@ export default function FooterBrandBar() {
   const expanded = progress > 0.85;
 
   return (
-    <div
-      ref={barRef}
-      className={`hidden xl:flex fixed rounded-[12px] z-50 items-center bg-neutral-black transition-[border-radius,padding] duration-300 ease-out ${
-        expanded ? "justify-between" : "justify-start"
-      }`}
-      style={{
-        top,
-        left,
-        width,
-        opacity: ready ? 1 : 0,
-        padding: `${10 + 6 * progress}px ${16 + 4 * progress}px`,
-      }}
-    >
-      <Logo />
-
+    <div ref={containerRef} className="css-container w-full">
       <div
-        className="flex items-center gap-2.5 ml-auto overflow-hidden justify-end transition-all duration-300"
+        ref={barRef}
+        className={`hidden xl:flex fixed rounded-[12px] z-50 items-center bg-neutral-black transition-[border-radius,padding] duration-300 ease-out ${
+          expanded ? "justify-between" : "justify-start"
+        }`}
         style={{
-          opacity: progress,
-          maxWidth: progress * 280,
+          top,
+          left,
+          width,
+          opacity: ready ? 1 : 0,
+          padding: `${10 + 6 * progress}px ${16 + 4 * progress}px`,
         }}
       >
-        <Button size="default">Test the AI</Button>
-                         <Button variant="dark" size="default">
-                           Join Early
-                         </Button>
+        <Logo />
+
+        <div
+          className="flex items-center gap-2.5 ml-auto overflow-hidden justify-end transition-all duration-300"
+          style={{
+            opacity: progress,
+            maxWidth: progress * 280,
+          }}
+        >
+          <Button size="default">Test the AI</Button>
+                           <Button variant="dark" size="default">
+                             Join Early
+                           </Button>
+        </div>
       </div>
     </div>
   );

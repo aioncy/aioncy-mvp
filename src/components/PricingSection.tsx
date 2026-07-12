@@ -241,7 +241,7 @@ export default function PricingSection() {
       </div>
 
       {/* Pricing Cards Grid (411px width proportional mockup) */}
-      <div className="w-full max-w-7xl mx-auto grid md:flex lg:grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch justify-start lg:justify-center px-4 md:px-8 lg:px-4 md:overflow-x-auto md:snap-x md:snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="w-full max-w-7xl mx-auto grid md:flex lg:grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch justify-start lg:justify-center px-4 md:px-8 lg:px-0 md:overflow-x-auto md:snap-x md:snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {PLANS.map((plan) => {
           const price =
             billingCycle === "monthly" ? plan.monthlyPrice : plan.annualPrice;
@@ -288,7 +288,7 @@ export default function PricingSection() {
                 {/* Description */}
                 <p
                   className={`css-body--re-400 ${
-                    plan.isFeatured ? "text-white/80" : "text-neutral-lightgrey"
+                    plan.isFeatured ? "#FFFFFF" : "#201D1D"
                   }`}
                 >
                   {plan.description}

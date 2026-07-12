@@ -27,7 +27,7 @@ export default function Card({
   return (
     <div
       onClick={onClick}
-      className={`arc-card group p-2 w-[300px] h-[250px] rounded-[6px] bg-neutral-black flex flex-col overflow-hidden select-none ${className}`}
+      className={`arc-card group p-2 pb-0 w-[300px] h-[250px] rounded-[6px] bg-neutral-black flex flex-col overflow-hidden select-none ${className}`}
       // style={
       //   {
       //     "--card-rotate": `${rotation}deg`,

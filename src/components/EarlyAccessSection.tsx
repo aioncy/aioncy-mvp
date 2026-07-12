@@ -11,10 +11,10 @@ export default function EarlyAccessSection() {
     >
       <div className="css-container mx-auto flex flex-col xl:flex-row gap-3 xl:gap-4 items-stretch xl:min-h-[497px]">
         {/* Left: dark panel with semicircle left edge + flow image */}
-        <div className="flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[320px] sm:min-h-[400px] xl:min-h-0 px-6 py-10 xl:py-8 rounded-[12px] xl:rounded-l-full xl:rounded-r-md">
+        <div className="flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[320px] sm:min-h-[400px] xl:min-h-0 px-6 py-10 xl:py-8 rounded-[12px] xl:rounded-l-full xl:rounded-r-[12px]">
           <div className="relative w-full max-w-[380px]">
             {/* Cursive Yellow Callout */}
-            <div className="absolute -top-12 right-0 xl:-top-16 xl:-right-20 flex items-end gap-1.5 select-none pointer-events-none whitespace-nowrap z-20">
+            <div className="absolute -top-12 right-0 xl:-top-10 xl:-right-20 flex items-end gap-1.5 select-none pointer-events-none whitespace-nowrap z-20">
               {/* SVG Arrow */}
               <svg
                 width="15"

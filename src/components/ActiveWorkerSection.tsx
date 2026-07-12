@@ -21,49 +21,58 @@ interface SlideData {
 
 const SLIDES: SlideData[] = [
   {
-    title: "24/7 Active Digital Worker",
+    title: "Always On. Always Replying",
     description:
-      "Your AI stays active even when your team is offline, replying instantly to customer questions and capturing leads.",
-    statusText: "Always On. Always Replying.",
+      "Your AI stays active even when your team is offline, replying instantly to customer questions and capturing leads automatically.",
+    statusText: "24/7 Active Digital Worker",
     statusColor: "bg-[#98E891]",
     textColor: "text-neutral-black",
     image: "/ActiveWorkerSection/active-digital-worker.avif",
   },
   {
-    title: "Capture Leads Automatically",
+    title: "Every Conversation Becomes an Opportunity.",
     description:
-      "Qualify website visitors in real-time, capture contact details, and sync high-intent prospects directly to your CRM.",
-    statusText: "Lead Captured & Synced.",
+      "Aioncy automatically captures lead information, customer intent, and inquiries without missing a single conversation.",
+    statusText: "Lead Capture That Never Sleeps",
     statusColor: "bg-[#A153FF]",
     textColor: "text-white",
     image: "/ActiveWorkerSection/lead-capture.avif",
   },
   {
-    title: "Zero Delay Support Desk",
+    title: "Answers in Seconds, Not Hours.",
     description:
-      "Instantly resolve complex product inquiries and FAQs by reading directly from your documentation database.",
-    statusText: "Resolved in 0.4 seconds.",
+      "From pricing to services, your AI responds instantly with accurate business information across every channel.",
+    statusText: "Instant FAQ & Product Replies",
     statusColor: "bg-[#98E891]",
     textColor: "text-neutral-black",
     image: "/ActiveWorkerSection/zero-delay-support.avif",
   },
   {
-    title: "Autopilot Meeting Scheduler",
+    title: "AI When Possible. Human When Necessary.",
     description:
-      "Eliminate manual scheduling back-and-forth. The AI books qualified meetings directly into your calendar.",
-    statusText: "Meeting Confirmed.",
+      "When conversations become complex or customers request support, Aioncy smoothly transfers chats to your team.",
+    statusText: "Human Handover When Needed",
     statusColor: "bg-[#A153FF]",
     textColor: "text-white",
     image: "/ActiveWorkerSection/autopilot-scheduler.avif",
   },
   {
-    title: "Tailored Brand Personality",
+    title: "Turn Website Visitors Into Appointments.",
     description:
-      "Fine-tune the AI's guidelines, tone, and vocabulary to fit your brand identity and voice guidelines perfectly.",
-    statusText: "Voice Personality Updated.",
+      "Your website AI widget can qualify leads, collect details, and even schedule bookings automatically.",
+    statusText: "Smart Booking Assistant",
     statusColor: "bg-[#98E891]",
     textColor: "text-neutral-black",
     image: "/ActiveWorkerSection/brand-personality.avif",
+  },
+   {
+    title: "Everything In One Intelligent Workspace.",
+    description:
+      "Monitor conversations, leads, tickets, and AI performance from a single clean dashboard built for modern businesses.",
+    statusText: "Unified Inbox",
+    statusColor: "bg-[#A153FF]",
+    textColor: "text-white",
+    image: "/ActiveWorkerSection/extra-slide.avif",
   },
 ];
 

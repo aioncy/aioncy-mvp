@@ -28,7 +28,7 @@ const CARDS = [
   {
     title: "Personalized AI Agents",
     preview: "light" as const,
-    image: "/card images/continuous-improvement.avif",
+    image: "/card images/smart-automation.avif",
   },
   {
     title: "Smart Handover",

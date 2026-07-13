@@ -65,7 +65,7 @@ const SLIDES: SlideData[] = [
     textColor: "text-neutral-black",
     image: "/ActiveWorkerSection/brand-personality.avif",
   },
-   {
+  {
     title: "Everything In One Intelligent Workspace.",
     description:
       "Monitor conversations, leads, tickets, and AI performance from a single clean dashboard built for modern businesses.",
@@ -88,7 +88,6 @@ function SlidePhone({ slide }: { slide: SlideData }) {
   return (
     <div className="w-full flex-shrink-0 flex flex-col items-center justify-center mb-20 lg:mb-0">
       <div className="w-full max-w-[300px] lg:max-w-none lg:w-[350px] h-[506px] lg:h-[592px] rounded-[18px] border-[#0A0A0C] bg-[#0A0A0C] overflow-hidden relative flex flex-col">
-
         <div className="flex-1 relative flex flex-col justify-end overflow-hidden">
           <div className="relative w-full h-full">
             <Image
@@ -201,10 +200,13 @@ export default function ActiveWorkerSection() {
     };
   }, [updateFromScroll]);
 
-  const scrollToSlide = useCallback((index: number) => {
-    setActiveIndex(index);
-    snapToSlide(index);
-  }, [snapToSlide]);
+  const scrollToSlide = useCallback(
+    (index: number) => {
+      setActiveIndex(index);
+      snapToSlide(index);
+    },
+    [snapToSlide],
+  );
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -271,16 +273,12 @@ export default function ActiveWorkerSection() {
             </div>
 
             <SlidePhone slide={slide} />
-
           </div>
         ))}
 
         <div className="mt-[-80px] lg:mt-0 w-full flex items-center gap-4 mt-2 max-w-[300px] relative z-10">
           <Button className="flex-1">Test the AI</Button>
-          <Button
-            variant="secondary"
-            className="flex-1 text-neutral-black"
-          >
+          <Button variant="secondary" className="flex-1 text-neutral-black">
             Join Early
           </Button>
         </div>
@@ -300,8 +298,8 @@ export default function ActiveWorkerSection() {
             <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aioncy/10 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="w-full css-container h-full relative z-10 grid grid-cols-1 lg:grid-cols-2 flex-col lg:flex-row items-center">
-              <div className="flex-1 flex flex-col items-start gap-6 text-left self-center justify-center">
-                <div className="w-full">
+              <div className="h-full flex-1 flex flex-col items-start gap-6 text-left self-center justify-center">
+                <div className="w-full h-[506px] lg:h-[592px] flex items-center justify-between flex-col">
                   <div className="flex gap-1.5 w-[142px] h-[3px] mb-12 shrink-0 mx-auto ">
                     {SLIDES.map((_, idx) => (
                       <button
@@ -331,7 +329,7 @@ export default function ActiveWorkerSection() {
                       {SLIDES.map((slide) => (
                         <div
                           key={slide.title}
-                          className="h-[250px] flex flex-col gap-4 text-center"
+                          className="h-[400px] flex flex-col gap-4 text-center max-w-[580px] mx-auto text-align"
                         >
                           <h2 className="css-heading--h2 tracking-tight text-white">
                             {slide.title}
@@ -344,7 +342,7 @@ export default function ActiveWorkerSection() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-[13px] w-[243px] h-12 mt-4 shrink-0 mx-auto">
+                  <div className="flex items-center gap-[13px] h-12 mt-8 shrink-0 mx-auto w-full">
                     <Button className="flex-1 h-full">Test the AI</Button>
                     <Button variant="secondary" className="flex-1 h-full">
                       Join Early

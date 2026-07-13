@@ -109,9 +109,9 @@ export default function FooterBrandBar() {
           }}
         >
           <Button size="default">Test the AI</Button>
-                           <Button variant="dark" size="default">
-                             Join Early
-                           </Button>
+          <Button size="default" className="!bg-[#3F3D3D] !text-white">
+            Join Early
+          </Button>
         </div>
       </div>
     </div>

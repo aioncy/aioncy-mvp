@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "./Button";
 
 interface FeatureItem {
@@ -130,6 +130,65 @@ export default function PricingSection() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">(
     "monthly",
   );
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const tooltipRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const adjustTooltipPosition = (tooltipKey: string | null) => {
+    if (!tooltipKey) return;
+    requestAnimationFrame(() => {
+      const el = tooltipRefs.current[tooltipKey];
+      if (!el) return;
+
+      // reset inline styles first
+      el.style.left = "";
+      el.style.right = "";
+      el.style.transform = "";
+
+      const rect = el.getBoundingClientRect();
+      const pad = 12; // keep 12px padding from edges
+
+      if (rect.left < pad) {
+        el.style.left = `${pad}px`;
+        el.style.right = "auto";
+        el.style.transform = "none";
+      } else if (rect.right > window.innerWidth - pad) {
+        el.style.right = `${pad}px`;
+        el.style.left = "auto";
+        el.style.transform = "none";
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (!activeTooltip) return;
+    adjustTooltipPosition(activeTooltip);
+    const onResize = () => adjustTooltipPosition(activeTooltip);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [activeTooltip]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      // If the click is inside an element marked as tooltip-active, keep it.
+      if (target.closest("[data-tooltip-active]")) return;
+
+      // clear any inline styles applied when repositioning
+      Object.values(tooltipRefs.current).forEach((el) => {
+        if (!el) return;
+        el.style.left = "";
+        el.style.right = "";
+        el.style.transform = "";
+      });
+
+      setActiveTooltip(null);
+    };
+
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, []);
 
   return (
     <section
@@ -249,12 +308,11 @@ export default function PricingSection() {
           return (
             <div
               key={plan.name}
-              className={`flex flex-col rounded-[12px] px-8 py-12 md:min-w-[360px] md:snap-center lg:min-w-0 ${
+              className={`lg:min-h-[642px] flex flex-col rounded-[12px] px-6 lg:px-8 py-10 lg:py-12 md:min-w-[360px] md:snap-center lg:min-w-0 ${
                 plan.isFeatured
                   ? "bg-aioncy text-white border-none z-10"
                   : "bg-white text-neutral-black border border-border-light/50 hover:border-border-light hover:shadow-md"
               }`}
-              style={{ minHeight: "642px" }}
             >
               {/* Title and Description Section */}
               <div className="flex flex-col gap-6 h-[245px]">
@@ -326,59 +384,103 @@ export default function PricingSection() {
                       <span className="css-body--md-400">{feature.name}</span>
 
                       {/* Tooltip Wrapper */}
-                      <div className="relative flex items-center">
-                        {/* Info Icon (i) */}
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <mask
-                            id="mask0_4278_223"
-                            maskUnits="userSpaceOnUse"
-                            x="0"
-                            y="0"
-                            width="20"
-                            height="20"
-                          >
-                            <rect
-                              width="20"
-                              height="20"
-                              fill={plan.isFeatured ? "#F4F4F4" : "#D9D9D9"}
-                            />
-                          </mask>
-                          <g mask="url(#mask0_4278_223)">
-                            <path
-                              d="M9.37501 13.9583H10.625V9.16658H9.37501V13.9583ZM10.4775 7.54679C10.6079 7.41777 10.6731 7.2579 10.6731 7.06721C10.6731 6.87652 10.6086 6.71666 10.4796 6.58763C10.3506 6.45874 10.1907 6.39429 10 6.39429C9.80932 6.39429 9.64945 6.45874 9.52043 6.58763C9.3914 6.71666 9.32689 6.87652 9.32689 7.06721C9.32689 7.2579 9.39209 7.41777 9.52251 7.54679C9.65279 7.67582 9.81195 7.74033 10 7.74033C10.1881 7.74033 10.3472 7.67582 10.4775 7.54679ZM10.0015 17.9166C8.90647 17.9166 7.87723 17.7088 6.91376 17.2933C5.95029 16.8777 5.11223 16.3137 4.39959 15.6014C3.68695 14.889 3.12272 14.0513 2.70689 13.0883C2.29119 12.1252 2.08334 11.0962 2.08334 10.0014C2.08334 8.90638 2.29112 7.87714 2.70668 6.91367C3.12223 5.9502 3.68619 5.11214 4.39855 4.3995C5.11091 3.68686 5.94862 3.12263 6.91168 2.70679C7.87473 2.2911 8.90369 2.08325 9.99855 2.08325C11.0936 2.08325 12.1228 2.29103 13.0863 2.70658C14.0497 3.12214 14.8878 3.6861 15.6004 4.39846C16.3131 5.11082 16.8773 5.94853 17.2931 6.91159C17.7088 7.87464 17.9167 8.9036 17.9167 9.99846C17.9167 11.0935 17.7089 12.1227 17.2933 13.0862C16.8778 14.0496 16.3138 14.8877 15.6015 15.6003C14.8891 16.313 14.0514 16.8772 13.0883 17.293C12.1253 17.7087 11.0963 17.9166 10.0015 17.9166ZM10 16.6666C11.8611 16.6666 13.4375 16.0208 14.7292 14.7291C16.0208 13.4374 16.6667 11.861 16.6667 9.99992C16.6667 8.13881 16.0208 6.56242 14.7292 5.27075C13.4375 3.97909 11.8611 3.33325 10 3.33325C8.1389 3.33325 6.56251 3.97909 5.27084 5.27075C3.97918 6.56242 3.33334 8.13881 3.33334 9.99992C3.33334 11.861 3.97918 13.4374 5.27084 14.7291C6.56251 16.0208 8.1389 16.6666 10 16.6666Z"
-                              fill={plan.isFeatured ? "#F4F4F4" : "#757575"}
-                            />
-                          </g>
-                        </svg>
+                      <div
+                        className="relative flex items-center"
+                        data-tooltip-active
+                      >
+                        {/* Info Icon (button for tap) */}
+                        {/* unique key for this tooltip */}
+                        {(() => {
+                          const tooltipKey = `${plan.name}-${i}`;
+                          const isActive = activeTooltip === tooltipKey;
 
-                        {/* Floating Tooltip Box */}
-                        <div
-                          className={`absolute bottom-full mb-2 w-52 py-2 px-3 rounded-xl opacity-0 pointer-events-none group-hover/feat:opacity-100 transition-all duration-200 z-30 shadow-lg css-body--re-400 border ${
-                            plan.isFeatured
-                              ? "bg-white text-neutral-black border-border-light/40"
-                              : "bg-neutral-black text-white border-neutral-darkgrey"
-                          } ${plan.name === "Growth Plan" ? "right-0" : "left-1/2 -translate-x-1/2"}`}
-                        >
-                          {feature.tooltip}
-                          {/* Tooltip Arrow */}
-                          <div
-                            className={`absolute top-full border-4 border-transparent ${
-                              plan.name === "Growth Plan"
-                                ? "right-[18px]"
-                                : "left-1/2 -translate-x-1/2"
-                            } ${
-                              plan.isFeatured
-                                ? "border-t-white"
-                                : "border-t-neutral-black"
-                            }`}
-                          />
-                        </div>
+                          return (
+                            <>
+                              <button
+                                type="button"
+                                aria-expanded={isActive}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveTooltip((prev) =>
+                                    prev === tooltipKey ? null : tooltipKey,
+                                  );
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Escape")
+                                    setActiveTooltip(null);
+                                }}
+                                className="p-1 rounded-full focus:outline-none"
+                              >
+                                <svg
+                                  width="20"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <mask
+                                    id={`mask-${plan.name.replace(/\s+/g, "-")}-${i}`}
+                                    maskUnits="userSpaceOnUse"
+                                    x="0"
+                                    y="0"
+                                    width="20"
+                                    height="20"
+                                  >
+                                    <rect
+                                      width="20"
+                                      height="20"
+                                      fill={
+                                        plan.isFeatured ? "#F4F4F4" : "#D9D9D9"
+                                      }
+                                    />
+                                  </mask>
+                                  <g
+                                    mask={`url(#mask-${plan.name.replace(/\s+/g, "-")}-${i})`}
+                                  >
+                                    <path
+                                      d="M9.37501 13.9583H10.625V9.16658H9.37501V13.9583ZM10.4775 7.54679C10.6079 7.41777 10.6731 7.2579 10.6731 7.06721C10.6731 6.87652 10.6086 6.71666 10.4796 6.58763C10.3506 6.45874 10.1907 6.39429 10 6.39429C9.80932 6.39429 9.64945 6.45874 9.52043 6.58763C9.3914 6.71666 9.32689 6.87652 9.32689 7.06721C9.32689 7.2579 9.39209 7.41777 9.52251 7.54679C9.65279 7.67582 9.81195 7.74033 10 7.74033C10.1881 7.74033 10.3472 7.67582 10.4775 7.54679ZM10.0015 17.9166C8.90647 17.9166 7.87723 17.7088 6.91376 17.2933C5.95029 16.8777 5.11223 16.3137 4.39959 15.6014C3.68695 14.889 3.12272 14.0513 2.70689 13.0883C2.29119 12.1252 2.08334 11.0962 2.08334 10.0014C2.08334 8.90638 2.29112 7.87714 2.70668 6.91367C3.12223 5.9502 3.68619 5.11214 4.39855 4.3995C5.11091 3.68686 5.94862 3.12263 6.91168 2.70679C7.87473 2.2911 8.90369 2.08325 9.99855 2.08325C11.0936 2.08325 12.1228 2.29103 13.0863 2.70658C14.0497 3.12214 14.8878 3.6861 15.6004 4.39846C16.3131 5.11082 16.8773 5.94853 17.2931 6.91159C17.7088 7.87464 17.9167 8.9036 17.9167 9.99846C17.9167 11.0935 17.7089 12.1227 17.2933 13.0862C16.8778 14.0496 16.3138 14.8877 15.6015 15.6003C14.8891 16.313 14.0514 16.8772 13.0883 17.293C12.1253 17.7087 11.0963 17.9166 10.0015 17.9166ZM10 16.6666C11.8611 16.6666 13.4375 16.0208 14.7292 14.7291C16.0208 13.4374 16.6667 11.861 16.6667 9.99992C16.6667 8.13881 16.0208 6.56242 14.7292 5.27075C13.4375 3.97909 11.8611 3.33325 10 3.33325C8.1389 3.33325 6.56251 3.97909 5.27084 5.27075C3.97918 6.56242 3.33334 8.13881 3.33334 9.99992C3.33334 11.861 3.97918 13.4374 5.27084 14.7291C6.56251 16.0208 8.1389 16.6666 10 16.6666Z"
+                                      fill={
+                                        plan.isFeatured ? "#F4F4F4" : "#757575"
+                                      }
+                                    />
+                                  </g>
+                                </svg>
+                              </button>
+
+                              {/* Floating Tooltip Box */}
+                              <div
+                                ref={(el) =>
+                                  (tooltipRefs.current[tooltipKey] = el)
+                                }
+                                data-tooltip={tooltipKey}
+                                className={`absolute bottom-full mb-2 w-52 py-2 px-3 rounded-xl transition-all duration-200 z-30 shadow-lg css-body--re-400 border ${
+                                  plan.isFeatured
+                                    ? "bg-white text-neutral-black border-border-light/40"
+                                    : "bg-neutral-black text-white border-neutral-darkgrey"
+                                } ${plan.name === "Growth Plan" ? "right-0" : "left-1/2 -translate-x-1/2"} ${
+                                  isActive
+                                    ? "opacity-100 pointer-events-auto"
+                                    : "opacity-0 pointer-events-none"
+                                } group-hover/feat:opacity-100 group-hover/feat:pointer-events-auto`}
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                {feature.tooltip}
+                                {/* Tooltip Arrow */}
+                                <div
+                                  className={`absolute top-full border-4 border-transparent ${
+                                    plan.name === "Growth Plan"
+                                      ? "right-[18px]"
+                                      : "left-1/2 -translate-x-1/2"
+                                  } ${
+                                    plan.isFeatured
+                                      ? "border-t-white"
+                                      : "border-t-neutral-black"
+                                  }`}
+                                />
+                              </div>
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
                   ))}

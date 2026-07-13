@@ -21,8 +21,11 @@ export default function WingmanChat() {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ block: "nearest" });
+    } else if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -34,16 +37,19 @@ export default function WingmanChat() {
     setIsTyping(true);
 
     try {
-      const response = await fetch("https://n8n.apsan.com.np/webhook/db52b5a8-4f10-42fb-8e89-981bcb477395/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chatInput: userMsg,
-          sessionId: "session_" + Math.random().toString(36).substr(2, 12),
-          timestamp: new Date().toISOString(),
-          metaData: { business_id: "3" }
-        }),
-      });
+      const response = await fetch(
+        "https://n8n.apsan.com.np/webhook/db52b5a8-4f10-42fb-8e89-981bcb477395/chat",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chatInput: userMsg,
+            sessionId: "session_" + Math.random().toString(36).substr(2, 12),
+            timestamp: new Date().toISOString(),
+            metaData: { business_id: "3" },
+          }),
+        },
+      );
 
       if (!response.ok) throw new Error("Failed to get response");
 
@@ -52,9 +58,17 @@ export default function WingmanChat() {
 
       if (Array.isArray(json)) {
         const item = json[0];
-        reply = item?.response?.output?.reply || item?.output?.reply || item?.reply || JSON.stringify(item);
+        reply =
+          item?.response?.output?.reply ||
+          item?.output?.reply ||
+          item?.reply ||
+          JSON.stringify(item);
       } else {
-        reply = json?.output?.reply || json?.reply || json?.message || JSON.stringify(json);
+        reply =
+          json?.output?.reply ||
+          json?.reply ||
+          json?.message ||
+          JSON.stringify(json);
       }
 
       setIsTyping(false);
@@ -97,41 +111,60 @@ export default function WingmanChat() {
         </div>
 
         {/* Message Thread */}
-        <div ref={messagesContainerRef} className="flex-1 min-h-[280px] h-full overflow-y-auto px-5 pt-5 pb-2 flex flex-col scrollbar-thin">
+        <div
+          ref={messagesContainerRef}
+          className="flex-1 min-h-[280px] h-full overflow-y-auto px-3 lg:px-4 pt-5 pb-2 flex flex-col justify-end scrollbar-thin"
+        >
           {messages.map((msg, i) => (
             <div
               key={i}
-              className={`flex items-end gap-2.5 max-w-[386px] mt-3 ${
+              className={`flex items-end gap-2.5 max-w-[386px] mb-3 ${
                 msg.role === "user" ? "self-end flex-row-reverse" : "self-start"
               }`}
             >
               {/* Bot Avatar */}
               {msg.role === "assistant" && (
                 <div className="w-7 h-7 rounded-full bg-[#F4F4F4] flex items-center justify-center flex-shrink-0">
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clipPath="url(#clip0_4762_213)">
-<path d="M11.8199 5.98787C11.8199 6.94822 11.0415 7.727 10.0817 7.727C9.12185 7.727 8.35321 6.95796 8.34382 6.00561V5.97013C8.33443 4.64422 7.26508 3.56979 5.9416 3.55309C5.93117 3.55309 5.92039 3.55309 5.90996 3.55309C5.89953 3.55309 5.8891 3.55309 5.87867 3.55309C4.55345 3.56979 3.48305 4.64631 3.4761 5.97466V6.00109C3.46915 6.95553 2.69355 7.727 1.73822 7.727C0.782896 7.727 0 6.94822 0 5.98787C0 5.02753 0.778377 4.24874 1.73822 4.24874C3.07179 4.24874 4.15505 3.1757 4.17174 1.84526C4.17208 1.83483 4.17208 1.82405 4.17208 1.81361V1.80074C4.17904 0.84596 4.95463 0.0748291 5.90996 0.0748291C6.38971 0.0748291 6.82427 0.269612 7.13888 0.584047C7.45072 0.896047 7.64471 1.32561 7.64784 1.80074V1.81361C7.64784 1.82405 7.64784 1.83483 7.64818 1.84526C7.66487 3.1757 8.74813 4.24874 10.0817 4.24874C11.0415 4.24874 11.8199 5.02718 11.8199 5.98787Z" fill="black"/>
-<path d="M5.90996 4.17395C6.86981 4.17395 7.64818 4.95273 7.64818 5.91308C7.64818 6.87343 6.87954 7.64247 5.92769 7.65186H5.89223C4.56701 7.66125 3.49313 8.73117 3.47645 10.0553C3.47645 10.0658 3.47645 10.0766 3.47645 10.087C3.47645 10.0974 3.47645 10.1079 3.47645 10.1183C3.49313 11.4442 4.56909 12.5152 5.89675 12.5221H5.92317C6.87711 12.5291 7.64818 13.3051 7.64818 14.2609C7.64818 15.2167 6.86981 16 5.90996 16C4.95011 16 4.17174 15.2213 4.17174 14.2609C4.17174 12.9266 3.09925 11.8428 1.76951 11.8261C1.75908 11.8258 1.74831 11.8258 1.73788 11.8258H1.72501C0.770728 11.8188 0 11.0428 0 10.087C0 9.60699 0.194681 9.17221 0.508952 8.85743C0.820789 8.54543 1.25013 8.35134 1.72501 8.34821H1.73788C1.74831 8.34821 1.75908 8.34821 1.76951 8.34786C3.09925 8.33117 4.17174 7.24734 4.17174 5.91308C4.17174 4.95273 4.94977 4.17395 5.90996 4.17395Z" fill="black"/>
-<path d="M10.0903 11.8261C9.13043 11.8261 8.35205 11.0473 8.35205 10.087C8.35205 9.13252 9.12069 8.35756 10.0725 8.34817H10.108C11.4332 8.33878 12.5071 7.26887 12.5238 5.9447C12.5238 5.93426 12.5238 5.92348 12.5238 5.91304C12.5238 5.90261 12.5238 5.89217 12.5238 5.88174C12.5071 4.55583 11.4311 3.48487 10.1035 3.47791H10.0771C9.12313 3.47096 8.35205 2.69496 8.35205 1.73913C8.35205 0.778783 9.13043 0 10.0903 0C11.0505 0 11.8285 0.778783 11.8285 1.73913C11.8285 3.07339 12.901 4.15722 14.2307 4.17391C14.2412 4.17426 14.2519 4.17426 14.2624 4.17426H14.2752C15.2295 4.18122 16.0002 4.95722 16.0002 5.91304C16.0002 6.39304 15.8056 6.82783 15.4913 7.14261C15.1794 7.45461 14.7501 7.6487 14.2752 7.65183H14.2624C14.2519 7.65183 14.2412 7.65183 14.2307 7.65217C12.901 7.66887 11.8285 8.7527 11.8285 10.087C11.8285 11.0473 11.0505 11.8261 10.0903 11.8261Z" fill="black"/>
-<path d="M4.17188 10.0869C4.17188 9.12656 4.95025 8.34778 5.9101 8.34778C6.86995 8.34778 7.63859 9.11682 7.64797 10.0692V10.1046C7.65736 11.4306 8.72672 12.505 10.0502 12.5217C10.0606 12.5217 10.0714 12.5217 10.0818 12.5217C10.0923 12.5217 10.1027 12.5217 10.1131 12.5217C11.4383 12.505 12.5087 11.4285 12.5157 10.1001V10.0737C12.5226 9.11926 13.2982 8.34778 14.2536 8.34778C15.2134 8.34778 15.9918 9.12656 15.9918 10.0869C15.9918 11.0473 15.2134 11.826 14.2536 11.826C12.92 11.826 11.8367 12.8991 11.8201 14.2295C11.8197 14.24 11.8197 14.2507 11.8197 14.2612V14.274C11.8128 15.2288 11.0372 16 10.0818 16C9.60209 16 9.16753 15.8052 8.85291 15.4907C8.54107 15.1787 8.34709 14.7492 8.34396 14.274V14.2612C8.34396 14.2507 8.34396 14.24 8.34361 14.2295C8.32692 12.8991 7.24366 11.826 5.9101 11.826C4.95025 11.826 4.17188 11.0476 4.17188 10.0869Z" fill="black"/>
-</g>
-<defs>
-<clipPath id="clip0_4762_213">
-<rect width="16" height="16" fill="white"/>
-</clipPath>
-</defs>
-</svg>
-
-
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clipPath="url(#clip0_4762_213)">
+                      <path
+                        d="M11.8199 5.98787C11.8199 6.94822 11.0415 7.727 10.0817 7.727C9.12185 7.727 8.35321 6.95796 8.34382 6.00561V5.97013C8.33443 4.64422 7.26508 3.56979 5.9416 3.55309C5.93117 3.55309 5.92039 3.55309 5.90996 3.55309C5.89953 3.55309 5.8891 3.55309 5.87867 3.55309C4.55345 3.56979 3.48305 4.64631 3.4761 5.97466V6.00109C3.46915 6.95553 2.69355 7.727 1.73822 7.727C0.782896 7.727 0 6.94822 0 5.98787C0 5.02753 0.778377 4.24874 1.73822 4.24874C3.07179 4.24874 4.15505 3.1757 4.17174 1.84526C4.17208 1.83483 4.17208 1.82405 4.17208 1.81361V1.80074C4.17904 0.84596 4.95463 0.0748291 5.90996 0.0748291C6.38971 0.0748291 6.82427 0.269612 7.13888 0.584047C7.45072 0.896047 7.64471 1.32561 7.64784 1.80074V1.81361C7.64784 1.82405 7.64784 1.83483 7.64818 1.84526C7.66487 3.1757 8.74813 4.24874 10.0817 4.24874C11.0415 4.24874 11.8199 5.02718 11.8199 5.98787Z"
+                        fill="black"
+                      />
+                      <path
+                        d="M5.90996 4.17395C6.86981 4.17395 7.64818 4.95273 7.64818 5.91308C7.64818 6.87343 6.87954 7.64247 5.92769 7.65186H5.89223C4.56701 7.66125 3.49313 8.73117 3.47645 10.0553C3.47645 10.0658 3.47645 10.0766 3.47645 10.087C3.47645 10.0974 3.47645 10.1079 3.47645 10.1183C3.49313 11.4442 4.56909 12.5152 5.89675 12.5221H5.92317C6.87711 12.5291 7.64818 13.3051 7.64818 14.2609C7.64818 15.2167 6.86981 16 5.90996 16C4.95011 16 4.17174 15.2213 4.17174 14.2609C4.17174 12.9266 3.09925 11.8428 1.76951 11.8261C1.75908 11.8258 1.74831 11.8258 1.73788 11.8258H1.72501C0.770728 11.8188 0 11.0428 0 10.087C0 9.60699 0.194681 9.17221 0.508952 8.85743C0.820789 8.54543 1.25013 8.35134 1.72501 8.34821H1.73788C1.74831 8.34821 1.75908 8.34821 1.76951 8.34786C3.09925 8.33117 4.17174 7.24734 4.17174 5.91308C4.17174 4.95273 4.94977 4.17395 5.90996 4.17395Z"
+                        fill="black"
+                      />
+                      <path
+                        d="M10.0903 11.8261C9.13043 11.8261 8.35205 11.0473 8.35205 10.087C8.35205 9.13252 9.12069 8.35756 10.0725 8.34817H10.108C11.4332 8.33878 12.5071 7.26887 12.5238 5.9447C12.5238 5.93426 12.5238 5.92348 12.5238 5.91304C12.5238 5.90261 12.5238 5.89217 12.5238 5.88174C12.5071 4.55583 11.4311 3.48487 10.1035 3.47791H10.0771C9.12313 3.47096 8.35205 2.69496 8.35205 1.73913C8.35205 0.778783 9.13043 0 10.0903 0C11.0505 0 11.8285 0.778783 11.8285 1.73913C11.8285 3.07339 12.901 4.15722 14.2307 4.17391C14.2412 4.17426 14.2519 4.17426 14.2624 4.17426H14.2752C15.2295 4.18122 16.0002 4.95722 16.0002 5.91304C16.0002 6.39304 15.8056 6.82783 15.4913 7.14261C15.1794 7.45461 14.7501 7.6487 14.2752 7.65183H14.2624C14.2519 7.65183 14.2412 7.65183 14.2307 7.65217C12.901 7.66887 11.8285 8.7527 11.8285 10.087C11.8285 11.0473 11.0505 11.8261 10.0903 11.8261Z"
+                        fill="black"
+                      />
+                      <path
+                        d="M4.17188 10.0869C4.17188 9.12656 4.95025 8.34778 5.9101 8.34778C6.86995 8.34778 7.63859 9.11682 7.64797 10.0692V10.1046C7.65736 11.4306 8.72672 12.505 10.0502 12.5217C10.0606 12.5217 10.0714 12.5217 10.0818 12.5217C10.0923 12.5217 10.1027 12.5217 10.1131 12.5217C11.4383 12.505 12.5087 11.4285 12.5157 10.1001V10.0737C12.5226 9.11926 13.2982 8.34778 14.2536 8.34778C15.2134 8.34778 15.9918 9.12656 15.9918 10.0869C15.9918 11.0473 15.2134 11.826 14.2536 11.826C12.92 11.826 11.8367 12.8991 11.8201 14.2295C11.8197 14.24 11.8197 14.2507 11.8197 14.2612V14.274C11.8128 15.2288 11.0372 16 10.0818 16C9.60209 16 9.16753 15.8052 8.85291 15.4907C8.54107 15.1787 8.34709 14.7492 8.34396 14.274V14.2612C8.34396 14.2507 8.34396 14.24 8.34361 14.2295C8.32692 12.8991 7.24366 11.826 5.9101 11.826C4.95025 11.826 4.17188 11.0476 4.17188 10.0869Z"
+                        fill="black"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_4762_213">
+                        <rect width="16" height="16" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
                 </div>
               )}
 
               {/* Message Bubble */}
               <div
-                className={`px-4.5 py-3 rounded-[18px] css-body--re-400 ${
+                className={`p-3 rounded-[18px] xl:max-w-[386px] xl:mr-0 css-body--re-400 ${
                   msg.role === "user"
                     ? "bg-neutral-black text-white rounded-br-sm"
-                    : "bg-neutral-offwhite text-neutral-black rounded-bl-sm"
+                    : "bg-neutral-offwhite text-neutral-black rounded-bl-sm mr-[40px]"
                 }`}
               >
                 {msg.text}
@@ -141,7 +174,7 @@ export default function WingmanChat() {
 
           {/* Typing Indicator */}
           {isTyping && (
-            <div className="flex items-end gap-2.5 max-w-[386px] self-start">
+            <div className="flex items-end gap-2.5 max-w-[386px] self-start mb-3">
               <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-utility-yellow to-yellow-400 flex items-center justify-center shadow-sm flex-shrink-0">
                 <span className="text-[14px]">🤖</span>
               </div>
@@ -228,7 +261,7 @@ export default function WingmanChat() {
       </div>
 
       {/* Handwritten Callout alongside the chat input */}
-      <div className="absolute left-[calc(100%+16px)] bottom-[20px] hidden xl:flex items-start gap-1 select-none pointer-events-none whitespace-nowrap">
+      <div className="absolute left-[calc(100%+16px)] bottom-[60px] hidden xl:flex items-start gap-1 select-none pointer-events-none whitespace-nowrap">
         <svg
           width="200"
           height="48"

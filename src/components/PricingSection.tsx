@@ -449,9 +449,9 @@ export default function PricingSection() {
 
                               {/* Floating Tooltip Box */}
                               <div
-                                ref={(el) =>
-                                  (tooltipRefs.current[tooltipKey] = el)
-                                }
+                                ref={(el) => {
+                                  tooltipRefs.current[tooltipKey] = el;
+                                }}
                                 data-tooltip={tooltipKey}
                                 className={`absolute bottom-full mb-2 w-52 py-2 px-3 rounded-xl transition-all duration-200 z-30 shadow-lg css-body--re-400 border ${
                                   plan.isFeatured

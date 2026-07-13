@@ -354,7 +354,7 @@ export default function PricingSection() {
               </div>
 
               {/* Button and Features Section */}
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-10">
                 {/* CTA Action Button */}
                 <div>
                   {plan.buttonVariant === "primary" && (
@@ -375,7 +375,7 @@ export default function PricingSection() {
                 </div>
 
                 {/* Features List Section */}
-                <div className="flex flex-col gap-3.5 pt-6">
+                <div className="flex flex-col gap-3.5">
                   {plan.features.map((feature, i) => (
                     <div
                       key={i}

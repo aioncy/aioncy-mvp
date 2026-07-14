@@ -67,7 +67,15 @@ function CardContent({ card }: { card: typeof CARDS[0] }) {
   if (card.useLottie && animationData) {
     return (
       <div className="relative w-full h-full bg-[#201D1D]">
-        <Lottie animationData={animationData} loop={true} />
+        <Lottie 
+          animationData={animationData} 
+          loop={true}
+          rendererSettings={{
+            preserveAspectRatio: 'xMidYMid slice',
+            progressiveLoad: true,
+          }}
+          style={{ width: '100%', height: '100%' }}
+        />
       </div>
     );
   }

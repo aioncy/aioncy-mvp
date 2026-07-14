@@ -26,7 +26,7 @@ export default function Footer() {
 
       <div className="w-full bg-[#F6F6F6] border-t border-border-light">
         <footer className="css-container w-full">
-          <div className="mx-auto xl:px-6 pt-10 pb-20 xl:pt-16 xl:pb-16">
+          <div className="mx-auto pt-10 pb-20 xl:pt-20 xl:pb-[100px]">
             <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-12 xl:gap-16 xl:gap-24">
               {/* Mobile-only static brand card */}
               <div className="xl:hidden w-full flex xl:justify-center mb-8">

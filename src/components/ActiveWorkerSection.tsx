@@ -299,7 +299,7 @@ export default function ActiveWorkerSection() {
 
             <div className="w-full css-container h-full relative z-10 grid grid-cols-1 lg:grid-cols-2 flex-col lg:flex-row items-center">
               <div className="h-full flex-1 flex flex-col items-start gap-6 text-left self-center justify-center">
-                <div className="w-full h-[506px] lg:h-[592px] flex items-center justify-between flex-col">
+                <div className="w-full h-[506px] lg:h-[652px] flex items-center justify-between flex-col">
                   <div className="flex gap-1.5 w-[142px] h-[3px] mb-12 shrink-0 mx-auto ">
                     {SLIDES.map((_, idx) => (
                       <button

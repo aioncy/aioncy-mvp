@@ -1,14 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Card from "@/components/Card";
+import Lottie from "lottie-react";
 
 const CARDS = [
   {
     title: "Lead Capture Automation",
     preview: "light" as const,
     image: "/card images/ai-conversations.avif",
+    useLottie: true,
+    lottiePath: "/Lotte File/Lead Capture.json",
   },
   {
     title: "AI Conversations in Action",
@@ -49,6 +52,38 @@ function buildOrbitCards(count: number) {
   }));
 }
 
+function CardContent({ card }: { card: typeof CARDS[0] }) {
+  const [animationData, setAnimationData] = useState<any>(null);
+
+  useEffect(() => {
+    if (card.useLottie && card.lottiePath) {
+      fetch(card.lottiePath)
+        .then((res) => res.json())
+        .then((data) => setAnimationData(data))
+        .catch((err) => console.error("Failed to load Lottie:", err));
+    }
+  }, [card]);
+
+  if (card.useLottie && animationData) {
+    return (
+      <div className="relative w-full h-full bg-[#201D1D]">
+        <Lottie animationData={animationData} loop={true} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full h-full bg-[#201D1D]">
+      <Image
+        src={card.image}
+        alt={card.title}
+        fill
+        className="object-cover rounded-[4px]"
+      />
+    </div>
+  );
+}
+
 export default function HeroCardArc() {
   // Desktop uses 20 cards for a dense, flat arc. (20 works perfectly for seamless 180° loop since 20/2=10 is a multiple of 5)
   const orbitCardsDesktop = buildOrbitCards(20);
@@ -71,14 +106,7 @@ export default function HeroCardArc() {
               }
             >
               <Card title={card.title} preview={card.preview} rotation={0}>
-                <div className="relative w-full h-full bg-[#201D1D]">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    className="object-cover rounded-[4px]"
-                  />
-                </div>
+                <CardContent card={card} />
               </Card>
             </div>
           ))}

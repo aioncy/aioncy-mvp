@@ -54,8 +54,8 @@ const PLANS: PlanData[] = [
   },
   {
     name: "Essential Plan",
-    monthlyPrice: "NRS 2,999",
-    annualPrice: "NRS 2,429", // ~19% off
+    monthlyPrice: "NRS 28,999",
+    annualPrice: "NRS 23,489", // ~19% off
     description:
       "Designed for growing businesses that want to automate conversations, capture leads, and manage customers from one dashboard.",
     buttonText: "Get Early Access",
@@ -88,8 +88,8 @@ const PLANS: PlanData[] = [
   },
   {
     name: "Growth Plan",
-    monthlyPrice: "NRS 6,999",
-    annualPrice: "NRS 5,669", // ~19% off
+    monthlyPrice: "NRS 67,999",
+    annualPrice: "NRS 55,079", // ~19% off
     description:
       "Built for businesses handling higher customer volume with advanced automation and operational workflows.",
     buttonText: "Coming Soon",

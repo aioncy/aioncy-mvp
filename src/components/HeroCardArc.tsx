@@ -11,7 +11,7 @@ const CARDS = [
     preview: "light" as const,
     image: "/card images/ai-conversations.avif",
     useLottie: true,
-    lottiePath: "/Lotte File/Lead Capture.json",
+    lottiePath: "/Lotte File/SmartHandover/SH New.json",
   },
   {
     title: "AI Conversations in Action",
@@ -59,7 +59,19 @@ function CardContent({ card }: { card: typeof CARDS[0] }) {
     if (card.useLottie && card.lottiePath) {
       fetch(card.lottiePath)
         .then((res) => res.json())
-        .then((data) => setAnimationData(data))
+        .then((data) => {
+          // Update asset paths to be absolute URLs
+          if (data.assets) {
+            const basePath = card.lottiePath.substring(0, card.lottiePath.lastIndexOf('/'));
+            data.assets = data.assets.map((asset: any) => {
+              if (asset.u && asset.p) {
+                asset.u = `${basePath}/images/`;
+              }
+              return asset;
+            });
+          }
+          setAnimationData(data);
+        })
         .catch((err) => console.error("Failed to load Lottie:", err));
     }
   }, [card]);
@@ -67,12 +79,15 @@ function CardContent({ card }: { card: typeof CARDS[0] }) {
   if (card.useLottie && animationData) {
     return (
       <div className="relative w-full h-full bg-[#201D1D]">
-        <Lottie 
-          animationData={animationData} 
+        <Lottie
+          animationData={animationData}
           loop={true}
+          renderer="svg"
           rendererSettings={{
-            preserveAspectRatio: 'xMidYMid slice',
-            progressiveLoad: true,
+            preserveAspectRatio: 'xMidYMid meet',
+            imagePreserveAspectRatio: 'xMidYMid meet',
+            progressiveLoad: false,
+            hideOnTransparent: true,
           }}
           style={{ width: '100%', height: '100%' }}
         />

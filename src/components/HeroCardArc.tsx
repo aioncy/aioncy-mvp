@@ -5,42 +5,52 @@ import Image from "next/image";
 import Card from "@/components/Card";
 import Lottie from "lottie-react";
 
-const CARDS = [
+type CardConfig = {
+  title: string;
+  preview: "light" | "dark";
+  image: string;
+  useVideo?: boolean;
+  videoPath?: string;
+  useLottie?: boolean;
+  lottiePath?: string;
+};
+
+const CARDS: CardConfig[] = [
   {
     title: "Lead Capture Automation",
-    preview: "light" as const,
+    preview: "light",
     image: "/card images/ai-conversations.avif",
-    useLottie: true,
-    lottiePath: "/Lotte File/SmartHandover/SH New.json",
+    useVideo: true,
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784132229/SH_Video_kq1nmp.mp4",
   },
   {
     title: "AI Conversations in Action",
-    preview: "dark" as const,
+    preview: "dark",
     image: "/card images/lead-capture-automation.avif",
   },
   {
     title: "Unified Inbox",
-    preview: "light" as const,
+    preview: "light",
     image: "/card images/continuous-improvement.avif",
   },
   {
     title: "Continuous AI Improvement",
-    preview: "dark" as const,
+    preview: "dark",
     image: "/card images/personalized-agents.avif",
   },
   {
     title: "Personalized AI Agents",
-    preview: "light" as const,
+    preview: "light",
     image: "/card images/smart-automation.avif",
   },
   {
     title: "Smart Handover",
-    preview: "light" as const,
+    preview: "light",
     image: "/card images/unified-inbox.avif",
   },
     {
     title: "Business Insights",
-    preview: "dark" as const,
+    preview: "dark",
     image: "/card images/analytics-dashboard.avif",
   },
 ];
@@ -53,16 +63,33 @@ function buildOrbitCards(count: number) {
 }
 
 function CardContent({ card }: { card: typeof CARDS[0] }) {
-  const [animationData, setAnimationData] = useState<any>(null);
+  if (card.useVideo && card.videoPath) {
+    return (
+      <div className="relative w-full h-full bg-[#201D1D]">
+        <video
+          src={card.videoPath}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover rounded-[4px]"
+        />
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    if (card.useLottie && card.lottiePath) {
-      fetch(card.lottiePath)
+  if (card.useLottie && card.lottiePath) {
+    const [animationData, setAnimationData] = useState<any>(null);
+
+    useEffect(() => {
+      const path = card.lottiePath;
+      if (!path) return;
+      fetch(path)
         .then((res) => res.json())
         .then((data) => {
           // Update asset paths to be absolute URLs
           if (data.assets) {
-            const basePath = card.lottiePath.substring(0, card.lottiePath.lastIndexOf('/'));
+            const basePath = path.substring(0, path.lastIndexOf('/'));
             data.assets = data.assets.map((asset: any) => {
               if (asset.u && asset.p) {
                 asset.u = `${basePath}/images/`;
@@ -73,26 +100,26 @@ function CardContent({ card }: { card: typeof CARDS[0] }) {
           setAnimationData(data);
         })
         .catch((err) => console.error("Failed to load Lottie:", err));
-    }
-  }, [card]);
+    }, [card.lottiePath]);
 
-  if (card.useLottie && animationData) {
-    return (
-      <div className="relative w-full h-full bg-[#201D1D]">
-        <Lottie
-          animationData={animationData}
-          loop={true}
-          renderer="svg"
-          rendererSettings={{
-            preserveAspectRatio: 'xMidYMid meet',
-            imagePreserveAspectRatio: 'xMidYMid meet',
-            progressiveLoad: false,
-            hideOnTransparent: true,
-          }}
-          style={{ width: '100%', height: '100%' }}
-        />
-      </div>
-    );
+    if (animationData) {
+      return (
+        <div className="relative w-full h-full bg-[#201D1D]">
+          <Lottie
+            animationData={animationData}
+            loop={true}
+            renderer="svg"
+            rendererSettings={{
+              preserveAspectRatio: 'xMidYMid meet',
+              imagePreserveAspectRatio: 'xMidYMid meet',
+              progressiveLoad: false,
+              hideOnTransparent: true,
+            }}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+      );
+    }
   }
 
   return (

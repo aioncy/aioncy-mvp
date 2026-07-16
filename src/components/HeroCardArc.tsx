@@ -21,12 +21,14 @@ const CARDS: CardConfig[] = [
     preview: "light",
     image: "/card images/ai-conversations.avif",
     useVideo: true,
-    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784132229/SH_Video_kq1nmp.mp4",
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784192476/lead_capture_glfewg.mp4",
   },
   {
     title: "AI Conversations in Action",
     preview: "dark",
     image: "/card images/lead-capture-automation.avif",
+    useVideo: true,
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784192469/AIConverssationin_Action_aq8d74.mp4",
   },
   {
     title: "Unified Inbox",
@@ -37,6 +39,8 @@ const CARDS: CardConfig[] = [
     title: "Continuous AI Improvement",
     preview: "dark",
     image: "/card images/personalized-agents.avif",
+    useVideo: true,
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784192458/Continuous_lscx3q.mp4",
   },
   {
     title: "Personalized AI Agents",
@@ -47,11 +51,15 @@ const CARDS: CardConfig[] = [
     title: "Smart Handover",
     preview: "light",
     image: "/card images/unified-inbox.avif",
+    useVideo: true,
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784192478/Smart_Handover_mp4_o6amhx.mp4",
   },
     {
     title: "Business Insights",
     preview: "dark",
     image: "/card images/analytics-dashboard.avif",
+    useVideo: true,
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784192454/Business_Insights_djpcs6.mp4",
   },
 ];
 

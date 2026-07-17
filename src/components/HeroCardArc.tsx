@@ -182,14 +182,7 @@ export default function HeroCardArc() {
               }
             >
               <Card title={card.title} preview={card.preview} rotation={0}>
-                <div className="relative w-full h-full">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    className="object-cover rounded-[4px]"
-                  />
-                </div>
+                <CardContent card={card} />
               </Card>
             </div>
           ))}

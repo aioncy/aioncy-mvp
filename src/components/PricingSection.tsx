@@ -381,7 +381,7 @@ export default function PricingSection() {
                       key={i}
                       className="flex items-center justify-between text-[13px] font-medium group/feat relative"
                     >
-                      <span className="css-body--md-400">{feature.name}</span>
+                      <span className="css-body--md-400 !text-[17px] lg:!text-[18px]">{feature.name}</span>
 
                       {/* Tooltip Wrapper */}
                       <div

@@ -42,7 +42,7 @@ const CARDS: CardConfig[] = [
     preview: "dark",
     image: "/card images/personalized-agents.avif",
     useVideo: true,
-    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784192458/Continuous_lscx3q.mp4",
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784474540/Continuous_sxor9w.mp4",
   },
   {
     title: "Personalized AI Agents",

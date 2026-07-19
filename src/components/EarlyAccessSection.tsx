@@ -13,7 +13,7 @@ export default function EarlyAccessSection() {
         {/* Left: dark panel with semicircle left edge + video */}
         <div className="relative flex items-center justify-center bg-[#1a1a1a] flex-1 min-h-[320px] sm:min-h-[400px] xl:min-h-0 rounded-[12px] xl:rounded-tl-[300px] xl:rounded-bl-[300px] xl:rounded-tr-[12px] xl:rounded-br-[12px] overflow-hidden">
           <video
-            src="https://res.cloudinary.com/ac0d3mm1/video/upload/v1784192487/CTA_h2cmhy.mp4"
+            src="https://res.cloudinary.com/ac0d3mm1/video/upload/v1784475006/CTA_knwrkn.mp4"
             autoPlay
             loop
             muted

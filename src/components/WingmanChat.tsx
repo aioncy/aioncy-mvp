@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useRef } from "react";
 import Button from "./Button";
@@ -6,19 +6,155 @@ import Button from "./Button";
 interface Message {
   role: "assistant" | "user";
   text: string;
+  suggestions?: string[];
+  time?: string;
 }
 
 export default function WingmanChat() {
   const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      text: "Hi, I'm Wingman — Aioncy's AI Agent. Ask me anything about Aioncy, our dashboard, features, or how the AI works.",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [streamingText, setStreamingText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const BUSINESS_ID = "3";
+  const WEBHOOK_URL = "https://n8n.apsan.com.np/webhook/db52b5a8-4f10-42fb-8e89-981bcb477395/chat";
+
+  // LocalStorage helpers
+  const safeGetItem = (key: string): string | null => {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const safeSetItem = (key: string, value: string): void => {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      /* storage unavailable */
+    }
+  };
+
+  const safeRemoveItem = (key: string): void => {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {}
+  };
+
+  // Session management
+  const SESSION_STORAGE_KEY = `n8n_chat_session__${BUSINESS_ID}`;
+  const HISTORY_STORAGE_KEY = `n8n_chat_history__${BUSINESS_ID}__`;
+
+  const [sessionId, setSessionId] = useState<string>(() => {
+    let id = safeGetItem(SESSION_STORAGE_KEY);
+    if (!id) {
+      id = "sess_" + Math.random().toString(36).substr(2, 12);
+      safeSetItem(SESSION_STORAGE_KEY, id);
+    }
+    return id;
+  });
+
+  // Load chat history on mount
+  useEffect(() => {
+    const loadHistory = (): Message[] => {
+      const raw = safeGetItem(HISTORY_STORAGE_KEY + sessionId);
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    };
+
+    const history = loadHistory();
+    if (history.length > 0) {
+      setMessages(history);
+    } else {
+      // Welcome message for new conversations
+      setMessages([
+        {
+          role: "assistant",
+          text: "Hi, I'm Wingman — Aioncy's AI Agent. Ask me anything about Aioncy, our dashboard, features, or how the AI works.",
+        },
+      ]);
+    }
+  }, [sessionId]);
+
+  // Save chat history
+  const saveHistory = (msgs: Message[]) => {
+    safeSetItem(HISTORY_STORAGE_KEY + sessionId, JSON.stringify(msgs));
+  };
+
+  // Markdown parser (simplified version from n8n script)
+  const parseMarkdown = (text: string): string => {
+    if (!text) return text;
+
+    const lines = text.split("\n");
+    let html = "";
+    let inList = false;
+    let listBuffer: string[] = [];
+
+    const parseInlineMarkdown = (t: string): string => {
+      return t
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/__(.+?)__/g, "<strong>$1</strong>")
+        .replace(/\*(.+?)\*/g, "<em>$1</em>")
+        .replace(/_(.+?)_/g, "<em>$1</em>")
+        .replace(/~~(.+?)~~/g, "<del>$1</del>")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      if (trimmed.match(/^[\*\-]\s+/)) {
+        if (!inList) {
+          inList = true;
+          listBuffer = [];
+        }
+        const itemText = trimmed.replace(/^[\*\-]\s+/, "");
+        listBuffer.push(parseInlineMarkdown(itemText));
+      } else {
+        if (inList && trimmed.length > 0) {
+          html += "<ul>";
+          listBuffer.forEach((item) => {
+            html += `<li>${item}</li>`;
+          });
+          html += "</ul>";
+          inList = false;
+          listBuffer = [];
+        }
+
+        if (trimmed.length > 0) {
+          html += `<p>${parseInlineMarkdown(trimmed)}</p>`;
+        }
+      }
+    }
+
+    if (inList) {
+      html += "<ul>";
+      listBuffer.forEach((item) => {
+        html += `<li>${item}</li>`;
+      });
+      html += "</ul>";
+    }
+
+    return html;
+  };
+
+  const timeStr = () => {
+    return new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -27,63 +163,213 @@ export default function WingmanChat() {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages.length]);
 
   const handleSend = async () => {
     if (!inputValue.trim()) return;
     const userMsg = inputValue.trim();
-    setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
+    const userMessage: Message = {
+      role: "user",
+      text: userMsg,
+      time: timeStr(),
+    };
+    setMessages((prev) => {
+      const updated = [...prev, userMessage];
+      saveHistory(updated);
+      return updated;
+    });
     setInputValue("");
     setIsTyping(true);
 
     try {
-      const response = await fetch(
-        "https://n8n.apsan.com.np/webhook/db52b5a8-4f10-42fb-8e89-981bcb477395/chat",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chatInput: userMsg,
-            sessionId: "session_" + Math.random().toString(36).substr(2, 12),
-            timestamp: new Date().toISOString(),
-            metaData: { business_id: "3" },
-          }),
-        },
-      );
+      const response = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chatInput: userMsg,
+          sessionId: sessionId,
+          timestamp: new Date().toISOString(),
+          metaData: { business_id: BUSINESS_ID },
+        }),
+      });
 
       if (!response.ok) throw new Error("Failed to get response");
 
-      const json = await response.json();
-      let reply = "";
+      const contentType = response.headers.get("content-type") || "";
 
-      if (Array.isArray(json)) {
-        const item = json[0];
-        reply =
-          item?.response?.output?.reply ||
-          item?.output?.reply ||
-          item?.reply ||
-          JSON.stringify(item);
+      // Streaming (SSE / text/event-stream)
+      if (
+        contentType.includes("text/event-stream") ||
+        contentType.includes("text/plain")
+      ) {
+        setIsTyping(false);
+        setIsStreaming(true);
+        setStreamingText("");
+        let buffer = "";
+        let fullReply = "";
+        let suggestions: string[] = [];
+
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+
+            const lines = buffer.split("\n");
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+              if (line.startsWith("data: ")) {
+                const raw = line.slice(6).trim();
+                if (raw === "[DONE]") break;
+                try {
+                  const parsed = JSON.parse(raw);
+                  if (Array.isArray(parsed)) {
+                    const item = parsed[0];
+                    if (item?.response?.output?.reply) {
+                      const chunk = item.response.output.reply;
+                      fullReply += chunk;
+                      setStreamingText(fullReply);
+                      if (item.response.output.suggestions) {
+                        suggestions = item.response.output.suggestions;
+                      }
+                    }
+                  } else if (parsed.text) {
+                    fullReply += parsed.text;
+                    setStreamingText(fullReply);
+                  } else if (typeof parsed === "string") {
+                    fullReply += parsed;
+                    setStreamingText(fullReply);
+                  }
+                } catch {
+                  fullReply += raw;
+                  setStreamingText(fullReply);
+                }
+              }
+            }
+          }
+        }
+
+        setIsStreaming(false);
+        const botMessage: Message = {
+          role: "assistant",
+          text: fullReply || "No response received.",
+          suggestions: suggestions.length ? suggestions : undefined,
+          time: timeStr(),
+        };
+        setMessages((prev) => {
+          const updated = [...prev, botMessage];
+          saveHistory(updated);
+          return updated;
+        });
       } else {
-        reply =
-          json?.output?.reply ||
-          json?.reply ||
-          json?.message ||
-          JSON.stringify(json);
-      }
+        // JSON response (n8n standard)
+        const json = await response.json();
+        let reply = "";
+        let suggestions: string[] = [];
 
-      setIsTyping(false);
-      setMessages((prev) => [...prev, { role: "assistant", text: reply }]);
+        if (Array.isArray(json)) {
+          const item = json[0];
+          if (item?.response?.output?.reply) {
+            reply = item.response.output.reply;
+            suggestions = item.response.output.suggestions || [];
+          } else if (item?.output?.reply) {
+            reply = item.output.reply;
+            suggestions = item.output.suggestions || [];
+          } else if (item?.reply) {
+            reply = item.reply;
+            suggestions = item.suggestions || [];
+          } else {
+            reply = JSON.stringify(item);
+          }
+        } else if (json?.output?.reply) {
+          reply = json.output.reply;
+          suggestions = json.output.suggestions || [];
+        } else if (json?.reply) {
+          reply = json.reply;
+          suggestions = json.suggestions || [];
+        } else if (json?.message) {
+          reply = json.message;
+        } else {
+          reply = JSON.stringify(json);
+        }
+
+        setIsTyping(false);
+        setIsStreaming(true);
+        setStreamingText("");
+
+        // Simulate typewriter streaming for non-streaming endpoints
+        let i = 0;
+        const speed = Math.max(10, Math.min(30, 1400 / reply.length));
+
+        const typeNext = () => {
+          if (i < reply.length) {
+            const chunk = reply.slice(i, i + 3);
+            setStreamingText((prev) => prev + chunk);
+            i += 3;
+            setTimeout(typeNext, speed);
+          } else {
+            setIsStreaming(false);
+            const botMessage: Message = {
+              role: "assistant",
+              text: reply,
+              suggestions: suggestions.length ? suggestions : undefined,
+              time: timeStr(),
+            };
+            setMessages((prev) => {
+              const updated = [...prev, botMessage];
+              saveHistory(updated);
+              return updated;
+            });
+          }
+        };
+        typeNext();
+      }
     } catch (error) {
       console.error("Chat error:", error);
       setIsTyping(false);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          text: "Sorry, I couldn't connect right now. Please try again later.",
-        },
-      ]);
+      setIsStreaming(false);
+      setMessages((prev) => {
+        const updated: Message[] = [
+          ...prev,
+          {
+            role: "assistant",
+            text: "Sorry, I couldn't connect right now. Please try again later.",
+            time: timeStr(),
+          },
+        ];
+        saveHistory(updated);
+        return updated;
+      });
     }
+  };
+
+  const handleSuggestionClick = (suggestion: string, index: number) => {
+    // Remove the suggestion from the message
+    setMessages((prev) => {
+      const updated = prev.map((msg, i) => {
+        if (i === index && msg.suggestions) {
+          return { ...msg, suggestions: [] };
+        }
+        return msg;
+      });
+      saveHistory(updated);
+      return updated;
+    });
+    setInputValue(suggestion);
+  };
+
+  const clearHistory = () => {
+    setMessages([
+      {
+        role: "assistant",
+        text: "Hi, I'm Wingman — Aioncy's AI Agent. Ask me anything about Aioncy, our dashboard, features, or how the AI works.",
+      },
+    ]);
+    safeRemoveItem(HISTORY_STORAGE_KEY + sessionId);
   };
 
   return (
@@ -100,13 +386,9 @@ export default function WingmanChat() {
           </div>
           <Button
             size="small"
-            onClick={() =>
-              alert(
-                "Booking a premium demo console with Aioncy Founder Agent...",
-              )
-            }
+            onClick={clearHistory}
           >
-            Book a demo
+            Clear chat
           </Button>
         </div>
 
@@ -167,10 +449,79 @@ export default function WingmanChat() {
                     : "bg-neutral-offwhite text-neutral-black rounded-bl-sm mr-[40px]"
                 }`}
               >
-                {msg.text}
+                {msg.role === "assistant" ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: parseMarkdown(msg.text),
+                    }}
+                  />
+                ) : (
+                  msg.text
+                )}
+                {/* Suggestions */}
+                {msg.suggestions && msg.suggestions.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {msg.suggestions.map((suggestion, sIdx) => (
+                      <button
+                        key={sIdx}
+                        onClick={() => handleSuggestionClick(suggestion, i)}
+                        className="px-3 py-1.5 text-xs font-medium bg-white border border-neutral-lightgrey rounded-full hover:bg-neutral-offwhite transition-colors"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))}
+
+          {/* Streaming Message */}
+          {isStreaming && (
+            <div className="flex items-end gap-2.5 max-w-[386px] self-start mb-3">
+              <div className="w-7 h-7 rounded-full bg-[#F4F4F4] flex items-center justify-center flex-shrink-0">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clipPath="url(#clip0_4762_213)">
+                    <path
+                      d="M11.8199 5.98787C11.8199 6.94822 11.0415 7.727 10.0817 7.727C9.12185 7.727 8.35321 6.95796 8.34382 6.00561V5.97013C8.33443 4.64422 7.26508 3.56979 5.9416 3.55309C5.93117 3.55309 5.92039 3.55309 5.90996 3.55309C5.89953 3.55309 5.8891 3.55309 5.87867 3.55309C4.55345 3.56979 3.48305 4.64631 3.4761 5.97466V6.00109C3.46915 6.95553 2.69355 7.727 1.73822 7.727C0.782896 7.727 0 6.94822 0 5.98787C0 5.02753 0.778377 4.24874 1.73822 4.24874C3.07179 4.24874 4.15505 3.1757 4.17174 1.84526C4.17208 1.83483 4.17208 1.82405 4.17208 1.81361V1.80074C4.17904 0.84596 4.95463 0.0748291 5.90996 0.0748291C6.38971 0.0748291 6.82427 0.269612 7.13888 0.584047C7.45072 0.896047 7.64471 1.32561 7.64784 1.80074V1.81361C7.64784 1.82405 7.64784 1.83483 7.64818 1.84526C7.66487 3.1757 8.74813 4.24874 10.0817 4.24874C11.0415 4.24874 11.8199 5.02718 11.8199 5.98787Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M5.90996 4.17395C6.86981 4.17395 7.64818 4.95273 7.64818 5.91308C7.64818 6.87343 6.87954 7.64247 5.92769 7.65186H5.89223C4.56701 7.66125 3.49313 8.73117 3.47645 10.0553C3.47645 10.0658 3.47645 10.0766 3.47645 10.087C3.47645 10.0974 3.47645 10.1079 3.47645 10.1183C3.49313 11.4442 4.56909 12.5152 5.89675 12.5221H5.92317C6.87711 12.5291 7.64818 13.3051 7.64818 14.2609C7.64818 15.2167 6.86981 16 5.90996 16C4.95011 16 4.17174 15.2213 4.17174 14.2609C4.17174 12.9266 3.09925 11.8428 1.76951 11.8261C1.75908 11.8258 1.74831 11.8258 1.73788 11.8258H1.72501C0.770728 11.8188 0 11.0428 0 10.087C0 9.60699 0.194681 9.17221 0.508952 8.85743C0.820789 8.54543 1.25013 8.35134 1.72501 8.34821H1.73788C1.74831 8.34821 1.75908 8.34821 1.76951 8.34786C3.09925 8.33117 4.17174 7.24734 4.17174 5.91308C4.17174 4.95273 4.94977 4.17395 5.90996 4.17395Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M10.0903 11.8261C9.13043 11.8261 8.35205 11.0473 8.35205 10.087C8.35205 9.13252 9.12069 8.35756 10.0725 8.34817H10.108C11.4332 8.33878 12.5071 7.26887 12.5238 5.9447C12.5238 5.93426 12.5238 5.92348 12.5238 5.91304C12.5238 5.90261 12.5238 5.89217 12.5238 5.88174C12.5071 4.55583 11.4311 3.48487 10.1035 3.47791H10.0771C9.12313 3.47096 8.35205 2.69496 8.35205 1.73913C8.35205 0.778783 9.13043 0 10.0903 0C11.0505 0 11.8285 0.778783 11.8285 1.73913C11.8285 3.07339 12.901 4.15722 14.2307 4.17391C14.2412 4.17426 14.2519 4.17426 14.2624 4.17426H14.2752C15.2295 4.18122 16.0002 4.95722 16.0002 5.91304C16.0002 6.39304 15.8056 6.82783 15.4913 7.14261C15.1794 7.45461 14.7501 7.6487 14.2752 7.65183H14.2624C14.2519 7.65183 14.2412 7.65183 14.2307 7.65217C12.901 7.66887 11.8285 8.7527 11.8285 10.087C11.8285 11.0473 11.0505 11.8261 10.0903 11.8261Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M4.17188 10.0869C4.17188 9.12656 4.95025 8.34778 5.9101 8.34778C6.86995 8.34778 7.63859 9.11682 7.64797 10.0692V10.1046C7.65736 11.4306 8.72672 12.505 10.0502 12.5217C10.0606 12.5217 10.0714 12.5217 10.0818 12.5217C10.0923 12.5217 10.1027 12.5217 10.1131 12.5217C11.4383 12.505 12.5087 11.4285 12.5157 10.1001V10.0737C12.5226 9.11926 13.2982 8.34778 14.2536 8.34778C15.2134 8.34778 15.9918 9.12656 15.9918 10.0869C15.9918 11.0473 15.2134 11.826 14.2536 11.826C12.92 11.826 11.8367 12.8991 11.8201 14.2295C11.8197 14.24 11.8197 14.2507 11.8197 14.2612V14.274C11.8128 15.2288 11.0372 16 10.0818 16C9.60209 16 9.16753 15.8052 8.85291 15.4907C8.54107 15.1787 8.34709 14.7492 8.34396 14.274V14.2612C8.34396 14.2507 8.34396 14.24 8.34361 14.2295C8.32692 12.8991 7.24366 11.826 5.9101 11.826C4.95025 11.826 4.17188 11.0476 4.17188 10.0869Z"
+                      fill="black"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_4762_213">
+                      <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+              <div className="bg-neutral-offwhite px-5 py-3.5 rounded-[18px] rounded-bl-sm mr-[40px]">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: parseMarkdown(streamingText),
+                  }}
+                />
+                <span className="inline-block w-0.5 h-3.5 bg-neutral-black ml-0.5 animate-pulse" />
+              </div>
+            </div>
+          )}
 
           {/* Typing Indicator */}
           {isTyping && (

@@ -46,7 +46,7 @@ export default function Card({
       </div>
 
       {/* Bottom ~1/3: title bar */}
-      <div className="flex-1 p-3 w-full bg-neutral-black flex items-center justify-center border-t border-white/10 max-h-12">
+      <div className="flex-1 px-[6px] lg:px-3 py-3 w-full bg-neutral-black flex items-center justify-center border-t border-white/10 max-h-12">
         <span className="css-body--re-400 text-white tracking-tight text-center leading-snug">
           {title}
         </span>

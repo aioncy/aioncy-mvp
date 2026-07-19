@@ -34,6 +34,8 @@ const CARDS: CardConfig[] = [
     title: "Unified Inbox",
     preview: "light",
     image: "/card images/continuous-improvement.avif",
+    useVideo: true,
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784301485/unified_inbox_jqyboo.mp4",
   },
   {
     title: "Continuous AI Improvement",
@@ -46,6 +48,8 @@ const CARDS: CardConfig[] = [
     title: "Personalized AI Agents",
     preview: "light",
     image: "/card images/smart-automation.avif",
+    useVideo: true,
+    videoPath: "https://res.cloudinary.com/ac0d3mm1/video/upload/v1784301481/personalized_j9oilt.mp4",
   },
   {
     title: "Smart Handover",

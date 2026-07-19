@@ -157,13 +157,12 @@ export default function WingmanChat() {
   };
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ block: "nearest" });
-    } else if (messagesContainerRef.current) {
+    // Only scroll to bottom on initial load if there's history
+    if (messages.length > 0 && messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
-  }, [messages.length]);
+  }, []);
 
   const handleSend = async () => {
     if (!inputValue.trim()) return;
@@ -395,7 +394,7 @@ export default function WingmanChat() {
         {/* Message Thread */}
         <div
           ref={messagesContainerRef}
-          className="flex-1 min-h-[280px] h-full overflow-y-auto px-3 lg:px-4 pt-5 pb-2 flex flex-col justify-end scrollbar-thin"
+          className="flex-1 min-h-[280px] h-full overflow-y-auto px-3 lg:px-4 pt-5 pb-2 flex flex-col scrollbar-thin"
         >
           {messages.map((msg, i) => (
             <div

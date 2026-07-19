@@ -387,7 +387,7 @@ export default function WingmanChat() {
             size="small"
             onClick={clearHistory}
           >
-            Clear chat
+            Join Early
           </Button>
         </div>
 

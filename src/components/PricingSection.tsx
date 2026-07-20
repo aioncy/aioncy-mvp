@@ -54,8 +54,8 @@ const PLANS: PlanData[] = [
   },
   {
     name: "Essential Plan",
-    monthlyPrice: "NRS 28,999",
-    annualPrice: "NRS 23,489", // ~19% off
+    monthlyPrice: "NRS 2,999",
+    annualPrice: "NRS 28,999", // ~19% off
     description:
       "Designed for growing businesses that want to automate conversations, capture leads, and manage customers from one dashboard.",
     buttonText: "Get Early Access",
@@ -88,8 +88,8 @@ const PLANS: PlanData[] = [
   },
   {
     name: "Growth Plan",
-    monthlyPrice: "NRS 67,999",
-    annualPrice: "NRS 55,079", // ~19% off
+    monthlyPrice: "NRS 6,999",
+    annualPrice: "NRS 67,999", // ~19% off
     description:
       "Built for businesses handling higher customer volume with advanced automation and operational workflows.",
     buttonText: "Coming Soon",
@@ -489,6 +489,10 @@ export default function PricingSection() {
             </div>
           );
         })}
+      </div>
+
+      <div className="css-container">
+        <div className="border-b border-border-light/40  pt-16 lg:pt-[200px]"></div>
       </div>
     </section>
   );

@@ -292,9 +292,9 @@ export default function ActiveWorkerSection() {
       >
         <div
           ref={stickyRef}
-          className="sticky top-0 z-30 w-full h-[100vh] min-h-[100vh] max-h-[100vh] overflow-hidden"
+          className="sticky top-0 z-[60] w-full h-[100vh] min-h-[100vh] max-h-[100vh] overflow-hidden"
         >
-          <section className="w-full h-[100vh] bg-utility-bluishpurple text-white relative overflow-visible flex items-center justify-center">
+          <section className="w-full h-[100vh] bg-utility-bluishpurple text-white relative overflow-visible flex items-center justify-center z-[60]">
             <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aioncy/10 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="w-full css-container h-full relative z-10 grid grid-cols-1 lg:grid-cols-2 flex-col lg:flex-row items-center">
